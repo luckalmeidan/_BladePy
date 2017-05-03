@@ -41,6 +41,7 @@ from bladepy.layout_creator import pyui_creator
 # Misc import
 
 import sys
+import subprocess
 import os
 import functools
 
@@ -58,9 +59,19 @@ from bladepy.software_core import output_viewerUI
 # This dictionary works because depending on OS, e.g. the register might save False as false, crashing the program
 dct = {"true": True, "false": False, True: True, False: False}
 
-bladepy_revision = "0.1.4"
+try:
+    bladepy_version = subprocess.check_output(["git", "describe", "--abbrev=4", "--always", "--tags"])
+    bladepy_version = bladepy_version.decode('utf-8').replace('\n', '')
+
+    with open(os.path.join(os.path.dirname(os.path.dirname(__file__)), "VERSION.txt"), 'w') as version_file:
+        version_file.write(bladepy_version)
+
+except (subprocess.CalledProcessError, FileNotFoundError):
+    with open(os.path.join(os.path.dirname(os.path.dirname(__file__)), "VERSION.txt"), 'r') as version_file:
+        bladepy_version = version_file.readline().strip()
 
 developer_mode = False
+
 
 class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
     """
@@ -94,6 +105,8 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
 
         super(BladePyCore, self).__init__(parent)
         # declaring instance attributes
+        print("BladePy %s started" % bladepy_version)
+
         self.canva = None
         self.display = None
         self.shape_manager = None
@@ -126,7 +139,7 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
 
         self.ui_shape_transparency_sld.sliderMoved.connect(self.shape_manager.setTransparency)
 
-        self.setWindowTitle("BladePy rev.%s - Main Window" % bladepy_revision)
+        self.setWindowTitle("BladePy %s - Main Window" % bladepy_version)
 
         # Connecting signals/slots
         self._connectOCCSignals()

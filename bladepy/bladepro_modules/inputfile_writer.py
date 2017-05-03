@@ -28,6 +28,8 @@ pyui_creator.createPyUI(ui_file, py_ui_file)
 
 from bladepy.bladepro_modules import inputfile_writerUI
 
+dct = {"true": True, "false": False, True: True, False: False}
+
 
 class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
     """
@@ -334,6 +336,8 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         :return:
         """
         if display_output is "Error":
+            print("bladepro routine ended")
+
             QtGui.QApplication.restoreOverrideCursor()
             QtGui.QMessageBox.about(self, "Warning", "Process failed: BladePro command not found or not in PATH")
             status_message = "Last Status: BladePro routine failed"
@@ -1379,7 +1383,6 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         # For some reason, when checkbox isChecked is saved to the user preferences_modules, it saves as lowercase
         # letters.  simple solution was to create a simple dictionary
 
-        dct = {"true": True, "false": False, True: True, False: False}
 
         # The set sums 1, as the first item in python lists is 0 and 0 is reserved for last user preferences_modules.
         setting += 1

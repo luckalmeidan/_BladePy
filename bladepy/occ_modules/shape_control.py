@@ -100,7 +100,7 @@ class ShapeManager(object):
 
             # Read number of blades from geometry file
             with open(shape_case[0]) as file:
-                shape_header = [next(file) for x in range(3)]
+                shape_header = [next(file) for iterator in range(3)]
 
             bladepro_line_in_file = shape_header[0]
             date_line_in_file = shape_header[1]

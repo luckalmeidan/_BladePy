@@ -1,10 +1,17 @@
 # -*- mode: python -*-
+import subprocess
 
+try:
+	version = subprocess.check_output(["git", "describe", "--abbrev=4", "--always", "--tags"])
+	version = version.decode('utf-8').replace('\n', '')
+except (subprocess.CalledProcessError, FileNotFoundError):
+	version = "git_versionless"
+	
 block_cipher = None
 
 
 a = Analysis(['../bladepy_run.py'],
-             pathex=['./Linux'],
+             pathex=['.'],
              binaries=[],
              datas=[('../bladepy/', './bladepy')],
              hiddenimports=[
@@ -76,7 +83,7 @@ pyz = PYZ(a.pure, a.zipped_data,
 exe = EXE(pyz,
           a.scripts,
           exclude_binaries=True,
-          name='bladepy',
+          name='bladepy_%s'% version,
           debug=False,
           strip=False,
           upx=True,

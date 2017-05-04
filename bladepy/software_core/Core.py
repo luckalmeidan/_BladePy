@@ -14,9 +14,9 @@ It has the BladePyCore Class, which inherits:
 """
 
 # OpenCascade Libraries
-from OCC.Display.backend import load_backend
 from OCC.AIS import AIS_Shaded
 from OCC.AIS import AIS_WireFrame
+from OCC.Display.backend import load_backend
 
 used_backend = load_backend()
 
@@ -60,13 +60,13 @@ from bladepy.software_core import output_viewerUI
 dct = {"true": True, "false": False, True: True, False: False}
 
 try:
-    bladepy_version = subprocess.check_output(["git", "describe", "--abbrev=4", "--always", "--tags"])
+    bladepy_version = subprocess.check_output(["git", "describe", "--abbrev=4", "--dirty", "--always", "--tags"])
     bladepy_version = bladepy_version.decode('utf-8').replace('\n', '')
 
     with open(os.path.join(os.path.dirname(os.path.dirname(__file__)), "VERSION.txt"), 'w') as version_file:
         version_file.write(bladepy_version)
 
-except (subprocess.CalledProcessError, FileNotFoundError):
+except:
     with open(os.path.join(os.path.dirname(os.path.dirname(__file__)), "VERSION.txt"), 'r') as version_file:
         bladepy_version = version_file.readline().strip()
 
@@ -113,7 +113,7 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         self.inputwriter_widget = None
         self.tecplot_widget = None
         self.preferences_widget = None
-
+        self.model = None
         # This attribute is used all around the code and represents the "working" shape.
         self.current_h_ais_shape = None
 
@@ -362,14 +362,12 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
 
         """
 
-        global igs_surf_output_file_path
         to_be_loaded_shape_list = []
 
         igs_surf_exists = False
         igs_3d_cur_exists = False
         igs_2d_cur_exists = False
         tecplot_exists = False
-
 
         igs_surf_check_state = self.preferences_widget.default_igs_surf_check_state
         igs_cur_3d_check_state = self.preferences_widget.default_igs_3d_cur_check_state
@@ -379,7 +377,6 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         igs_surf_exception = self.preferences_widget.default_igs_surf_exception
         igs_3d_cur_exception = self.preferences_widget.default_igs_3d_cur_exception
         igs_2d_cur_exception = self.preferences_widget.default_igs_2d_cur_exception
-
 
         # Gets the name of the adding case in a field in Input Writer Widget
         to_add_case_name = self.inputwriter_widget.ui_case_name_edit.text()
@@ -515,7 +512,6 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         self._setSelection(self.ui_case_treeview.currentIndex(), old=None)
 
         self.display.Repaint()
-
 
     def deleteCase(self):
         """
@@ -1067,7 +1063,7 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
 
 def main():
     app = QtGui.QApplication(sys.argv)
-
+    app.setStyle("gtk+")
     main_window = BladePyCore()
     # MainWindow.setgui()
     app.exec_()

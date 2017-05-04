@@ -66,3 +66,4 @@ target/
 
 # QtCtreator CMake
 CMakeLists.txt.user*
+/bladepy/VERSION.txt

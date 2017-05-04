@@ -6,10 +6,10 @@ Qt Designer for the Blade Inputfile writer. The class has the methods for writin
 and calling the C++ code to run with the generated input file.
 
 """
+import functools
 import os
 import subprocess
 import sys
-import functools
 
 import matplotlib as mpl
 import matplotlib.image as mpimg
@@ -31,6 +31,7 @@ from bladepy.bladepro_modules import inputfile_writerUI
 dct = {"true": True, "false": False, True: True, False: False}
 
 
+# noinspection PyBroadException
 class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
     """
     Class for creating a GUI for the BladePy Inputfile Writer Widget.
@@ -51,6 +52,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         self.list_settings = []
         self.file_geometry = ""
         self.working_directory = ""
+        self.bladepro_process = None
 
         # List to up to 10 preferences_modules defined
         self.user_settings = [QtCore.QSettings("BladePy", "BladePy\InputWriter\Options{number}".format(number=1)),
@@ -281,6 +283,17 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         :return:
         """
         # TODO: Docstrings
+
+        # Check if BladePro exists in machine
+        try:
+            subprocess.check_output(["bladepro"])
+        except FileNotFoundError:
+            QtGui.QMessageBox.about(self, "Warning", "Process failed: BladePro command not found or not in PATH")
+            status_message = "Last Status: BladePro routine failed"
+            self.ui_application_status_lbl.setText(status_message)
+
+            return False
+
         input_generated_bool = self.generateInput()
 
         if not input_generated_bool:
@@ -293,9 +306,8 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         try:
             bladepro_version = self.op_viewer.preferences_widget.list_settings[1].value(
                 "bladepro_settings/default_bladebro_version")
-        except AttributeError:
+        except:
             bladepro_version = "bladepro"
-
 
         # bladepro_command = bladepro_version + " " + os.path.join(working_path, case_name)
 
@@ -315,13 +327,12 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         return True
 
-
     def _runBladeProStarted(self, bladepro_version):
         """
 
         :return:
         """
-        #TODO: (LOW) Docstrings
+        # TODO: (LOW) Docstrings
         print("%s routine called" % bladepro_version)
 
         self.ui_inputpreview_textedit.clear()
@@ -339,7 +350,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
             print("bladepro routine ended")
 
             QtGui.QApplication.restoreOverrideCursor()
-            QtGui.QMessageBox.about(self, "Warning", "Process failed: BladePro command not found or not in PATH")
+            QtGui.QMessageBox.about(self, "Warning", "Process failed: BladePro returned an error flag")
             status_message = "Last Status: BladePro routine failed"
             self.ui_application_status_lbl.setText(status_message)
 
@@ -414,17 +425,18 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         """
         working_path = self.ui_working_path_edit.text()
         if self.ui_read_ibl_rbtn.isChecked():
-            if self.ui_read_ibl_fpfile_edit.text() == "":
-                read_ibl_file = self.ui_read_ibl_iblfile_edit.text()
-                file_abs_path = os.path.join(working_path, read_ibl_file)
-                gen_file.write("READ/IBL\n")
+            read_ibl_file = self.ui_read_ibl_iblfile_edit.text()
+            file_abs_path = os.path.join(working_path, read_ibl_file)
 
+            if self.ui_read_ibl_fpfile_edit.text() == "":
+
+                gen_file.write("READ/IBL\n")
                 gen_file.write("{file_name_ibl}\n\n".format(file_name_ibl=file_abs_path))
             else:
                 gen_file.write("READ/IBL2\n")
-                read_ibl_file = self.ui_read_ibl_iblfile_edit.text()
                 read_fp_file = self.ui_read_ibl_fpfile_edit.text()
-                gen_file.write("{file_name_ibl}\n{file_name_fp}\n\n".format(file_name_ibl=read_ibl_file,
+                file_fp_abs_path = os.path.join(working_path, read_fp_file)
+                gen_file.write("{file_name_ibl}\n{file_name_fp}\n\n".format(file_name_ibl=file_abs_path,
                                                                             file_name_fp=read_fp_file))
 
         if self.ui_read_cftgeo_rbtn.isChecked():
@@ -731,7 +743,10 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         """
         if self.ui_output_igs_surf_chk.isChecked():
+            opt_dict = {0: "No extrapolation", 1: "Parametric extrapolation", 2: "Span extrapolation"}
+
             output_igs_surf_option = self.ui_output_igs_surf_opt_combo.currentIndex()
+            output_igs_extrapolation_method = self.ui_output_igs_extrap_opt_combo.currentIndex()
             output_igs_surf_rails_list = [float(self.ui_output_igs_surf_rail_combo.itemText(i))
                                           for i in range(self.ui_output_igs_surf_rail_combo.count())]
 
@@ -750,12 +765,32 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
             output_igs_surf_rails_len = len(output_igs_surf_rails_list)
 
             # concatenate the rails list to write it to the input file
-            output_igs_surf_rails_concatenated = "\n".join(str(i) for i in output_igs_surf_rails_list)
+            if len(output_igs_surf_rails_list) != 0:
+                output_igs_surf_rails_concatenated = "\n".join(str(i) for i in output_igs_surf_rails_list)
+                output_igs_surf_rails_concatenated += "\n"
+            else:
+                output_igs_surf_rails_concatenated = ""
 
+            if opt_dict[output_igs_extrapolation_method] == "No extrapolation":
+                output_extrapolation_keyword = ""
+            else:
+                hub_percentage = self.ui_output_igs_extrap_hub_spn.value()
+                shroud_percentage = self.ui_output_igs_extrap_shroud_spn.value()
+
+                if opt_dict[output_igs_extrapolation_method] == "Parametric extrapolation":
+                    output_extrapolation_type = "extrap"
+                elif opt_dict[output_igs_extrapolation_method] == "Span extrapolation":
+                    output_extrapolation_type = "extras"
+
+                output_extrapolation_keyword = "{method} {hub} {shroud}".format(hub=hub_percentage,
+                                                                                shroud=shroud_percentage,
+                                                                                method=output_extrapolation_type)
+                output_extrapolation_keyword += "\n"
             gen_file.write("OUTPUT/IGS/SURF\n")
-            gen_file.write("{surf_option}\n{n_rails}\n{rails}\n\n".format(surf_option=output_igs_surf_option,
-                                                                          n_rails=output_igs_surf_rails_len,
-                                                                          rails=output_igs_surf_rails_concatenated))
+            gen_file.write("{surf_option}\n{n_rails}\n{rails}{extrap}\n".format(surf_option=output_igs_surf_option,
+                                                                                n_rails=output_igs_surf_rails_len,
+                                                                                rails=output_igs_surf_rails_concatenated,
+                                                                                extrap=output_extrapolation_keyword))
 
     def outputIGSSurfRemoveRail(self):
         """
@@ -823,9 +858,13 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         """
         if self.ui_output_igs_pnts2cur_chk.isChecked():
+            working_path = self.ui_working_path_edit.text()
+
             output_igs_pnts2cur_file = self.ui_output_igs_pnts2cur_file_edit.text()
+            file_abs_path = os.path.join(working_path, output_igs_pnts2cur_file)
+
             gen_file.write("OUTPUT/IGS/PNTS2CUR\n")
-            gen_file.write("{pnt2cur_file}\n\n".format(pnt2cur_file=output_igs_pnts2cur_file))
+            gen_file.write("{pnt2cur_file}\n\n".format(pnt2cur_file=file_abs_path))
 
     def outputIGSPnts2Pnts(self, gen_file):
         """
@@ -841,9 +880,13 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         """
         if self.ui_output_igs_pnts2pnts_chk.isChecked():
+            working_path = self.ui_working_path_edit.text()
+
             output_igs_pnts2pnts_file = self.ui_output_igs_pnts2pnts_file_edit.text()
+            file_abs_path = os.path.join(working_path, output_igs_pnts2pnts_file)
+
             gen_file.write("OUTPUT/IGS/PNTS2PNTS\n")
-            gen_file.write("{pnts2pnts_file}\n\n".format(pnts2pnts_file=output_igs_pnts2pnts_file))
+            gen_file.write("{pnts2pnts_file}\n\n".format(pnts2pnts_file=file_abs_path))
 
     def outputMapPnts(self, gen_file):
         """
@@ -859,12 +902,17 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         """
         if self.ui_output_mappnts_chk.isChecked():
+            working_path = self.ui_working_path_edit.text()
+
             output_mappnts_points = self.ui_output_mappnts_pointsfile_edit.text()
             output_mappnts_streamcurve = self.ui_output_mappnts_streamcurvefile_edit.text()
 
+            file_points_abs_path = os.path.join(working_path, output_mappnts_points)
+            file_stream_abs_path = os.path.join(working_path, output_mappnts_streamcurve)
+
             gen_file.write("OUTPUT/MAPPNTS\n")
-            gen_file.write("{mappnts_points}\n{mappnts_streamc}\n\n".format(mappnts_points=output_mappnts_points,
-                                                                            mappnts_streamc=output_mappnts_streamcurve))
+            gen_file.write("{mappnts_points}\n{mappnts_streamc}\n\n".format(mappnts_points=file_points_abs_path,
+                                                                            mappnts_streamc=file_stream_abs_path))
 
     # Output options
     def outputTecplot2d(self, gen_file):
@@ -1336,8 +1384,6 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
             #     print("Open Core.py for displaying BladePro outputs")
             #     return False
 
-
-
     def userSettingsButtonPressedGroup(self, button_pressed):
         """
         Method group that wrap all functions for user preferences_modules options in toolbar
@@ -1449,6 +1495,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
             self.list_settings[setting].endGroup()
 
             self.list_settings[setting].beginGroup("output_panel")
+
             self.ui_output_igs_surf_chk.setChecked(dct[self.list_settings[setting].value("igs_surf/checkbox")])
             self.ui_output_igs_surf_opt_combo.setCurrentIndex(
                 int(self.list_settings[setting].value("igs_surf/opt_combo")))
@@ -1458,6 +1505,14 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
                 self.ui_output_igs_surf_rail_combo.addItems(self.list_settings[setting].value("igs_surf/rail_combo"))
             except TypeError:
                 pass
+
+            self.ui_output_igs_extrap_opt_combo.setCurrentIndex(
+                int(self.list_settings[setting].value("igs_surf/extrap_combo")))
+            self.ui_output_igs_extrap_hub_spn.setValue(
+                int(self.list_settings[setting].value("igs_surf/hub_extrap_value")))
+            self.ui_output_igs_extrap_shroud_spn.setValue(
+                int(self.list_settings[setting].value("igs_surf/shroud_extrap_value")))
+
             self.ui_output_heighv_chk.setChecked(dct[self.list_settings[setting].value("heighv/checkbox")])
             self.ui_output_heighv_hvar_spn.setValue(int(self.list_settings[setting].value("heighv/hvar_value")))
 
@@ -1521,9 +1576,15 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
             self.list_settings[setting].endGroup()
 
-        except KeyError:
-            message_error = "The pre-defined preferences_modules probably accepted a new member. Redefine this setting"
+        except (KeyError, TypeError):
+            message_error = "The pre-defined set probably accepted a new member due to BladePy update." \
+                            " This set will now be reseted"
             QtGui.QMessageBox.warning(self, "Warning", message_error)
+
+            while self.list_settings[setting].group() is not "":
+                self.list_settings[setting].endGroup()
+
+            self.saveSettings(setting - 1)
 
         finally:
             # Clean-up tasks. Closes all possible opened groups
@@ -1610,7 +1671,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         self.list_settings[setting].setValue("streams/checkbox", self.ui_modify_streams_chk.isChecked())
         self.list_settings[setting].setValue("streams/opt_combo", self.ui_modify_streams_opt_combo.currentIndex())
-        # needs to fix ("input saved value")
+
         self.list_settings[setting].setValue("streams/input", self.ui_modify_streams_input_combo.currentText())
         self.list_settings[setting].setValue("streams/inputlist",
                                              [float(self.ui_modify_streams_input_combo.itemText(i))
@@ -1626,6 +1687,12 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
                                              [float(self.ui_output_igs_surf_rail_combo.itemText(i))
                                               for i in range(self.ui_output_igs_surf_rail_combo.count())])
 
+        self.list_settings[setting].setValue("igs_surf/extrap_combo",
+                                             self.ui_output_igs_extrap_opt_combo.currentIndex())
+
+        self.list_settings[setting].setValue("igs_surf/hub_extrap_value", self.ui_output_igs_extrap_hub_spn.value())
+        self.list_settings[setting].setValue("igs_surf/shroud_extrap_value",
+                                             self.ui_output_igs_extrap_shroud_spn.value())
         self.list_settings[setting].setValue("igs_cur_3d/checkbox", self.ui_output_igs_cur_3d_chk.isChecked())
         self.list_settings[setting].setValue("igs_cur_3d/opt_combo", self.ui_output_igs_cur_3d_opt_combo.currentIndex())
 

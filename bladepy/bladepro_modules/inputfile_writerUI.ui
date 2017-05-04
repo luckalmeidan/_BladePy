@@ -1046,7 +1046,7 @@
       <layout class="QVBoxLayout" name="ui_supported_outputs_groupbox_vl">
        <item>
         <layout class="QGridLayout" name="ui_supported_outputs_groupbox_vl_gl">
-         <item row="0" column="0" rowspan="4">
+         <item row="0" column="0" rowspan="3">
           <widget class="QCheckBox" name="ui_output_igs_surf_chk">
            <property name="statusTip">
             <string>Enable keyword OUTPUT/IGS/SURF</string>
@@ -1059,7 +1059,7 @@
            </property>
           </widget>
          </item>
-         <item row="5" column="0">
+         <item row="4" column="0">
           <widget class="QCheckBox" name="ui_output_igs_cur_3d_chk">
            <property name="statusTip">
             <string>Enable keyword OUTPUT/IGS/CUR/3D</string>
@@ -1072,7 +1072,7 @@
            </property>
           </widget>
          </item>
-         <item row="6" column="0">
+         <item row="5" column="0">
           <widget class="QCheckBox" name="ui_output_igs_cur_2d_chk">
            <property name="statusTip">
             <string>Enable keyword OUTPUT/IGS/CUR/2D</string>
@@ -1085,7 +1085,7 @@
            </property>
           </widget>
          </item>
-         <item row="6" column="1">
+         <item row="5" column="1">
           <widget class="QLabel" name="ui_output_igs_cur_2d_lbl">
            <property name="enabled">
             <bool>false</bool>
@@ -1098,7 +1098,7 @@
            </property>
           </widget>
          </item>
-         <item row="5" column="1">
+         <item row="4" column="1">
           <widget class="QLabel" name="ui_output_igs_cur_3d_lbl">
            <property name="enabled">
             <bool>false</bool>
@@ -1111,7 +1111,118 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="2">
+         <item row="4" column="2">
+          <widget class="QComboBox" name="ui_output_igs_cur_3d_opt_combo">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="statusTip">
+            <string>List: Determines which surfaces to include in the igs-file</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>0 - All surfaces</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1 - Blade + flow path</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2 - Blade</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>3 - Stream surfaces</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>4 - Hub</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>5 - Shroud</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="0" column="1" rowspan="3">
+          <widget class="QLabel" name="ui_output_igs_surf_lbl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>Command: OUTPUT/IGS/SURF - This keyword will generate iges file type outputs</string>
+           </property>
+           <property name="text">
+            <string>IGS Surf</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QLabel" name="ui_output_tecplot_2d_lbl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>Command: OUTPUT/TECPLOT/2D - This keyword will output the blade geometry including flow path and stream curves in Tecplot format</string>
+           </property>
+           <property name="text">
+            <string>Tecplot 2D</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="2">
+          <widget class="QComboBox" name="ui_output_igs_cur_2d_opt_combo">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="statusTip">
+            <string notr="true">List: Options for blade sections profiles in igs-file in different spaces</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>1 - m'-teta</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2 - m-rteta</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QCheckBox" name="ui_output_tecplot_2d_chk">
+           <property name="statusTip">
+            <string>Enable keyword OUTPUT/TECPLOT/2D</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="shortcut">
+            <string>1</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3" colspan="2">
           <widget class="QPushButton" name="ui_output_igs_surf_deleterail_btn">
            <property name="enabled">
             <bool>false</bool>
@@ -1121,6 +1232,113 @@
            </property>
            <property name="text">
             <string>Remove Rail</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="4">
+          <widget class="QSpinBox" name="ui_output_igs_extrap_shroud_spn">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>%Shroud: Shroud percentage extension</string>
+           </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="3">
+          <widget class="QSpinBox" name="ui_output_igs_extrap_hub_spn">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>%Hub: Hub percentage extension</string>
+           </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QComboBox" name="ui_output_igs_extrap_opt_combo">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="font">
+            <font>
+             <weight>50</weight>
+             <bold>false</bold>
+             <strikeout>false</strikeout>
+             <kerning>false</kerning>
+            </font>
+           </property>
+           <property name="mouseTracking">
+            <bool>false</bool>
+           </property>
+           <property name="acceptDrops">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>Method:  Parametric - Extend the blade surf. in spanwise direction a % of the parametric extension; Span - Create new profiles, replacing the first and the last sections, with the % span extrapolation </string>
+           </property>
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="editable">
+            <bool>false</bool>
+           </property>
+           <property name="minimumContentsLength">
+            <number>0</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>No extrapolation</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Parametric extrapolation</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Span extrapolation</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QComboBox" name="ui_output_igs_surf_rail_combo">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="font">
+            <font>
+             <weight>50</weight>
+             <bold>false</bold>
+             <strikeout>false</strikeout>
+             <kerning>false</kerning>
+            </font>
+           </property>
+           <property name="mouseTracking">
+            <bool>false</bool>
+           </property>
+           <property name="acceptDrops">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>List: Type the cordlenght positions, between 0 and 1, for rail curves and press Enter to add an item to this List</string>
+           </property>
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="editable">
+            <bool>true</bool>
+           </property>
+           <property name="minimumContentsLength">
+            <number>0</number>
            </property>
           </widget>
          </item>
@@ -1195,151 +1413,7 @@
            </item>
           </widget>
          </item>
-         <item row="5" column="2">
-          <widget class="QComboBox" name="ui_output_igs_cur_3d_opt_combo">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="statusTip">
-            <string>List: Determines which surfaces to include in the igs-file</string>
-           </property>
-           <item>
-            <property name="text">
-             <string>0 - All surfaces</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>1 - Blade + flow path</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>2 - Blade</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>3 - Stream surfaces</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>4 - Hub</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>5 - Shroud</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="0" column="1" rowspan="4">
-          <widget class="QLabel" name="ui_output_igs_surf_lbl">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>Command: OUTPUT/IGS/SURF - This keyword will generate iges file type outputs</string>
-           </property>
-           <property name="text">
-            <string>IGS Surf</string>
-           </property>
-          </widget>
-         </item>
-         <item row="7" column="1">
-          <widget class="QLabel" name="ui_output_tecplot_2d_lbl">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>Command: OUTPUT/TECPLOT/2D - This keyword will output the blade geometry including flow path and stream curves in Tecplot format</string>
-           </property>
-           <property name="text">
-            <string>Tecplot 2D</string>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="2">
-          <widget class="QComboBox" name="ui_output_igs_cur_2d_opt_combo">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="statusTip">
-            <string notr="true">List: Options for blade sections profiles in igs-file in different spaces</string>
-           </property>
-           <item>
-            <property name="text">
-             <string>1 - m'-teta</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>2 - m-rteta</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="7" column="0">
-          <widget class="QCheckBox" name="ui_output_tecplot_2d_chk">
-           <property name="statusTip">
-            <string>Enable keyword OUTPUT/TECPLOT/2D</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="shortcut">
-            <string>1</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2" rowspan="2">
-          <widget class="QComboBox" name="ui_output_igs_surf_rail_combo">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="font">
-            <font>
-             <weight>50</weight>
-             <bold>false</bold>
-             <strikeout>false</strikeout>
-             <kerning>false</kerning>
-            </font>
-           </property>
-           <property name="mouseTracking">
-            <bool>false</bool>
-           </property>
-           <property name="acceptDrops">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>List: Type the cordlenght positions, between 0 and 1, for rail curves and press Enter to add an item to this List</string>
-           </property>
-           <property name="autoFillBackground">
-            <bool>false</bool>
-           </property>
-           <property name="editable">
-            <bool>true</bool>
-           </property>
-           <property name="minimumContentsLength">
-            <number>0</number>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0" colspan="3">
+         <item row="3" column="0" colspan="5">
           <widget class="Line" name="line_5">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -1873,7 +1947,7 @@
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../../../.designer/backup/icons/bladepro/help.svg</normaloff>../../../.designer/backup/icons/bladepro/help.svg</iconset>
+             <normaloff>../../../../dev/.designer/backup/icons/bladepro/help.svg</normaloff>../../../../dev/.designer/backup/icons/bladepro/help.svg</iconset>
            </property>
            <property name="autoRaise">
             <bool>true</bool>
@@ -2585,11 +2659,11 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>60</x>
+     <x>39</x>
      <y>870</y>
     </hint>
     <hint type="destinationlabel">
-     <x>149</x>
+     <x>128</x>
      <y>873</y>
     </hint>
    </hints>
@@ -2601,11 +2675,11 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>60</x>
+     <x>39</x>
      <y>870</y>
     </hint>
     <hint type="destinationlabel">
-     <x>544</x>
+     <x>439</x>
      <y>873</y>
     </hint>
    </hints>
@@ -2617,11 +2691,11 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>60</x>
+     <x>39</x>
      <y>841</y>
     </hint>
     <hint type="destinationlabel">
-     <x>149</x>
+     <x>128</x>
      <y>844</y>
     </hint>
    </hints>
@@ -2633,11 +2707,11 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>60</x>
+     <x>39</x>
      <y>841</y>
     </hint>
     <hint type="destinationlabel">
-     <x>544</x>
+     <x>439</x>
      <y>844</y>
     </hint>
    </hints>
@@ -2649,11 +2723,11 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>60</x>
+     <x>39</x>
      <y>770</y>
     </hint>
     <hint type="destinationlabel">
-     <x>149</x>
+     <x>128</x>
      <y>805</y>
     </hint>
    </hints>
@@ -2665,11 +2739,11 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>60</x>
+     <x>39</x>
      <y>770</y>
     </hint>
     <hint type="destinationlabel">
-     <x>544</x>
+     <x>439</x>
      <y>741</y>
     </hint>
    </hints>
@@ -2681,11 +2755,11 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>60</x>
+     <x>39</x>
      <y>896</y>
     </hint>
     <hint type="destinationlabel">
-     <x>149</x>
+     <x>128</x>
      <y>896</y>
     </hint>
    </hints>
@@ -2697,12 +2771,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>60</x>
+     <x>39</x>
      <y>770</y>
     </hint>
     <hint type="destinationlabel">
-     <x>544</x>
-     <y>770</y>
+     <x>439</x>
+     <y>773</y>
     </hint>
    </hints>
   </connection>
@@ -2713,12 +2787,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>60</x>
+     <x>39</x>
      <y>770</y>
     </hint>
     <hint type="destinationlabel">
-     <x>544</x>
-     <y>805</y>
+     <x>545</x>
+     <y>776</y>
     </hint>
    </hints>
   </connection>
@@ -2749,7 +2823,7 @@
      <y>329</y>
     </hint>
     <hint type="destinationlabel">
-     <x>956</x>
+     <x>906</x>
      <y>332</y>
     </hint>
    </hints>
@@ -2781,7 +2855,7 @@
      <y>411</y>
     </hint>
     <hint type="destinationlabel">
-     <x>956</x>
+     <x>906</x>
      <y>400</y>
     </hint>
    </hints>
@@ -2797,7 +2871,7 @@
      <y>411</y>
     </hint>
     <hint type="destinationlabel">
-     <x>956</x>
+     <x>906</x>
      <y>429</y>
     </hint>
    </hints>
@@ -2829,7 +2903,7 @@
      <y>479</y>
     </hint>
     <hint type="destinationlabel">
-     <x>956</x>
+     <x>906</x>
      <y>468</y>
     </hint>
    </hints>
@@ -2845,7 +2919,7 @@
      <y>479</y>
     </hint>
     <hint type="destinationlabel">
-     <x>956</x>
+     <x>906</x>
      <y>497</y>
     </hint>
    </hints>
@@ -2877,7 +2951,7 @@
      <y>547</y>
     </hint>
     <hint type="destinationlabel">
-     <x>956</x>
+     <x>906</x>
      <y>536</y>
     </hint>
    </hints>
@@ -2893,7 +2967,7 @@
      <y>547</y>
     </hint>
     <hint type="destinationlabel">
-     <x>956</x>
+     <x>906</x>
      <y>565</y>
     </hint>
    </hints>
@@ -2973,7 +3047,7 @@
      <y>190</y>
     </hint>
     <hint type="destinationlabel">
-     <x>956</x>
+     <x>906</x>
      <y>193</y>
     </hint>
    </hints>
@@ -3021,7 +3095,7 @@
      <y>615</y>
     </hint>
     <hint type="destinationlabel">
-     <x>956</x>
+     <x>906</x>
      <y>604</y>
     </hint>
    </hints>
@@ -3037,7 +3111,7 @@
      <y>615</y>
     </hint>
     <hint type="destinationlabel">
-     <x>956</x>
+     <x>906</x>
      <y>633</y>
     </hint>
    </hints>
@@ -3053,7 +3127,7 @@
      <y>219</y>
     </hint>
     <hint type="destinationlabel">
-     <x>956</x>
+     <x>906</x>
      <y>222</y>
     </hint>
    </hints>
@@ -3085,7 +3159,7 @@
      <y>683</y>
     </hint>
     <hint type="destinationlabel">
-     <x>956</x>
+     <x>906</x>
      <y>672</y>
     </hint>
    </hints>
@@ -3101,7 +3175,7 @@
      <y>683</y>
     </hint>
     <hint type="destinationlabel">
-     <x>956</x>
+     <x>906</x>
      <y>701</y>
     </hint>
    </hints>
@@ -3133,7 +3207,7 @@
      <y>271</y>
     </hint>
     <hint type="destinationlabel">
-     <x>956</x>
+     <x>906</x>
      <y>274</y>
     </hint>
    </hints>
@@ -3165,7 +3239,7 @@
      <y>300</y>
     </hint>
     <hint type="destinationlabel">
-     <x>956</x>
+     <x>906</x>
      <y>303</y>
     </hint>
    </hints>
@@ -3197,7 +3271,7 @@
      <y>358</y>
     </hint>
     <hint type="destinationlabel">
-     <x>956</x>
+     <x>906</x>
      <y>361</y>
     </hint>
    </hints>
@@ -3263,6 +3337,54 @@
     <hint type="destinationlabel">
      <x>319</x>
      <y>635</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ui_output_igs_surf_chk</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>ui_output_igs_extrap_opt_combo</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>25</x>
+     <y>764</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>142</x>
+     <y>794</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ui_output_igs_surf_chk</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>ui_output_igs_extrap_hub_spn</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>33</x>
+     <y>761</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>459</x>
+     <y>791</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ui_output_igs_surf_chk</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>ui_output_igs_extrap_shroud_spn</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>30</x>
+     <y>763</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>512</x>
+     <y>792</y>
     </hint>
    </hints>
   </connection>

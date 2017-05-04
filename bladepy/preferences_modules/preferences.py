@@ -24,11 +24,13 @@ from bladepy.preferences_modules import preferencesUI
 
 dct = {"true": True, "false": False, True: True, False: False}
 
+
 class PreferencesBladePy(QtGui.QDialog, preferencesUI.Ui_PreferencesDialog):
     """
     Class with the methods for customizing user preferences.
 
     """
+
     def __init__(self, parent=None, OutputViewerWidget=None):
 
         super(PreferencesBladePy, self).__init__(parent)
@@ -52,7 +54,6 @@ class PreferencesBladePy(QtGui.QDialog, preferencesUI.Ui_PreferencesDialog):
             icon = QtGui.QIcon(pixmap)
             self.op_viewer.ui_shape_setcolor_combo.setItemIcon(index, icon)
             self.ui_preferences_default_color_combo.setItemIcon(index, icon)
-
 
         # The try/except below is to prevent the program crashing when opening for the first time in a computer
         try:
@@ -94,7 +95,7 @@ class PreferencesBladePy(QtGui.QDialog, preferencesUI.Ui_PreferencesDialog):
         self.default_shape_transparency = int(self.list_settings[1].value("default_shape_transparency"))
         self.default_zoom_step = float(self.list_settings[1].value("default_zoomfactor"))
         self.op_viewer.canva.zoomfactor = float(self.list_settings[1].value("default_zoomfactor"))
-        self.default_preload_blades_check_state =  dct[self.list_settings[1].value("default_preload_blades_check_state")]
+        self.default_preload_blades_check_state = dct[self.list_settings[1].value("default_preload_blades_check_state")]
 
         self.list_settings[1].endGroup()
 
@@ -123,17 +124,16 @@ class PreferencesBladePy(QtGui.QDialog, preferencesUI.Ui_PreferencesDialog):
 
         :return:
         """
-        #TODO: Docstrings
+        # TODO: Docstrings
         # TODO: I want to update this section in the future with better way to add new configurations.
 
-       # it is necessary to update the preferences widgets with values set by user in previous sections.
+        # it is necessary to update the preferences widgets with values set by user in previous sections.
         self.ui_preferences_zoom_dpsn.setValue(float(self.default_zoom_step))
         self.ui_preferences_default_color_combo.setCurrentIndex(
             list(shape_colordictionary.keys()).index(self.default_shape_color))
         self.ui_preferences_default_quality_dspn.setValue(self.default_shape_factor)
         self.ui_preferences_default_transparency_dspn.setValue(int(self.default_shape_transparency))
         self.ui_preferences_igs_preload_chk.setChecked(self.default_preload_blades_check_state)
-
 
         self.ui_preferences_igs_surf_chk.setChecked(self.default_igs_surf_check_state)
         self.ui_preferences_igs_surf_exception_edit.setText(self.default_igs_surf_exception)
@@ -156,7 +156,6 @@ class PreferencesBladePy(QtGui.QDialog, preferencesUI.Ui_PreferencesDialog):
         self.op_viewer.ui_shape_quality_dspn.setValue(self.default_shape_factor)
         self.op_viewer.ui_shape_transparency_sld.setValue(self.default_shape_transparency)
         self.op_viewer.ui_display_zoomfactor_dspn.setValue(self.default_zoom_step)
-
 
     def okAction(self):
         """
@@ -186,7 +185,6 @@ class PreferencesBladePy(QtGui.QDialog, preferencesUI.Ui_PreferencesDialog):
         self.setProgramDefaults()
 
         # will only update fields in the output_viewer GUI in case the program just started.
-
 
     def saveSettings(self, setting, restore=False):
         """
@@ -219,7 +217,6 @@ class PreferencesBladePy(QtGui.QDialog, preferencesUI.Ui_PreferencesDialog):
 
             to_be_default_bladebro_version = self.ui_preferences_running_bladepro_version_edit.text()
 
-
         else:
             # below there is the "standard" values for preferences. This is standard values are set every time a user
             # starts the program for the first time. This can be necessary for recovering application
@@ -240,7 +237,6 @@ class PreferencesBladePy(QtGui.QDialog, preferencesUI.Ui_PreferencesDialog):
 
             to_be_default_bladebro_version = "bladepro"
 
-
         self.list_settings[setting].beginGroup("shapes_settings")
 
         self.list_settings[setting].setValue("default_shape_color", to_be_default_shape_color)
@@ -249,7 +245,8 @@ class PreferencesBladePy(QtGui.QDialog, preferencesUI.Ui_PreferencesDialog):
         self.list_settings[setting].setValue("default_shape_transparency", to_be_default_shape_transparency)
         self.list_settings[setting].setValue("default_zoomfactor", to_be_default_zoom_step)
         self.list_settings[setting].setValue("default_transformation", [0, 0, 0, 0, 2])
-        self.list_settings[setting].setValue("default_preload_blades_check_state", to_be_default_preload_blades_check_state)
+        self.list_settings[setting].setValue("default_preload_blades_check_state",
+                                             to_be_default_preload_blades_check_state)
 
         self.list_settings[setting].endGroup()
 
@@ -269,24 +266,23 @@ class PreferencesBladePy(QtGui.QDialog, preferencesUI.Ui_PreferencesDialog):
 
         self.list_settings[setting].setValue("default_bladebro_version", to_be_default_bladebro_version)
 
-
         self.list_settings[setting].endGroup()
 
 
-    # quality_preferences = [[self.default_shape_factor, self.ui_preferences_default_quality_dspn,
-    #                         self.op_viewer.ui_shape_quality_dspn, "dpsn", "shapes_settings", "default_shape_quality",
-    #                         10]]
-    #
-    # igs_surf_preferences = [[self.default_igs_surf_check_state, self.ui_preferences_igs_surf_chk, None,
-    #                          "chk", "outputs_settings", "default_igs_surf_check_state", True],
-    #                         [self.default_igs_surf_exception, self.ui_preferences_igs_surf_exception_edit, None,
-    #                          "edit", "outputs_settings", "default_igs_surf_exception", "SHROUD"]]
-    #
-    # igs_surf_preferences = [[self.ui_preferences_igs_surf_chk, None,
-    #                          "chk", "outputs_settings", "default_igs_surf_check_state"],
-    #                         [self.ui_preferences_igs_surf_exception_edit, None,
-    #                          "edit", "outputs_settings", "default_igs_surf_exception"]]
-    #
-    # igs_surf_preload_blades = [[self.ui_preferences_igs_surf_chk, None,
-    #                             "chk", "outputs_settings", "default_igs_surf_check_state"]]
-    # Preferences Objects
+        # quality_preferences = [[self.default_shape_factor, self.ui_preferences_default_quality_dspn,
+        #                         self.op_viewer.ui_shape_quality_dspn, "dpsn", "shapes_settings", "default_shape_quality",
+        #                         10]]
+        #
+        # igs_surf_preferences = [[self.default_igs_surf_check_state, self.ui_preferences_igs_surf_chk, None,
+        #                          "chk", "outputs_settings", "default_igs_surf_check_state", True],
+        #                         [self.default_igs_surf_exception, self.ui_preferences_igs_surf_exception_edit, None,
+        #                          "edit", "outputs_settings", "default_igs_surf_exception", "SHROUD"]]
+        #
+        # igs_surf_preferences = [[self.ui_preferences_igs_surf_chk, None,
+        #                          "chk", "outputs_settings", "default_igs_surf_check_state"],
+        #                         [self.ui_preferences_igs_surf_exception_edit, None,
+        #                          "edit", "outputs_settings", "default_igs_surf_exception"]]
+        #
+        # igs_surf_preload_blades = [[self.ui_preferences_igs_surf_chk, None,
+        #                             "chk", "outputs_settings", "default_igs_surf_check_state"]]
+        # Preferences Objects

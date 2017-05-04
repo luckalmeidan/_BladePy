@@ -1,14 +1,21 @@
 # -*- mode: python -*-
 import subprocess
 
+bladepy_run_path = "../bladepy_run.py"
+
 try:
 	version = subprocess.check_output(["git", "describe", "--abbrev=4", "--always", "--tags"])
 	version = version.decode('utf-8').replace('\n', '')
-except (subprocess.CalledProcessError, FileNotFoundError):
-	version = "git_versionless"
-	
-block_cipher = None
 
+except:
+	version = "git_versionless"
+
+with open("../bladepy/VERSION.txt", 'w') as version_file:
+	version_file.write(version)
+
+subprocess.call(["python", bladepy_run_path, "update_compile"])
+
+block_cipher = None
 
 a = Analysis(['../bladepy_run.py'],
              pathex=['.'],
@@ -89,9 +96,9 @@ exe = EXE(pyz,
           upx=True,
           console=True )
 coll = COLLECT(exe,
-               a.binaries,
-               a.zipfiles,
-               a.datas,
-               strip=False,
-               upx=True,
-               name='bladepy_run')
+			   a.binaries,
+			   a.zipfiles,
+			   a.datas,
+			   strip=False,
+			   upx=True,
+			   name='BladePy_%s_standalone' % version)

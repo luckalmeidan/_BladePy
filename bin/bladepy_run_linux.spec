@@ -1,8 +1,6 @@
 # -*- mode: python -*-
 import subprocess
 
-bladepy_run_path = "../bladepy_run.py"
-
 try:
 	version = subprocess.check_output(["git", "describe", "--abbrev=4", "--always", "--tags"])
 	version = version.decode('utf-8').replace('\n', '')
@@ -12,8 +10,6 @@ except:
 
 with open("../bladepy/VERSION.txt", 'w') as version_file:
 	version_file.write(version)
-
-subprocess.call(["python", bladepy_run_path, "update_compile"])
 
 block_cipher = None
 

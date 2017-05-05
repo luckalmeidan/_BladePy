@@ -8,6 +8,7 @@ The class qtViewer3d is a class that in general setups the visualization and the
 
 from OCC.Display.qtDisplay import qtViewer3d
 
+
 class customQtViewer3d(qtViewer3d):
     """
     Customized class from OCC.Display.qtDisplay.qtViewer3d of PythonOCC, inheriting it and defining a new one.

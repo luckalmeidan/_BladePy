@@ -4,6 +4,7 @@ File that contains the class CaseModel that creates a model for the Case treevie
 
 """
 from PyQt4 import QtCore, QtGui
+
 from ..occ_modules.shape_control import shape_colordictionaryhex, shape_colordictionary
 
 
@@ -26,7 +27,6 @@ class CaseModel(QtCore.QAbstractItemModel):
         super(CaseModel, self).__init__(parent)
         self._rootNode = root
         self.op_viewer = OutputViewerWidget
-
 
     def rowCount(self, parent):
         """
@@ -63,39 +63,39 @@ class CaseModel(QtCore.QAbstractItemModel):
                 return node.name()
 
             if index.column() == 1:
-                if node.tecplotIsVisible():
-                    return node.tecplotMode()
+                if node.tecplotIsVisible:
+                    return node.tecplotMode
                 else:
                     return "hidden"
 
             if index.column() == 3:
-                return node.shapeQuality()
+                return node.shapeQuality
 
             if index.column() == 4:
-                return node.shapeTransparency()
+                return node.shapeTransparency
 
             if index.column() == 5:
-                return list(shape_colordictionary.keys()).index(node.shapeColor())
+                return list(shape_colordictionary.keys()).index(node.shapeColor)
 
             if index.column() == 6:
-                return node.shapeTransformation()[0]
+                return node.shapeTransformation[0]
 
             if index.column() == 7:
-                return node.shapeTransformation()[1]
+                return node.shapeTransformation[1]
 
             if index.column() == 8:
-                return node.shapeTransformation()[2]
+                return node.shapeTransformation[2]
 
             if index.column() == 9:
-                return node.shapeTransformation()[3]
+                return node.shapeTransformation[3]
 
             if index.column() == 10:
-                return node.shapeTransformation()[4]
+                return node.shapeTransformation[4]
 
         if role == QtCore.Qt.DecorationRole:
             if index.column() == 0:
                 pixmap = QtGui.QPixmap(26, 26)
-                pixmap.fill(shape_colordictionaryhex[node.shapeColor()])
+                pixmap.fill(shape_colordictionaryhex[node.shapeColor])
                 icon = QtGui.QIcon(pixmap)
                 return icon
 
@@ -114,21 +114,21 @@ class CaseModel(QtCore.QAbstractItemModel):
                 if index.column() == 0:
                     node.setName(value)
                 if index.column() == 3:
-                    node.setShapeQuality(value)
+                    node.shapeQuality = value
                 if index.column() == 4:
-                    node.setShapeTransparency(value)
+                    node.shapeTransparency = value
                 if index.column() == 5:
-                    node.setShapeColor(list(shape_colordictionary.keys())[value])
+                    node.shapeColor = (list(shape_colordictionary.keys())[value])
                 if index.column() == 6:
-                    node.setShapeTransformation(value, 0)
+                    node.shapeTransformation = (value, 0)
                 if index.column() == 7:
-                    node.setShapeTransformation(value, 1)
+                    node.shapeTransformation = (value, 1)
                 if index.column() == 8:
-                    node.setShapeTransformation(value, 2)
+                    node.shapeTransformation = (value, 2)
                 if index.column() == 9:
-                    node.setShapeTransformation(value, 3)
+                    node.shapeTransformation = (value, 3)
                 if index.column() == 10:
-                    node.setShapeTransformation(value, 4)
+                    node.shapeTransformation = (value, 4)
 
                 self.dataChanged.emit(index, index)
                 return True

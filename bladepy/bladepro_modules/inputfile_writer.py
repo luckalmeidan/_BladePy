@@ -6,6 +6,7 @@ Qt Designer for the Blade Inputfile writer. The class has the methods for writin
 and calling the C++ code to run with the generated input file.
 
 """
+
 import functools
 import os
 import subprocess
@@ -26,12 +27,13 @@ py_ui_file = os.path.join(input_writer_dir, "inputfile_writerUI.py")
 # Translate layout .ui file to .py file
 pyui_creator.createPyUI(ui_file, py_ui_file)
 
+# noinspection PyPep8
 from bladepy.bladepro_modules import inputfile_writerUI
 
 dct = {"true": True, "false": False, True: True, False: False}
 
 
-# noinspection PyBroadException
+# noinspection PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming
 class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
     """
     Class for creating a GUI for the BladePy Inputfile Writer Widget.
@@ -71,6 +73,8 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         self.list_settings.append(self.last_settings)
         self.list_settings.extend(self.user_settings)
 
+        # for setting in self.list_settings:
+        #     setting.clear()
         # Define the instance variable for the setting names list. This is used to save/retrieve user renamed
         # preferences_modules.
         self.settings_names = QtCore.QSettings("BladePy", "BladePy\InputWriter\SettingsNames")
@@ -79,7 +83,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         self.setupUi(self)
         self.setWindowTitle("BladePy - Input Writer")
 
-        # sets a instace variable of the main object of Core
+        # sets a instance variable of the main object of Core
         self.op_viewer = output_viewer
 
         # Retrieves preferences_modules names defined previously by user. If not defined, it will load the default
@@ -103,8 +107,8 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         # Find path button
         self.ui_read_find_btn.clicked.connect(self.readOptionsFind)
         self.ui_working_path_edit.setText(os.path.join(os.path.dirname(__file__)))
-        self.ui_read_find_btn.clicked.connect(self._fillExistantOutputs)
-        self.ui_working_path_edit.textChanged.connect(self._fillExistantOutputs)
+        self.ui_read_find_btn.clicked.connect(self._fillExistentOutputs)
+        self.ui_working_path_edit.textChanged.connect(self._fillExistentOutputs)
 
         # Output viewer link
 
@@ -136,9 +140,14 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
         self.ui_modify_te_help_btn.setIcon(icon)
-        self.loadSettings(-1)
+        self.loadSettings(-1, launch=True)
 
-    def _fillExistantOutputs(self):
+    def _fillExistentOutputs(self):
+        """
+
+        :return:
+        """
+        # TODO: docstrings
         self.ui_case_name_existent_list.clear()
         working_path = self.ui_working_path_edit.text()
 
@@ -197,8 +206,8 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
             if os.path.isfile(os.path.join(working_path, case_name)):
                 overwrite_input = QtGui.QMessageBox.warning(self, "Warning", "Existent Case. Overwrite Inputfile?",
-                                                             QtGui.QMessageBox.Yes |
-                                                             QtGui.QMessageBox.No)
+                                                            QtGui.QMessageBox.Yes |
+                                                            QtGui.QMessageBox.No)
                 if overwrite_input == 65536:
                     # TODO: comment
                     return False
@@ -320,11 +329,6 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         QtGui.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         self.bladepro_process.start(bladepro_version, [os.path.join(working_path, case_name)])
 
-        #bladepro_process = subprocess.Popen([bladepro_version, os.path.join(working_path, case_name)], stdout=subprocess.PIPE)
-
-        #bladepro_process.wait()
-
-
         return True
 
     def _runBladeProStarted(self, bladepro_version):
@@ -336,10 +340,9 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         print("%s routine called" % bladepro_version)
 
         self.ui_inputpreview_textedit.clear()
-        QtCore.QCoreApplication.processEvents()
+        QtCore.QCoreApplication.processEvents(self)
         status_message = "Last Status: BladePro is running. Please wait..."
         self.ui_application_status_lbl.setText(status_message)
-
 
     def _runBladeProFinished(self, display_output):
         """
@@ -349,7 +352,8 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         if display_output is "Error":
             print("bladepro routine ended")
 
-            QtGui.QApplication.restoreOverrideCursor()
+            QtGui.QApplication.restoreOverrideCursor(self)
+            # noinspection PyCallByClass
             QtGui.QMessageBox.about(self, "Warning", "Process failed: BladePro returned an error flag")
             status_message = "Last Status: BladePro routine failed"
             self.ui_application_status_lbl.setText(status_message)
@@ -360,14 +364,14 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         status_message = "Last Status: BladePro routine ended"
 
         self.ui_application_status_lbl.setText(status_message)
-        self._fillExistantOutputs()
+        self._fillExistentOutputs()
 
         cursor = self.ui_inputpreview_textedit.textCursor()
         cursor.movePosition(cursor.End)
         cursor.insertText("bladepro routine ended")
         self.ui_inputpreview_textedit.ensureCursorVisible()
 
-        QtGui.QApplication.restoreOverrideCursor()
+        QtGui.QApplication.restoreOverrideCursor(self)
 
         if display_output:
             if "OUTPUT" not in self.ui_inputpreview_textedit.toPlainText():
@@ -378,8 +382,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         else:
             return False
 
-        # TODO: DOCSTRINGS
-
+            # TODO: DOCSTRINGS
 
     def _runBladeProDataReady(self):
         """
@@ -390,7 +393,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         cursor = self.ui_inputpreview_textedit.textCursor()
         cursor.movePosition(cursor.End)
-        cursor.insertText(str(self.bladepro_process.readAll(),"utf-8"))
+        cursor.insertText(str(self.bladepro_process.readAll(), "utf-8"))
         self.ui_inputpreview_textedit.ensureCursorVisible()
 
     def openSelectedCases(self):
@@ -469,7 +472,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
             return
 
         file_geometry = os.path.basename(selected_file)
-        self.working_path = os.path.dirname(selected_file)
+        working_path = os.path.dirname(selected_file)
         case_name = os.path.splitext(file_geometry)[0]
         extension = os.path.splitext(file_geometry)[1]
 
@@ -488,7 +491,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
             self.ui_read_cftgeo_cftfile_edit.setText(file_geometry)
 
         self.ui_case_name_edit.setText(case_name + "_output")
-        self.ui_working_path_edit.setText(self.working_path)
+        self.ui_working_path_edit.setText(working_path)
 
     def defineBlade(self, gen_file):
         """
@@ -572,7 +575,8 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
             gen_file.write("MODIFY/TE/ROUND\n")
             gen_file.write("{round_val}\n\n".format(round_val=round_value))
 
-    def modifyTEHelp(self):
+    @staticmethod
+    def modifyTEHelp():
         """
         Auxiliary method that displays the figures to orient the user about coordinates parameters D, Z-ref and Gamma
 
@@ -781,6 +785,8 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
                     output_extrapolation_type = "extrap"
                 elif opt_dict[output_igs_extrapolation_method] == "Span extrapolation":
                     output_extrapolation_type = "extras"
+                else:
+                    output_extrapolation_type = "undefined"
 
                 output_extrapolation_keyword = "{method} {hub} {shroud}".format(hub=hub_percentage,
                                                                                 shroud=shroud_percentage,
@@ -1352,7 +1358,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         """
         if pressed_btn.text() == "Exit":
             self.close()
-            QtCore.QCoreApplication.exit()
+            QtCore.QCoreApplication.exit(self)
             sys.exit()
 
     def menuFileBladeproButtonPressedGroup(self, pressed_btn):
@@ -1411,17 +1417,19 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
             # TODO: Button Help
             print("TODO: HELP")
 
-    def loadSettings(self, setting):
+    def loadSettings(self, setting, launch=False):
         """
         Loads the user preferences_modules defined in "setting" index.
 
         This will check all checkboxes and modify all the fields according to the setting loaded.
 
         The last user preferences_modules is defined by setting = -1.
-        Thus, to load last user preferences_modules the function call is loadSettings(-1). There is up to 10 sets available,
-        starting with setting = 0.
+        Thus, to load last user preferences_modules the function call is loadSettings(-1). There is up to 10 sets
+        available, starting with setting = 0.
 
         @param setting [int] Is the ui_listsettings_combo index.
+        @param launch [bool] In case application just started and it is loading last configuration.
+
         @return None
 
         """
@@ -1429,15 +1437,10 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         # For some reason, when checkbox isChecked is saved to the user preferences_modules, it saves as lowercase
         # letters.  simple solution was to create a simple dictionary
 
-
         # The set sums 1, as the first item in python lists is 0 and 0 is reserved for last user preferences_modules.
         setting += 1
 
         # if statement In case the user tries to load preferences_modules no previously defined.
-        if self.list_settings[setting].value("read_panel/ibl_file") is None:
-            QtGui.QMessageBox.warning(self, "Warning", "No Setting previously defined for this item")
-            return
-
         # Begin group/end group. Means, e. g. that value("ibl_file") value is stored actually  in
         # value("read_panel/ibl_file")
 
@@ -1577,12 +1580,12 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
             self.list_settings[setting].endGroup()
 
         except (KeyError, TypeError):
-            message_error = "The pre-defined set probably accepted a new member due to BladePy update." \
-                            " This set will now be reseted"
-            QtGui.QMessageBox.warning(self, "Warning", message_error)
+            if not launch:
+                message_error = "Undefined or invalid setting. Settings will be restored"
+                QtGui.QMessageBox.warning(self, "Warning", message_error)
 
-            while self.list_settings[setting].group() is not "":
-                self.list_settings[setting].endGroup()
+                while self.list_settings[setting].group() is not "":
+                    self.list_settings[setting].endGroup()
 
             self.saveSettings(setting - 1)
 

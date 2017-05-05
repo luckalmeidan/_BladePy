@@ -20,6 +20,7 @@ from OCC.TDF import TDF_LabelSequence
 from OCC.TDataStd import TDataStd_Name_GetID, Handle_TDataStd_Name
 from OCC.TDocStd import Handle_TDocStd_Document
 from OCC.TopLoc import TopLoc_Location
+# noinspection PyProtectedMember
 from OCC.XCAFApp import _XCAFApp
 from OCC.XCAFDoc import XCAFDoc_DocumentTool
 from OCC.gp import gp_Trsf, gp_Pnt, gp_Ax1, gp_Dir, gp_Vec
@@ -50,6 +51,7 @@ shape_colordictionaryhex = {"Black": QtGui.QColor(0, 0, 0),
                             "Custom": QtGui.QColor(rgb[0], rgb[1], rgb[2])}
 
 
+# noinspection PyArgumentList,PyArgumentList
 class ShapeManager(object):
     """
     This class is a group of methods related to shape properties control.
@@ -62,7 +64,7 @@ class ShapeManager(object):
 
     def __init__(self, OutputViewerWidget):
 
-        ## Object reference to main object
+        # Object reference to main object
         self.op_viewer = OutputViewerWidget
 
     def loadShape(self, shape_list):
@@ -74,8 +76,8 @@ class ShapeManager(object):
 
         @param shape_list [list] First index contains the path of shape, second index contains a list of display
         exceptions, e.g: [[igs_2d_shape_path, ["HUB", "SHROUD"], [igs_3d_shape_path, ["STREAM"]]
-        @return First return contains list of AIS_ColoredShapes handles and second return contains a list of sub-shape names
-        in strings
+        @return First return contains list of AIS_ColoredShapes handles and second return contains a list of sub-shape
+        names in strings
         """
         loaded_ais_shapes = []
         loaded_h_ais_shapes = []
@@ -192,8 +194,8 @@ class ShapeManager(object):
 
             if self.op_viewer.root_node.childCount() != 0:
                 used_colors = []
-                for case in self.op_viewer.root_node._children:
-                    used_colors.append(case.shapeColor())
+                for case in self.op_viewer.root_node.children:
+                    used_colors.append(case.shapeColor)
 
                 if loaded_shape_color in used_colors:
                     for color in list(shape_colordictionary.keys()):
@@ -270,7 +272,7 @@ class ShapeManager(object):
 
         if self.op_viewer.selectionMode == "surf":
             if self.op_viewer.ui_subcase_list.count() / 2 < len(self.op_viewer.ui_subcase_list.selectedIndexes()):
-                self.op_viewer.case_node.setShapeQuality(factor)
+                self.op_viewer.case_node.shapeQuality = factor
 
         self.op_viewer.display.Repaint()
 
@@ -294,7 +296,7 @@ class ShapeManager(object):
         if self.op_viewer.selectionMode == "surf":
             # If the selected items is the majority of the list, then the property is set to the whole Case
             if self.op_viewer.ui_subcase_list.count() / 2 < len(self.op_viewer.ui_subcase_list.selectedIndexes()):
-                self.op_viewer.case_node.setShapeTransparency(transparency / 100)
+                self.op_viewer.case_node.shapeTransparency = (transparency / 100)
 
                 # set the properties to to the selected shapes
 
@@ -323,7 +325,7 @@ class ShapeManager(object):
         if self.op_viewer.selectionMode == "surf":
             # If the selected items is the majority of the list, then the property is set to the whole Case
             if self.op_viewer.ui_subcase_list.count() / 2 < len(self.op_viewer.ui_subcase_list.selectedIndexes()):
-                self.op_viewer.case_node.setShapeColor(current_color_combo)
+                self.op_viewer.case_node.shapeColor = current_color_combo
 
         self.op_viewer.display.Repaint()
 
@@ -381,11 +383,11 @@ class ShapeManager(object):
         if self.op_viewer.selectionMode == "surf":
             # If the selected items is the majority of the list, then the property is set to the whole Case
             if self.op_viewer.ui_subcase_list.count() / 2 < len(self.op_viewer.ui_subcase_list.selectedIndexes()):
-                self.op_viewer.case_node.setShapeTransformation(x, 0)
-                self.op_viewer.case_node.setShapeTransformation(y, 1)
-                self.op_viewer.case_node.setShapeTransformation(z, 2)
-                self.op_viewer.case_node.setShapeTransformation(teta / pi * 180, 3)
-                self.op_viewer.case_node.setShapeTransformation(rotataxis_index_combo, 4)
+                self.op_viewer.case_node.shapeTransformation = (x, 0)
+                self.op_viewer.case_node.shapeTransformation = (y, 1)
+                self.op_viewer.case_node.shapeTransformation = (z, 2)
+                self.op_viewer.case_node.shapeTransformation = (teta / pi * 180, 3)
+                self.op_viewer.case_node.shapeTransformation = (rotataxis_index_combo, 4)
 
             for i in range(0, len(self.op_viewer.ui_subcase_list.selectedIndexes())):
                 index = self.op_viewer.ui_subcase_list.selectedIndexes()[i]
@@ -426,7 +428,7 @@ class ShapeManager(object):
             return
 
         self.op_viewer.display.Context.DisplaySelected()
-        self.op_viewer._surfaceChanged()
+        self.op_viewer.surfaceChanged()
 
     def viewBlades(self, mode):
         """
@@ -439,14 +441,14 @@ class ShapeManager(object):
         if self._exceptionCatch():
             return
 
-        n_blades = self.op_viewer.case_node._n_blades
+        n_blades = self.op_viewer.case_node.numberBlades
         # TODO: (MED) COMMENT
-        if not self.op_viewer.case_node.h_copied_blades:
+        if not self.op_viewer.case_node.copiedBladesHAIS:
 
             for j in range(1, n_blades):
                 h_copy_blade = []
-                for i in range(0, len(self.op_viewer.case_node._blade_h_aisshape)):
-                    copy_blade = AIS_ColoredShape(self.op_viewer.case_node._blade_h_aisshape[i])
+                for i in range(0, len(self.op_viewer.case_node.bladeHAIS)):
+                    copy_blade = AIS_ColoredShape(self.op_viewer.case_node.bladeHAIS[i])
                     copy_blade.SetOwnDeviationCoefficient(
                         self.op_viewer.DC / self.op_viewer.preferences_widget.default_shape_factor)
                     h_copy_blade.append(copy_blade.GetHandle())
@@ -456,21 +458,21 @@ class ShapeManager(object):
                 for i in range(0, len(h_copy_blade)):
                     self.op_viewer.display.Context.Display(h_copy_blade[i], False)
 
-                self.op_viewer.case_node.h_copied_blades.extend(h_copy_blade)
+                self.op_viewer.case_node.copiedBladesHAIS.extend(h_copy_blade)
 
-        for h_ais_shape in self.op_viewer.case_node.h_copied_blades:
+        for h_ais_shape in self.op_viewer.case_node.copiedBladesHAIS:
             self.op_viewer.display.Context.Erase(h_ais_shape, False)
 
         if mode == "all":
-            for i in range(0, len(self.op_viewer.case_node.h_copied_blades)):
-                self.op_viewer.display.Context.Display(self.op_viewer.case_node.h_copied_blades[i], False)
+            for i in range(0, len(self.op_viewer.case_node.copiedBladesHAIS)):
+                self.op_viewer.display.Context.Display(self.op_viewer.case_node.copiedBladesHAIS[i], False)
 
         elif mode == "passage" and n_blades > 1:
-            for i in range(0, int(len(self.op_viewer.case_node.h_copied_blades) / (n_blades - 1))):
-                self.op_viewer.display.Context.Display(self.op_viewer.case_node.h_copied_blades[i], False)
+            for i in range(0, int(len(self.op_viewer.case_node.copiedBladesHAIS) / (n_blades - 1))):
+                self.op_viewer.display.Context.Display(self.op_viewer.case_node.copiedBladesHAIS[i], False)
 
         if self.op_viewer.selectionMode == "shape":
-            self.op_viewer.current_h_ais_shape.extend(self.op_viewer.case_node.h_copied_blades)
+            self.op_viewer.current_h_ais_shape.extend(self.op_viewer.case_node.copiedBladesHAIS)
 
         # TODO: comment section
         # TODO: DOCSTRINGS
@@ -488,7 +490,7 @@ class ShapeManager(object):
         if self._exceptionCatch():
             return
 
-        for h_ais_shape in self.op_viewer.case_node.h_copied_blades:
+        for h_ais_shape in self.op_viewer.case_node.copiedBladesHAIS:
             self.op_viewer.display.Context.Erase(h_ais_shape, False)
 
         self.op_viewer.display.Repaint()
@@ -503,7 +505,7 @@ class ShapeManager(object):
             self.op_viewer.display.Context.Remove(to_remove_shape[i], False)
 
         if remove_copied:
-            self.op_viewer.case_node.h_copied_blades = []
+            self.op_viewer.case_node.copiedBladesHAIS = []
 
         # TODO: COMMENT
         # TODO: DOCSTRINGS

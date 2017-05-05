@@ -11,13 +11,11 @@ import os
 import sys
 
 import matplotlib.pyplot as plt
+import numpy as np
 from PyQt4 import QtGui
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
 from scipy import interpolate
-
-import numpy as np
-
 
 from bladepy.layout_creator import pyui_creator
 from bladepy.tecplot_modules.tecplot_reader import TecPlotCore
@@ -32,6 +30,7 @@ pyui_creator.createPyUI(ui_file, py_ui_file)
 from bladepy.tecplot_modules import tecplot_displayUI
 
 
+# noinspection PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming
 class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
     """
     Class for creating a GUI for the BladePy TecplotViewer Widget
@@ -53,6 +52,10 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
 
     def __init__(self, parent=None, OutputViewerWidget=None):
         super(TecPlotWindow, self).__init__(parent)
+        self.ax1 = None
+        self.ax2 = None
+        self.ax3 = None
+        self.ax4= None
 
         self.tecplot_blade_plotlines = []
         self.tecplot_stream_plotlines = []
@@ -62,7 +65,8 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
         self.tecplot_mean_plotlines = []
         self.tecplot_meanbeta_plotlines = []
         self.tecplot_thickness_plotlines = []
-
+        self.tecplot_stackcur_plotlines = []
+        self.tecplot_stackpnts_plotlines = []
         # setup the initial display here
         self.setupUi(self)
         self.setCentralWidget(None)
@@ -166,13 +170,16 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
 
         plt.subplots_adjust(top=.96, bottom=.07, right=.90, left=.12)
 
-        if self.op_viewer.ui_tecplot_toggle_grid_chk.isChecked():
-            self.toggleGrid()
+        try:
+            if self.op_viewer.ui_tecplot_toggle_grid_chk.isChecked():
+                self.toggleGrid()
+        except AttributeError:
+            pass
 
         # plt.tight_layout(pad=1.3, w_pad=0.1, h_pad=.1)
 
-        self._canvas_1.draw()
-        self._canvas_2.draw()
+        self.canvas(1).draw()
+        self.canvas(2).draw()
 
     def tecplotDisplay_1(self):
         """
@@ -360,25 +367,24 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
             temp_line_list_color = []
             to_save_color_list = []
 
-            if self.op_viewer.case_node.tecplotIsNeutral():
+            if self.op_viewer.case_node.tecplotIsNeutral:
                 # Iterates through all sub-plots of the tecplots graphics.
 
-                for n in range(1, len(self.op_viewer.case_node.tecplotLists())):
+                for n in range(1, len(self.op_viewer.case_node.tecplotLists)):
                     # m is a variable for cycling through tecplot_colors
-                    for index, line in enumerate(self.op_viewer.case_node.tecplotLists()[n]):
-                        line.set_color(self.op_viewer.case_node.tecplotSavedColorList()[n-1][index])
+                    for index, line in enumerate(self.op_viewer.case_node.tecplotLists[n]):
+                        line.set_color(self.op_viewer.case_node.tecplotSavedColorList[n-1][index])
 
                         if line.get_linestyle() != "None":
                             line.set_linestyle('-')
 
                 # the attribute below is to setup the condition of the current state of tecplot
 
-                self.op_viewer.case_node.setTecplotMode("standard")
-
+                self.op_viewer.case_node.tecplotMode = "standard"
 
                 # Every modifying in the graphics appearances of tecplot must be redrawn.
-                self._canvas_1.draw()
-                self._canvas_2.draw()
+                self.canvas(1).draw()
+                self.canvas(2).draw()
 
                 # Sends the signal to treeview to update tecplot condition
 
@@ -387,8 +393,8 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
                                                           self.op_viewer.ui_case_treeview.currentIndex()))
 
             else:
-                for n in range(1, len(self.op_viewer.case_node.tecplotLists())):
-                    for line in self.op_viewer.case_node.tecplotLists()[n]:
+                for n in range(1, len(self.op_viewer.case_node.tecplotLists)):
+                    for line in self.op_viewer.case_node.tecplotLists[n]:
                         temp_line_list_color.append(line.get_color())
                         line.set_color("k")
                         if line.get_linestyle() != "None":
@@ -397,10 +403,10 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
                     to_save_color_list.append(temp_line_list_color)
                     temp_line_list_color = []
 
-                self.op_viewer.case_node.setTecplotSavedColorList(to_save_color_list)
-                self.op_viewer.case_node.setTecplotMode("neutral")
-                self._canvas_1.draw()
-                self._canvas_2.draw()
+                self.op_viewer.case_node.tecplotSavedColorList = to_save_color_list
+                self.op_viewer.case_node.tecplotMode = "neutral"
+                self.canvas(1).draw()
+                self.canvas(2).draw()
 
                 self.op_viewer.model.dataChanged.emit(self.op_viewer.ui_case_treeview.currentIndex(),
                                                       self.op_viewer.ui_case_treeview.indexBelow(
@@ -422,13 +428,13 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
         # First checks if any tecplot output was in fact loaded to start manipulating the condition.
         try:
             # if it is visible, turns to invisible and vice-versa
-            if self.op_viewer.case_node.tecplotIsVisible():
+            if self.op_viewer.case_node.tecplotIsVisible:
                 # it must save the style list to recover it for re-displaying in way before making it invisbile.
                 temp_line_list = []
                 to_save_style_list = []
 
-                for n in range(0, len(self.op_viewer.case_node.tecplotLists())):
-                    for line in self.op_viewer.case_node.tecplotLists()[n]:
+                for n in range(0, len(self.op_viewer.case_node.tecplotLists)):
+                    for line in self.op_viewer.case_node.tecplotLists[n]:
                         temp_line_list.append(line.get_visible())
                         line.set_visible(False)
 
@@ -441,17 +447,17 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
                 self.op_viewer.ui_tecplot_toggle_streamlines_chk.setEnabled(False)
                 self.op_viewer.ui_tecplot_toggle_stackcurves_btn.setEnabled(False)
 
-                self.op_viewer.case_node.setTecplotSavedStyleList(to_save_style_list)
-                self.op_viewer.case_node.setTecplotVisibility("invisible")
+                self.op_viewer.case_node.tecplotSavedStyleList = to_save_style_list
+                self.op_viewer.case_node.tecplotVisibility = "invisible"
 
                 self.op_viewer.model.dataChanged.emit(self.op_viewer.ui_case_treeview.currentIndex(),
                                                       self.op_viewer.ui_case_treeview.indexBelow(
                                                           self.op_viewer.ui_case_treeview.currentIndex()))
             else:
                 # Makes tecplot lines visible. Recovers the linestyle calling tecplotSavedStyleList method.
-                for n in range(0, len(self.op_viewer.case_node.tecplotLists())):
-                    for index, line in enumerate(self.op_viewer.case_node.tecplotLists()[n]):
-                        line.set_visible(self.op_viewer.case_node.tecplotSavedStyleList()[n][index])
+                for n in range(0, len(self.op_viewer.case_node.tecplotLists)):
+                    for index, line in enumerate(self.op_viewer.case_node.tecplotLists[n]):
+                        line.set_visible(self.op_viewer.case_node.tecplotSavedStyleList[n][index])
 
 
                 self.op_viewer.ui_tecplot_setneutral_btn.setEnabled(True)
@@ -460,14 +466,14 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
                 self.op_viewer.ui_tecplot_toggle_streamlines_chk.setEnabled(True)
                 self.op_viewer.ui_tecplot_toggle_stackcurves_btn.setEnabled(True)
 
-                self.op_viewer.case_node.setTecplotVisibility("visible")
+                self.op_viewer.case_node.tecplotVisibility = "visible"
 
                 self.op_viewer.model.dataChanged.emit(self.op_viewer.ui_case_treeview.currentIndex(),
                                                       self.op_viewer.ui_case_treeview.indexBelow(
                                                           self.op_viewer.ui_case_treeview.currentIndex()))
 
-            self._canvas_1.draw()
-            self._canvas_2.draw()
+            self.canvas(1).draw()
+            self.canvas(2).draw()
         except AttributeError:
             pass
 
@@ -486,33 +492,33 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
 
         try:
             # if it is visible, turns to invisible and vice-versa
-            if self.op_viewer.case_node.tecplotMeanLinesIsVisible():
+            if self.op_viewer.case_node.tecplotMeanLinesIsVisible:
                 # it must save the style list to recover it for re-displaying in way before making it invisbile.
                 temp_line_list = []
                 to_save_style_list = []
 
-                for line in self.op_viewer.case_node.tecplotLists()[4]:
+                for line in self.op_viewer.case_node.tecplotLists[4]:
                     temp_line_list.append(line.get_visible())
                     line.set_visible(False)
 
                 to_save_style_list.append(temp_line_list)
 
-                self.op_viewer.case_node.setTecplotMeanLinesSavedStyleList(to_save_style_list)
+                self.op_viewer.case_node.tecplotMeanLinesSavedStyleList = to_save_style_list
 
-                self.op_viewer.case_node.setTecplotMeanLinesVisibility("invisible")
+                self.op_viewer.case_node.tecplotMeanLinesVisibility = "invisible"
 
 
             else:
                 # Makes tecplot lines visible. Recovers the linestyle calling tecplotSavedStyleList method.
 
-                for index, line in enumerate(self.op_viewer.case_node.tecplotLists()[4]):
-                    line.set_visible(self.op_viewer.case_node.tecplotMeanLinesSavedStyleList()[0][index])
+                for index, line in enumerate(self.op_viewer.case_node.tecplotLists[4]):
+                    line.set_visible(self.op_viewer.case_node.tecplotMeanLinesSavedStyleList[0][index])
 
 
-                self.op_viewer.case_node.setTecplotMeanLinesVisibility("visible")
+                self.op_viewer.case_node.tecplotMeanLinesVisibility = "visible"
 
-            self._canvas_1.draw()
-            self._canvas_2.draw()
+            self.canvas(1).draw()
+            self.canvas(2).draw()
 
         except AttributeError:
             pass
@@ -532,33 +538,33 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
             return
 
         try:
-            if self.op_viewer.case_node.tecplotBladeProfilesIsVisible():
+            if self.op_viewer.case_node.tecplotBladeProfilesIsVisible:
                 # it must save the style list to recover it for re-displaying in way before making it invisbile.
                 temp_line_list = []
                 to_save_style_list = []
 
-                for line in self.op_viewer.case_node.tecplotLists()[3]:
+                for line in self.op_viewer.case_node.tecplotLists[3]:
                     temp_line_list.append(line.get_visible())
                     line.set_visible(False)
 
                 to_save_style_list.append(temp_line_list)
 
-                self.op_viewer.case_node.setTecplotBladeProfilesSavedStyleList(to_save_style_list)
+                self.op_viewer.case_node.tecplotBladeProfilesSavedStyleList = to_save_style_list
 
-                self.op_viewer.case_node.setTecplotBladeProfilesVisibility("invisible")
+                self.op_viewer.case_node.tecplotBladeProfilesVisibility = "invisible"
 
 
             else:
                 # Makes tecplot lines visible. Recovers the linestyle calling tecplotSavedStyleList method.
 
 
-                for index, line in enumerate(self.op_viewer.case_node.tecplotLists()[3]):
-                    line.set_visible(self.op_viewer.case_node.tecplotBladeProfilesSavedStyleList()[0][index])
+                for index, line in enumerate(self.op_viewer.case_node.tecplotLists[3]):
+                    line.set_visible(self.op_viewer.case_node.tecplotBladeProfilesSavedStyleList[0][index])
 
-                self.op_viewer.case_node.setTecplotBladeProfilesVisibility("visible")
+                self.op_viewer.case_node.tecplotBladeProfilesVisibility = "visible"
 
-            self._canvas_1.draw()
-            self._canvas_2.draw()
+            self.canvas(1).draw()
+            self.canvas(2).draw()
 
         except AttributeError:
             pass
@@ -578,33 +584,33 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
             return
 
         try:
-            if self.op_viewer.case_node.tecplotStreamLinesIsVisible():
+            if self.op_viewer.case_node.tecplotStreamLinesIsVisible:
                 # it must save the style list to recover it for re-displaying in way before making it invisbile.
                 temp_line_list = []
                 to_save_style_list = []
 
-                for line in self.op_viewer.case_node.tecplotLists()[2]:
+                for line in self.op_viewer.case_node.tecplotLists[2]:
                     temp_line_list.append(line.get_visible())
                     line.set_visible(False)
 
                 to_save_style_list.append(temp_line_list)
 
-                self.op_viewer.case_node.setTecplotStreamLinesSavedStyleList(to_save_style_list)
+                self.op_viewer.case_node.tecplotStreamLinesSavedStyleList = to_save_style_list
 
-                self.op_viewer.case_node.setTecplotStreamLinesVisibility("invisible")
+                self.op_viewer.case_node.tecplotStreamLinesVisibility = "invisible"
 
 
             else:
                 # Makes tecplot lines visible. Recovers the linestyle calling tecplotSavedStyleList method.
 
 
-                for index, line in enumerate(self.op_viewer.case_node.tecplotLists()[2]):
-                    line.set_visible(self.op_viewer.case_node.tecplotStreamLinesSavedStyleList()[0][index])
+                for index, line in enumerate(self.op_viewer.case_node.tecplotLists[2]):
+                    line.set_visible(self.op_viewer.case_node.tecplotStreamLinesSavedStyleList[0][index])
 
-                self.op_viewer.case_node.setTecplotStreamLinesVisibility("visible")
+                self.op_viewer.case_node.tecplotStreamLinesVisibility = "visible"
 
-            self._canvas_1.draw()
-            self._canvas_2.draw()
+            self.canvas(1).draw()
+            self.canvas(2).draw()
         except AttributeError:
             pass
 
@@ -624,31 +630,31 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
         # TODO: Prevent user from clicking before
 
         try:
-            if self.op_viewer.case_node.tecplotStackCurIsVisible():
+            if self.op_viewer.case_node.tecplotStackCurIsVisible:
                 # it must save the style list to recover it for re-displaying in way before making it invisbile.
                 temp_line_list = []
                 to_save_style_list = []
 
-                for line in self.op_viewer.case_node.tecplotLists()[1]:
+                for line in self.op_viewer.case_node.tecplotLists[1]:
                     temp_line_list.append(line.get_visible())
                     line.set_visible(False)
 
                 to_save_style_list.append(temp_line_list)
 
-                self.op_viewer.case_node.setTecplotStackCurSavedStyleList(to_save_style_list)
+                self.op_viewer.case_node.tecplotStackCurSavedStyleList = to_save_style_list
 
-                self.op_viewer.case_node.setTecplotStackCurVisibility("invisible")
+                self.op_viewer.case_node.tecplotStackCurVisibility = "invisible"
 
 
             else:
                 # Makes tecplot lines visible. Recovers the linestyle calling tecplotSavedStyleList method.
-                for index, line in enumerate(self.op_viewer.case_node.tecplotLists()[1]):
-                    line.set_visible(self.op_viewer.case_node.tecplotStackCurSavedStyleList()[0][index])
+                for index, line in enumerate(self.op_viewer.case_node.tecplotLists[1]):
+                    line.set_visible(self.op_viewer.case_node.tecplotStackCurSavedStyleList[0][index])
 
-                self.op_viewer.case_node.setTecplotStackCurVisibility("visible")
+                self.op_viewer.case_node.tecplotStackCurVisibility = "visible"
 
-            self._canvas_1.draw()
-            self._canvas_2.draw()
+            self.canvas(1).draw()
+            self.canvas(2).draw()
         except AttributeError:
             pass
 
@@ -666,8 +672,8 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
             for axis in [self.ax1, self.ax2, self.ax3, self.ax4]:
                 axis.grid(check)
 
-            self._canvas_1.draw()
-            self._canvas_2.draw()
+            self.canvas(1).draw()
+            self.canvas(2).draw()
 
         except AttributeError:
             pass
@@ -686,8 +692,8 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
                 axis.autoscale(enable=True, axis='both', tight=True)
 
 
-            self._canvas_1.draw()
-            self._canvas_2.draw()
+            self.canvas(1).draw()
+            self.canvas(2).draw()
 
         except AttributeError:
             pass
@@ -706,11 +712,23 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
                 axis.relim()
                 axis.autoscale_view()
 
-            self._canvas_1.draw()
-            self._canvas_2.draw()
+            self.canvas(1).draw()
+            self.canvas(2).draw()
 
         except AttributeError:
             pass
+
+    def canvas(self, canvas_number):
+        """
+
+        :param canvas_number:
+        :return:
+        """
+        # TODO : Docstring
+        if canvas_number == 1:
+            return self._canvas_1
+        elif canvas_number == 2:
+            return self._canvas_2
 
     def _exceptionCatch(self):
         """
@@ -722,9 +740,13 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
         """
         number_of_cases = self.op_viewer.model.rowCount(self.op_viewer.ui_case_treeview.rootIndex())
 
-        if self.op_viewer.case_node.tecplotMode() == "None" or number_of_cases == 0:
+        if self.op_viewer.case_node.tecplotMode == "None" or number_of_cases == 0:
             print("Action not feasible")
             return True
+
+    def debug(self):
+           pass
+
 
 
 
@@ -734,7 +756,8 @@ def main( ):
     tecplot_window = TecPlotWindow()
 
     tecplot_window.show()
-
+    tecplot_window.openTecplot("./tecplot_sample/612-0-1.2d.tec.dat")
+    tecplot_window.debug()
     # MainWindow.setgui()
     app.exec_()
 
@@ -745,3 +768,4 @@ def main( ):
 
 if __name__ == "__main__":
     main()
+

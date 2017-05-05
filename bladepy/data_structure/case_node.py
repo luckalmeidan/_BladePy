@@ -5,10 +5,11 @@ File that contains the class CaseNode to structure all data loaded in BladePy.
 """
 
 from PyQt4 import QtCore
+
 from ..occ_modules.shape_control import rev_shape_colordictionary
-import configparser
 
 
+# noinspection PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming
 class CaseNode(object):
     """
     Class to structure all data loaded in Core.BladePyCore.addCase().
@@ -19,7 +20,8 @@ class CaseNode(object):
     The model used to represent a CaseNode is an case_model.CaseModel object.
 
     """
-    def __init__(self, name, loaded_shapes = [[],[],[], [[],[],[]]], plot_lists=None, parent=None):
+
+    def __init__(self, name, loaded_shapes=[[], [], [], [[], [], []]], plot_lists=None, parent=None):
         """
         The constructor of the class.
 
@@ -42,9 +44,9 @@ class CaseNode(object):
 
             self._h_aisshape = loaded_shapes[0]  # List with all entities
             self._blade_h_aisshape = loaded_shapes[1]  # List with blade entities
-            self.h_copied_blades = loaded_shapes[2]
+            self._h_copied_blades = loaded_shapes[2]
 
-            self._supshape_names = loaded_shapes[3]
+            self._subshape_names = loaded_shapes[3]
 
             self._bladepro_version = loaded_shapes[4][0]
             self._created_date = loaded_shapes[4][1]
@@ -64,22 +66,21 @@ class CaseNode(object):
             # TODO: Exception in case the user loaded only case with only tecplot file
             try:
                 try:
-                    node_shape_color = rev_shape_colordictionary[self.shapeHAIS()[0].GetObject().Color()]
-                except (KeyError):
+                    node_shape_color = rev_shape_colordictionary[self.shapeHAIS[0].GetObject().Color()]
+                except KeyError:
                     node_shape_color = "Custom"
 
-                node_shape_transparency = int(self.shapeHAIS()[0].GetObject().Transparency()*100)
-                node_shape_quality = 0.001/self.shapeHAIS()[0].GetObject().OwnDeviationCoefficient()[1]
+                node_shape_transparency = int(self.shapeHAIS[0].GetObject().Transparency() * 100)
+                node_shape_quality = 0.001 / self.shapeHAIS[0].GetObject().OwnDeviationCoefficient()[1]
 
             except IndexError:
                 node_shape_color = "Custom"
                 node_shape_transparency = 0
                 node_shape_quality = 0
 
-
-            self.setShapeTransparency(node_shape_transparency)
-            self.setShapeColor(node_shape_color)
-            self.setShapeQuality(node_shape_quality)
+            self.shapeTransparency = node_shape_transparency
+            self.shapeColor = node_shape_color
+            self.shapeQuality = node_shape_quality
             # TODO: Explain below
 
             list_settings[1].beginGroup("shapes_settings")
@@ -94,27 +95,54 @@ class CaseNode(object):
             # if list not empty, tecplot mode is standard
 
             if self._tecplot_lists:
-                self.setTecplotMode("standard")
+                self.tecplotMode = "standard"
             else:
-                self.setTecplotMode("None")
+                self.tecplotMode = "None"
 
-            self.setTecplotVisibility("visible")
-            self.setTecplotMeanLinesVisibility("visible")
-            self.setTecplotBladeProfilesVisibility("visible")
-            self.setTecplotStackCurVisibility("visible")
-            self.setTecplotStreamLinesVisibility("visible")
+            self.tecplotVisibility = "visible"
+            self.tecplotMeanLinesVisibility = "visible"
+            self.tecplotBladeProfilesVisibility = "visible"
+            self.tecplotStackCurVisibility = "visible"
+            self.tecplotStreamLinesVisibility = "visible"
 
-            self.setTecplotSavedStyleList([])
-            self.setTecplotBladeProfilesSavedStyleList([])
-            self.setTecplotMeanLinesSavedStyleList([])
-            self.setTecplotStackCurSavedStyleList([])
+            self.tecplotSavedStyleList = ([])
+            self.tecplotBladeProfilesSavedStyleList = ([])
+            self.tecplotMeanLinesSavedStyleList = ([])
+            self.tecplotStackCurSavedStyleList = ([])
 
             parent.addChild(self)
-
 
         self._children = []
 
     # Below is defining the methods for getting and setting protected members of the class.
+    @property
+    def bladeProVersion(self):
+        """
+
+        :return:
+        """
+        # TODO: Docstrings
+        return self._bladepro_version
+
+    @property
+    def creationDate(self):
+        """
+
+        :return:
+        """
+        # TODO: Docstrings
+        return self._created_date
+
+    @property
+    def shapeNames(self):
+        """
+
+        :return:
+        """
+        # TODO: Docstrings
+        return self._subshape_names
+
+    @property
     def numberBlades(self):
         """
 
@@ -123,28 +151,31 @@ class CaseNode(object):
         # TODO: Docstrings
         return self._n_blades
 
+    @property
     def ownShape(self):
         """
 
         :return:
         """
         # TODO: Docstrings
-        if self.shapeHAIS():
+        if self.shapeHAIS:
             return True
         else:
             return False
 
+    @property
     def ownPlot(self):
         """
 
         :return:
         """
         # TODO: Docstrings
-        if self.tecplotLists():
+        if self.tecplotLists:
             return True
         else:
             return False
 
+    @property
     def shapeHAIS(self):
         """
         Method for retrieving the handle of AIS_ColoredShape for the node
@@ -153,6 +184,25 @@ class CaseNode(object):
         """
         return self._h_aisshape
 
+    @property
+    def bladeHAIS(self):
+        """
+        Method for retrieving the handle of blade AIS_ColoredShape for the node
+
+        @return [Handle_AIS_InteractiveObject] The AIS_ColoredShape Handle.
+        """
+        return self._blade_h_aisshape
+
+    @property
+    def copiedBladesHAIS(self):
+        """
+        Method for retrieving the handle of created blades AIS_ColoredShape for the node
+
+        @return [Handle_AIS_InteractiveObject] The AIS_ColoredShape Handle.
+        """
+        return self._h_copied_blades
+
+    @property
     def shapeTransformation(self):
         """
         Method for getting the transformation for the shape of this case
@@ -161,7 +211,8 @@ class CaseNode(object):
         """
         return self._transformation
 
-    def setShapeTransformation(self, transformation, coord):
+    @shapeTransformation.setter
+    def shapeTransformation(self, transformation_coord):
         """
         Method for setting the transformation for the shape of this case
 
@@ -170,9 +221,11 @@ class CaseNode(object):
 
         @return None
         """
-
+        transformation = transformation_coord[0]
+        coord = transformation_coord[1]
         self._transformation[coord] = transformation
 
+    @property
     def shapeTransparency(self):
         """
         Method for getting the transparency for the shape of this case
@@ -181,7 +234,8 @@ class CaseNode(object):
         """
         return self._transparency
 
-    def setShapeTransparency(self, transparency):
+    @shapeTransparency.setter
+    def shapeTransparency(self, transparency):
         """
         Method for setting the transparency for the shape of this case
 
@@ -190,6 +244,7 @@ class CaseNode(object):
         """
         self._transparency = transparency
 
+    @property
     def shapeColor(self):
         """
         Method for getting the color for the shape of this case
@@ -198,7 +253,8 @@ class CaseNode(object):
         """
         return self._color
 
-    def setShapeColor(self, color):
+    @shapeColor.setter
+    def shapeColor(self, color):
         """
         Method for setting the color for the shape of this case
 
@@ -207,6 +263,7 @@ class CaseNode(object):
         """
         self._color = color
 
+    @property
     def shapeQuality(self):
         """
         Method for getting the quality for the shape of this case
@@ -215,7 +272,8 @@ class CaseNode(object):
         """
         return self._quality
 
-    def setShapeQuality(self, quality):
+    @shapeQuality.setter
+    def shapeQuality(self, quality):
         """
         Method for setting the quality for the shape of this case
 
@@ -224,6 +282,7 @@ class CaseNode(object):
         """
         self._quality = quality
 
+    @property
     def tecplotLists(self):
         """
         Method for getting the tecplot graphics of this case
@@ -232,6 +291,7 @@ class CaseNode(object):
         """
         return self._tecplot_lists
 
+    @property
     def tecplotSavedStyleList(self):
         """
         Method for getting the saved tecplot graphics line-styles of this case.
@@ -243,6 +303,7 @@ class CaseNode(object):
         """
         return self._tecplot_savedstyle_list
 
+    @property
     def tecplotSavedColorList(self):
         """
         Method for getting the saved tecplot graphics line-color of this case.
@@ -251,6 +312,7 @@ class CaseNode(object):
         """
         return self._tecplot_savedcolor_list
 
+    @property
     def tecplotMeanLinesSavedStyleList(self):
         """
         Method for getting the saved tecplot graphics line-styles of this case.
@@ -262,6 +324,7 @@ class CaseNode(object):
         """
         return self._tecplot_meanline_savedstyle_list
 
+    @property
     def tecplotBladeProfilesSavedStyleList(self):
         """
         Method for getting the saved tecplot graphics line-styles of this case.
@@ -273,6 +336,7 @@ class CaseNode(object):
         """
         return self._tecplot_bladeprofile_savedstyle_list
 
+    @property
     def tecplotStackCurSavedStyleList(self):
         """
         Method for getting the saved tecplot graphics line-styles of this case.
@@ -284,6 +348,7 @@ class CaseNode(object):
         """
         return self._tecplot_stackcur_savedstyle_list
 
+    @property
     def tecplotStreamLinesSavedStyleList(self):
         """
         Method for getting the saved tecplot graphics line-styles of this case.
@@ -295,7 +360,8 @@ class CaseNode(object):
         """
         return self._tecplot_streamline_savedstyle_list
 
-    def setTecplotSavedStyleList(self, tecplot_list):
+    @tecplotSavedStyleList.setter
+    def tecplotSavedStyleList(self, tecplot_list):
         """
         Method for setting the saved tecplot graphics line-styles of this case.
 
@@ -306,7 +372,8 @@ class CaseNode(object):
         """
         self._tecplot_savedstyle_list = tecplot_list
 
-    def setTecplotSavedColorList(self, teplot_list):
+    @tecplotSavedColorList.setter
+    def tecplotSavedColorList(self, teplot_list):
         """
         Method for getting the saved tecplot graphics line-color of this case.
 
@@ -314,7 +381,8 @@ class CaseNode(object):
         """
         self._tecplot_savedcolor_list = teplot_list
 
-    def setTecplotMeanLinesSavedStyleList(self, tecplot_list):
+    @tecplotMeanLinesSavedStyleList.setter
+    def tecplotMeanLinesSavedStyleList(self, tecplot_list):
         """
         Method for setting the saved tecplot graphics line-styles of MeanLines of this case.
 
@@ -325,7 +393,8 @@ class CaseNode(object):
         """
         self._tecplot_meanline_savedstyle_list = tecplot_list
 
-    def setTecplotBladeProfilesSavedStyleList(self, tecplot_list):
+    @tecplotBladeProfilesSavedStyleList.setter
+    def tecplotBladeProfilesSavedStyleList(self, tecplot_list):
         """
         Method for setting the saved tecplot graphics line-styles of MeanLines of this case.
 
@@ -336,7 +405,8 @@ class CaseNode(object):
         """
         self._tecplot_bladeprofile_savedstyle_list = tecplot_list
 
-    def setTecplotStackCurSavedStyleList(self, tecplot_list):
+    @tecplotStackCurSavedStyleList.setter
+    def tecplotStackCurSavedStyleList(self, tecplot_list):
         """
         Method for setting the saved tecplot graphics line-styles of MeanLines of this case.
 
@@ -347,7 +417,8 @@ class CaseNode(object):
         """
         self._tecplot_stackcur_savedstyle_list = tecplot_list
 
-    def setTecplotStreamLinesSavedStyleList(self, tecplot_list):
+    @tecplotStreamLinesSavedStyleList.setter
+    def tecplotStreamLinesSavedStyleList(self, tecplot_list):
         """
         Method for setting the saved tecplot graphics line-styles of MeanLines of this case.
 
@@ -358,6 +429,7 @@ class CaseNode(object):
         """
         self._tecplot_streamline_savedstyle_list = tecplot_list
 
+    @property
     def tecplotVisibility(self):
         """
         Method for getting the current state of visibility the tecplot graphics for this case
@@ -366,6 +438,7 @@ class CaseNode(object):
         """
         return self._tecplot_visibility
 
+    @property
     def tecplotBladeProfilesVisibility(self):
         """
         Method for getting the current state of visibility the tecplot graphics for this case
@@ -374,6 +447,7 @@ class CaseNode(object):
         """
         return self._tecplot_bladeprofile_visibility
 
+    @property
     def tecplotMeanLinesVisibility(self):
         """
         Method for getting the current state of visibility the tecplot graphics for this case
@@ -382,6 +456,7 @@ class CaseNode(object):
         """
         return self._tecplot_meanline_visibility
 
+    @property
     def tecplotStackCurVisibility(self):
         """
         Method for getting the current state of visibility the tecplot graphics for this case
@@ -390,7 +465,7 @@ class CaseNode(object):
         """
         return self._tecplot_stackcur_visibility
 
-
+    @property
     def tecplotStreamLinesVisibility(self):
         """
         Method for getting the current state of visibility the tecplot graphics for this case
@@ -399,7 +474,8 @@ class CaseNode(object):
         """
         return self._tecplot_streamline_visibility
 
-    def setTecplotVisibility(self, visibility):
+    @tecplotVisibility.setter
+    def tecplotVisibility(self, visibility):
         """
         Method for setting a state for the tecplot graphics for this case
 
@@ -408,7 +484,8 @@ class CaseNode(object):
         """
         self._tecplot_visibility = visibility
 
-    def setTecplotBladeProfilesVisibility(self, visibility):
+    @tecplotBladeProfilesVisibility.setter
+    def tecplotBladeProfilesVisibility(self, visibility):
         """
         Method for setting a state for the tecplot graphics for this case
 
@@ -417,7 +494,8 @@ class CaseNode(object):
         """
         self._tecplot_bladeprofile_visibility = visibility
 
-    def setTecplotMeanLinesVisibility(self, visibility):
+    @tecplotMeanLinesVisibility.setter
+    def tecplotMeanLinesVisibility(self, visibility):
         """
         Method for setting a state for the tecplot graphics for this case
 
@@ -426,7 +504,8 @@ class CaseNode(object):
         """
         self._tecplot_meanline_visibility = visibility
 
-    def setTecplotStackCurVisibility(self, visibility):
+    @tecplotStackCurVisibility.setter
+    def tecplotStackCurVisibility(self, visibility):
         """
         Method for setting a state for the tecplot graphics for this case
 
@@ -435,8 +514,8 @@ class CaseNode(object):
         """
         self._tecplot_stackcur_visibility = visibility
 
-
-    def setTecplotStreamLinesVisibility(self, visibility):
+    @tecplotStreamLinesVisibility.setter
+    def tecplotStreamLinesVisibility(self, visibility):
         """
         Method for setting a state for the tecplot graphics for this case
 
@@ -445,62 +524,67 @@ class CaseNode(object):
         """
         self._tecplot_streamline_visibility = visibility
 
+    @property
     def tecplotIsVisible(self):
         """
          Method for verifying if tecplot is visible
 
          @return [bool] True if it is "visible" False if it is "invisible"
          """
-        if self.tecplotVisibility() == "visible":
+        if self.tecplotVisibility == "visible":
             return True
         else:
             return False
 
+    @property
     def tecplotMeanLinesIsVisible(self):
         """
          Method for verifying if tecplot MeanLines is visible
 
          @return [bool] True if it is "visible" False if it is "invisible"
          """
-        if self.tecplotMeanLinesVisibility() == "visible":
+        if self.tecplotMeanLinesVisibility == "visible":
             return True
         else:
             return False
 
+    @property
     def tecplotBladeProfilesIsVisible(self):
         """
          Method for verifying if tecplot BladeProfiles is visible
 
          @return [bool] True if it is "visible" False if it is "invisible"
          """
-        if self.tecplotBladeProfilesVisibility() == "visible":
+        if self.tecplotBladeProfilesVisibility == "visible":
             return True
         else:
             return False
 
-
+    @property
     def tecplotStackCurIsVisible(self):
         """
          Method for verifying if tecplot BladeProfiles is visible
 
          @return [bool] True if it is "visible" False if it is "invisible"
          """
-        if self.tecplotStackCurVisibility() == "visible":
+        if self.tecplotStackCurVisibility == "visible":
             return True
         else:
             return False
 
+    @property
     def tecplotStreamLinesIsVisible(self):
         """
          Method for verifying if tecplot BladeProfiles is visible
 
          @return [bool] True if it is "visible" False if it is "invisible"
          """
-        if self.tecplotStreamLinesVisibility() == "visible":
+        if self.tecplotStreamLinesVisibility == "visible":
             return True
         else:
             return False
 
+    @property
     def tecplotMode(self):
         """
         Method for getting the current state of mode the tecplot graphics for this case.
@@ -509,10 +593,11 @@ class CaseNode(object):
 
         @return [str] The state of mode of the tecplot. Can be "neutral" or "standard"
         """
-    
+
         return self._tecplot_mode
 
-    def setTecplotMode(self, mode):
+    @tecplotMode.setter
+    def tecplotMode(self, mode):
         """
         Method for setting the current state of mode the tecplot graphics for this case. 
         
@@ -521,17 +606,18 @@ class CaseNode(object):
         """
         self._tecplot_mode = mode
 
+    @property
     def tecplotIsNeutral(self):
         """
          Method for verifying if tecplot is neutral
 
          @return [bool] True if it is "neutral" False if it is "standard"
          """
-        if self.tecplotMode() == "neutral":
+        if self.tecplotMode == "neutral":
             return True
         else:
             return False
-    
+
     def addChild(self, child):
         """
         Methods required by model tree view of PyQt. Not necessary to observe this method.
@@ -579,6 +665,13 @@ class CaseNode(object):
         """
         return self._children[row]
 
+    @property
+    def children(self):
+        """
+        Methods required by model tree view of PyQt. Not necessary to observe this method.
+        """
+        return self._children
+
     def childCount(self):
         """
         Methods required by model tree view of PyQt. Not necessary to observe this method.
@@ -595,5 +688,5 @@ class CaseNode(object):
         """
         Methods required by model tree view of PyQt. Not necessary to observe this method.
         """
-        if self._parent is not None:
-            return self._parent._children.index(self)
+        if self.parent() is not None:
+            return self.parent().children().index(self)

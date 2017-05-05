@@ -2,7 +2,7 @@
 import subprocess
 
 try:
-	version = subprocess.check_output(["git", "describe", "--abbrev=4", "--always", "--tags"])
+	version = subprocess.check_output(["git", "describe", "--abbrev=4", "--dirty", "--always", "--tags"], stderr=subprocess.STDOUT)
 	version = version.decode('utf-8').replace('\n', '')
 
 except:

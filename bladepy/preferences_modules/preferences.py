@@ -25,6 +25,7 @@ from bladepy.preferences_modules import preferencesUI
 dct = {"true": True, "false": False, True: True, False: False}
 
 
+# noinspection PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming
 class PreferencesBladePy(QtGui.QDialog, preferencesUI.Ui_PreferencesDialog):
     """
     Class with the methods for customizing user preferences.
@@ -34,6 +35,20 @@ class PreferencesBladePy(QtGui.QDialog, preferencesUI.Ui_PreferencesDialog):
     def __init__(self, parent=None, OutputViewerWidget=None):
 
         super(PreferencesBladePy, self).__init__(parent)
+        self.default_shape_color = str
+        self.default_shape_factor = float
+        self.default_shape_transparency = int
+        self.default_zoom_step = float
+        self.default_preload_blades_check_state = bool
+        self.default_igs_surf_check_state = bool
+        self.default_igs_surf_exception = str
+        self.default_igs_3d_cur_check_state = bool
+        self.default_igs_3d_cur_exception = str
+        self.default_igs_2d_cur_check_state = bool
+        self.default_igs_2d_cur_exception = str
+        self.default_tecplot_2d_check_state = bool
+        self.default_bladebro_version = str
+
         self.setupUi(self)
         self.last_settings = QtCore.QSettings("BladePy", "BladePy\MainApp\LastMainOptions".format(number=1))
         self.user_settings = [QtCore.QSettings("BladePy", "BladePy\MainApp\Options{number}".format(number=1))]
@@ -75,7 +90,6 @@ class PreferencesBladePy(QtGui.QDialog, preferencesUI.Ui_PreferencesDialog):
             self.setInitialGUI()
 
         # TODO: Explain this section
-
 
         self.ui_preferences_ok_btn.clicked.connect(self.okAction)
         self.ui_preferences_cancel_btn.clicked.connect(self.cancelAction)
@@ -192,6 +206,7 @@ class PreferencesBladePy(QtGui.QDialog, preferencesUI.Ui_PreferencesDialog):
 
         @param setting [int] always 1 for the moment. It support a number of different preferences_modules, but not yet
         implemented
+        @param restore [bool] In case the application need restore, sets true
         @return None
         """
         if not restore:
@@ -268,9 +283,9 @@ class PreferencesBladePy(QtGui.QDialog, preferencesUI.Ui_PreferencesDialog):
 
         self.list_settings[setting].endGroup()
 
-
         # quality_preferences = [[self.default_shape_factor, self.ui_preferences_default_quality_dspn,
-        #                         self.op_viewer.ui_shape_quality_dspn, "dpsn", "shapes_settings", "default_shape_quality",
+        #                         self.op_viewer.ui_shape_quality_dspn, "dpsn", "shapes_settings",
+        # "default_shape_quality",
         #                         10]]
         #
         # igs_surf_preferences = [[self.default_igs_surf_check_state, self.ui_preferences_igs_surf_chk, None,

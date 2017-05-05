@@ -5,7 +5,8 @@ from PyQt4.uic.driver import Driver
 
 developer_mode = False
 
-class pyOutputObject(object):
+
+class PyOutputObject(object):
     #
     def __init__(self, py_output):
         self.indent = 4
@@ -26,6 +27,7 @@ def createPyUI(input_ui_file_dir, output_py_file_dir, application_update_ui=Fals
 
     @param input_ui_file_dir [.ui file] A file created in Qt Designer
     @param output_py_file_dir [.py file] A file that will be the translation of the file created in Qt Designer
+    @param application_update_ui In case entire application will be updated
     @return None
     """
     if developer_mode or application_update_ui:
@@ -36,7 +38,7 @@ def createPyUI(input_ui_file_dir, output_py_file_dir, application_update_ui=Fals
         else:
             from PyQt4.uic.port_v2.invoke import invoke
 
-        opts = pyOutputObject(output_py_file_dir)
+        opts = PyOutputObject(output_py_file_dir)
         args = [input_ui_file_dir]
 
         if len(args) != 1:
@@ -101,25 +103,25 @@ def createPyUI(input_ui_file_dir, output_py_file_dir, application_update_ui=Fals
 def updateApplication():
     layout_creator_path = os.path.dirname(__file__)
 
-    tecplot_modules_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "tecplot_modules")
+    tecplot_modules_path = os.path.join(os.path.dirname(layout_creator_path), "tecplot_modules")
     ui_file = os.path.join(tecplot_modules_path, "tecplot_displayUI.ui")
     py_ui_file = os.path.join(tecplot_modules_path, "tecplot_displayUI.py")
 
     createPyUI(ui_file, py_ui_file, application_update_ui=True)
 
-    bladepro_modules_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "bladepro_modules")
+    bladepro_modules_path = os.path.join(os.path.dirname(layout_creator_path), "bladepro_modules")
     ui_file = os.path.join(bladepro_modules_path, "inputfile_writerUI.ui")
     py_ui_file = os.path.join(bladepro_modules_path, "inputfile_writerUI.py")
 
     createPyUI(ui_file, py_ui_file, application_update_ui=True)
 
-    preferences_modules_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "preferences_modules")
+    preferences_modules_path = os.path.join(os.path.dirname(layout_creator_path), "preferences_modules")
     ui_file = os.path.join(preferences_modules_path, "preferencesUI.ui")
     py_ui_file = os.path.join(preferences_modules_path, "preferencesUI.py")
 
     createPyUI(ui_file, py_ui_file, application_update_ui=True)
 
-    software_core_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "software_core")
+    software_core_path = os.path.join(os.path.dirname(layout_creator_path), "software_core")
     ui_file = os.path.join(software_core_path, "output_viewerUI.ui")
     py_ui_file = os.path.join(software_core_path, "output_viewerUI.py")
 

@@ -12,8 +12,13 @@ It has the BladePyCore Class, which inherits:
 
 
 """
+# Misc import
 
-# OpenCascade Libraries
+import functools
+import os
+import subprocess
+import sys
+
 from OCC.AIS import AIS_Shaded
 from OCC.AIS import AIS_WireFrame
 from OCC.Display.backend import load_backend
@@ -21,6 +26,7 @@ from OCC.Display.backend import load_backend
 used_backend = load_backend()
 
 # PyQt Library
+# noinspection PyPep8
 from PyQt4 import QtCore, QtGui
 
 # Internal Modules
@@ -38,12 +44,6 @@ from bladepy.bladepro_modules.inputfile_writer import InputWriterWindow
 from bladepy.preferences_modules.preferences import PreferencesBladePy
 
 from bladepy.layout_creator import pyui_creator
-# Misc import
-
-import sys
-import subprocess
-import os
-import functools
 
 output_viewer_dir = os.path.dirname(__file__)
 
@@ -59,8 +59,10 @@ from bladepy.software_core import output_viewerUI
 # This dictionary works because depending on OS, e.g. the register might save False as false, crashing the program
 dct = {"true": True, "false": False, True: True, False: False}
 
+# noinspection PyBroadException
 try:
-    bladepy_version = subprocess.check_output(["git", "describe", "--abbrev=4", "--dirty", "--always", "--tags"])
+    bladepy_version = subprocess.check_output(["git", "describe", "--abbrev=4", "--dirty", "--always", "--tags"],
+                                              stderr=subprocess.STDOUT)
     bladepy_version = bladepy_version.decode('utf-8').replace('\n', '')
 
     with open(os.path.join(os.path.dirname(os.path.dirname(__file__)), "VERSION.txt"), 'w') as version_file:
@@ -73,6 +75,7 @@ except:
 developer_mode = False
 
 
+# noinspection PyProtectedMember,PyCallByClass,PyArgumentList,PyMethodMayBeStatic,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming
 class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
     """
     This is the key Class that wraps all the other packages and modules of BladePy.
@@ -207,10 +210,10 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
             self.display.Context.SetDisplayMode(AIS_Shaded)
             self.display.Context.DefaultDrawer().GetObject().SetFaceBoundaryDraw(True)
 
-            for case in self.root_node._children:
+            for case in self.root_node.children:
                 # TODO: Refactor extend
-                list_h_sub_shape = case.shapeHAIS()
-                list_h_sub_shape.extend(case.h_copied_blades)
+                list_h_sub_shape = case.shapeHAIS
+                list_h_sub_shape.extend(case.copiedBladesHAIS)
                 for h_sub_shape in list_h_sub_shape:
                     self.display.Context.Redisplay(h_sub_shape, False)  # Not Optimum Solution I Think
 
@@ -221,10 +224,10 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
             self.display.Context.SetDisplayMode(AIS_Shaded)
             self.display.Context.DefaultDrawer().GetObject().SetFaceBoundaryDraw(False)
 
-            for case in self.root_node._children:
+            for case in self.root_node.children:
                 # TODO: Refactor extend
-                list_h_sub_shape = case.shapeHAIS()
-                list_h_sub_shape.extend(case.h_copied_blades)
+                list_h_sub_shape = case.shapeHAIS
+                list_h_sub_shape.extend(case.copiedBladesHAIS)
                 for h_sub_shape in list_h_sub_shape:
                     self.display.Context.Redisplay(h_sub_shape, False)  # Not Optimum Solution I Think
 
@@ -294,10 +297,10 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         """
         Method group that wrap only exit function for "file" menu.
 
-        @param pressed_btn [QtGui.QAction] Signal emitted by button clicked on ui_file_menur
+        @param pressed_btn [QtGui.QAction] Signal emitted by button clicked on ui_file_menu
         @return None
         """
-        # TODO Naybe this is not the best way to exit the program
+        # TODO maybe this is not the best way to exit the program
         if pressed_btn.text() == "Exit":
             self.inputwriter_widget.close()
             self.close()
@@ -353,7 +356,6 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         This will be triggered by the Output Viewer when opening an existing case or when Run BladePro button
         is clicked in in the Input Writer GUI. This method will read files related to the working case. Currently, the
         addCase method supports three outputs from BladePro.
-
         \arg IGS 3D Curves;
         \arg IGS Surfaces;
         \arg Tecplots 2D.
@@ -429,11 +431,11 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         # starts loading CAD files
 
         # Mistake-prevention of user filling of exception list
-        permited_characters_except_list = [" ", ",", "/"]
-        for permited_character in permited_characters_except_list:
-            igs_surf_exception = igs_surf_exception.replace(permited_character, ";")
-            igs_3d_cur_exception = igs_3d_cur_exception.replace(permited_character, ";")
-            igs_2d_cur_exception = igs_2d_cur_exception.replace(permited_character, ";")
+        permitted_characters_except_list = [" ", ",", "/"]
+        for permitted_character in permitted_characters_except_list:
+            igs_surf_exception = igs_surf_exception.replace(permitted_character, ";")
+            igs_3d_cur_exception = igs_3d_cur_exception.replace(permitted_character, ";")
+            igs_2d_cur_exception = igs_2d_cur_exception.replace(permitted_character, ";")
 
         igs_surf_exception = igs_surf_exception.split(";")
         igs_3d_cur_exception = igs_3d_cur_exception.split(";")
@@ -472,7 +474,7 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
             loaded_tecplot_profile_plotlines = self.tecplot_widget.tecplot_profile_plotlines
             loaded_tecplot_thickness_plotlines = self.tecplot_widget.tecplot_thickness_plotlines
 
-            # Group all Tcplots in a single list with all lists
+            # Group all Tecplots in a single list with all lists
             loaded_tecplot_plotlines_list.append(loaded_tecplot_blade_plotlines)
             loaded_tecplot_plotlines_list.append(loaded_tecplot_stackcur_plotlines)
             loaded_tecplot_plotlines_list.append(loaded_tecplot_stream_plotlines)
@@ -487,7 +489,7 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
             except AttributeError:
                 pass
 
-        # Creates a Case Node from datastructure module with the loaded shape and loaded tecplot
+        # Creates a Case Node from data_structure module with the loaded shape and loaded tecplot
 
         CaseNode(to_add_case_name, loaded_shapes, loaded_tecplot_plotlines_list,
                  self.root_node)
@@ -528,18 +530,18 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         if self.model.rowCount(self.ui_case_treeview.rootIndex()) == 0:
             return
 
-        for n in range(0, len(self.case_node.tecplotLists())):
-            for line in self.case_node.tecplotLists()[n]:
+        for n in range(0, len(self.case_node.tecplotLists)):
+            for line in self.case_node.tecplotLists[n]:
                 line.remove()
 
         # Updates canvas
-        self.tecplot_widget._canvas_1.draw()
-        self.tecplot_widget._canvas_2.draw()
+        self.tecplot_widget.canvas(1).draw()
+        self.tecplot_widget.canvas(2).draw()
         self.tecplot_widget.relimScale()
 
-        self.current_h_ais_shape = self.case_node.shapeHAIS()
+        self.current_h_ais_shape = self.case_node.shapeHAIS
 
-        self.current_h_ais_shape.extend(self.case_node.h_copied_blades)
+        self.current_h_ais_shape.extend(self.case_node.copiedBladesHAIS)
         self.shape_manager.shapeDeletion(self.current_h_ais_shape)
 
         # Remove the node from data structure.
@@ -558,7 +560,7 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
 
             self._setSelection(self.ui_case_treeview.currentIndex(), old=None)
             self._setupDataMapper()
-        except (IndexError):
+        except IndexError:
             pass
 
     def setZoomFactor(self):
@@ -570,7 +572,7 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         """
         self.canva.zoomfactor = self.ui_display_zoomfactor_dspn.value()
 
-    def _surfaceChanged(self):
+    def surfaceChanged(self):
         """
         Method function that controls the situation when a sub-shape is selected in the ListWidget.
 
@@ -585,7 +587,7 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
             return
 
         # Gets the shape of the current case
-        self.current_h_ais_shape = self.case_node.shapeHAIS()
+        self.current_h_ais_shape = self.case_node.shapeHAIS
 
         sub_shape = []
         sub_shape_name = []
@@ -593,12 +595,12 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         # Gets the subshape selected in TreeWidget in the current case shape
         for i in range(0, len(self.ui_subcase_list.selectedIndexes())):
             sub_shape.append(self.current_h_ais_shape[self.ui_subcase_list.selectedIndexes()[i].row()])
-            sub_shape_name.append(self.case_node._supshape_names[self.ui_subcase_list.selectedIndexes()[i].row()])
+            sub_shape_name.append(self.case_node.shapeNames[self.ui_subcase_list.selectedIndexes()[i].row()])
 
         # This is a trigger that identifies that the program is in surface mode selection
 
         subshape_ref = self.case_node.subshape[self.ui_subcase_list.currentRow()]
-        ais_subshape_ref = self.case_node.shapeHAIS()[self.ui_subcase_list.currentRow()].GetObject()
+        ais_subshape_ref = self.case_node.shapeHAIS[self.ui_subcase_list.currentRow()].GetObject()
 
         # Mapping the subshape to the GUI controls
         self.ui_selectedcase_edit.setText(self.case_node.name() + ": " + "; ".join(sub_shape_name))
@@ -743,11 +745,11 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         self._dataMapper = QtGui.QDataWidgetMapper()
 
         self.ui_case_treeview.clicked.connect(self._setSelection)
-        self.ui_subcase_list.itemClicked.connect(self._surfaceChanged)
+        self.ui_subcase_list.itemClicked.connect(self.surfaceChanged)
 
     def _setupTecPlotWidget(self):
         """
-        Method function for setuping a widget for tecplot
+        Method function for setup a widget for tecplot
 
         The object tecplot_widget is the one that holds all methods for managing tecplot display
 
@@ -758,7 +760,7 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
 
     def _setupPreferencesWidget(self):
         """
-        Method function for setuping a widget for preferences menu
+        Method function for setup a widget for preferences menu
 
         The object preferences_widget is the one that holds all methods for managing program's configurations
 
@@ -768,7 +770,7 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
 
     def _setupInputWriterWidget(self):
         """
-        Method function for setuping a widget for bladepro
+        Method function for setup a widget for bladepro
 
         The object inputwriter_widget is the one that holds all methods for communication with BladePro.
 
@@ -929,11 +931,11 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         except AttributeError:
             pass
 
-        if self.case_node.ownShape():
+        if self.case_node.ownShape:
             self.ui_shapeappearance_groupbox.setEnabled(True)
             self.ui_shape_transformation_groupbox.setEnabled(True)
 
-            if self.case_node.numberBlades() >= 2:
+            if self.case_node.numberBlades >= 2:
                 self.ui_shape_activate_passage_blades_btn.setEnabled(True)
                 self.ui_shape_activate_all_blades_btn.setEnabled(True)
             else:
@@ -944,10 +946,10 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
             self.ui_shapeappearance_groupbox.setEnabled(False)
             self.ui_shape_transformation_groupbox.setEnabled(False)
 
-        if self.case_node.ownPlot():
+        if self.case_node.ownPlot:
             self.ui_tecplot_control_groupbox.setEnabled(True)
 
-            if self.case_node.tecplotIsVisible():
+            if self.case_node.tecplotIsVisible:
                 self.ui_tecplot_setinvisible_btn.setChecked(True)
                 self.ui_tecplot_setneutral_btn.setEnabled(True)
                 self.ui_tecplot_toggle_bladeprofiles_btn.setEnabled(True)
@@ -963,27 +965,27 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
                 self.ui_tecplot_toggle_stackcurves_btn.setEnabled(False)
                 self.ui_tecplot_toggle_streamlines_chk.setEnabled(False)
 
-            if self.case_node.tecplotBladeProfilesIsVisible():
+            if self.case_node.tecplotBladeProfilesIsVisible:
                 self.ui_tecplot_toggle_bladeprofiles_btn.setChecked(True)
             else:
                 self.ui_tecplot_toggle_bladeprofiles_btn.setChecked(False)
 
-            if self.case_node.tecplotMeanLinesIsVisible():
+            if self.case_node.tecplotMeanLinesIsVisible:
                 self.ui_tecplot_toggle_meanlines_btn.setChecked(True)
             else:
                 self.ui_tecplot_toggle_meanlines_btn.setChecked(False)
 
-            if self.case_node.tecplotIsNeutral():
+            if self.case_node.tecplotIsNeutral:
                 self.ui_tecplot_setneutral_btn.setChecked(True)
             else:
                 self.ui_tecplot_setneutral_btn.setChecked(False)
 
-            if self.case_node.tecplotStreamLinesIsVisible():
+            if self.case_node.tecplotStreamLinesIsVisible:
                 self.ui_tecplot_toggle_streamlines_chk.setChecked(True)
             else:
                 self.ui_tecplot_toggle_streamlines_chk.setChecked(False)
 
-            if self.case_node.tecplotStackCurIsVisible():
+            if self.case_node.tecplotStackCurIsVisible:
                 self.ui_tecplot_toggle_stackcurves_btn.setChecked(True)
             else:
                 self.ui_tecplot_toggle_stackcurves_btn.setChecked(False)
@@ -991,19 +993,18 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         else:
             self.ui_tecplot_control_groupbox.setEnabled(False)
 
-        self.current_h_ais_shape = list(self.case_node.shapeHAIS())
+        self.current_h_ais_shape = list(self.case_node.shapeHAIS)
 
         self.ui_subcase_list.clear()
 
         try:
             for i in range(0, len(self.current_h_ais_shape)):
-                self.ui_subcase_list.addItem(self.case_node._supshape_names[i])
+                self.ui_subcase_list.addItem(self.case_node.shapeNames[i])
         except Exception as e:
             # TODO: FIX ISSUE
             print(e)
 
-        # TODO: getter for h_copied_blades
-        self.current_h_ais_shape.extend(self.case_node.h_copied_blades)
+        self.current_h_ais_shape.extend(self.case_node.copiedBladesHAIS)
         self.display.Context.ClearSelected()
 
         for i in range(0, len(self.current_h_ais_shape)):
@@ -1011,8 +1012,8 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
 
         self.display.Context.UpdateCurrentViewer()
 
-        self.ui_bladepro_created_dynlbl.setText(self.case_node._bladepro_version)
-        self.ui_date_created_dynlbl.setText(self.case_node._created_date)
+        self.ui_bladepro_created_dynlbl.setText(self.case_node.bladeProVersion)
+        self.ui_date_created_dynlbl.setText(self.case_node.creationDate)
 
         # if cause for syncing buttons to selected case
 
@@ -1061,11 +1062,12 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         self._dataMapper.removeMapping(self.ui_shape_rotataxis_combo)
 
 
+# noinspection PyUnreachableCode,PyUnusedLocal
 def main():
     app = QtGui.QApplication(sys.argv)
     app.setStyle("gtk+")
     main_window = BladePyCore()
-    # MainWindow.setgui()
+
     app.exec_()
 
     # inifile.close()

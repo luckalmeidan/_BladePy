@@ -1,6 +1,8 @@
-import sys
 import os
 import subprocess
+import sys
+
+os.environ['MPLCONFIGDIR'] = "./bladepy/tecplot_modules/.cache"
 
 from bladepy.layout_creator import pyui_creator
 

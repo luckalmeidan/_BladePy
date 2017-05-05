@@ -689,4 +689,4 @@ class CaseNode(object):
         Methods required by model tree view of PyQt. Not necessary to observe this method.
         """
         if self.parent() is not None:
-            return self.parent().children().index(self)
+            return self.parent().children.index(self)

@@ -30,7 +30,6 @@ used_backend = load_backend()
 from PyQt4 import QtCore, QtGui
 
 # Internal Modules
-
 from bladepy.occ_modules.shape_control import ShapeManager
 from bladepy.occ_modules.shape_control import rev_shape_colordictionary, shape_colordictionary
 
@@ -51,7 +50,6 @@ ui_file = os.path.join(output_viewer_dir, "output_viewerUI.ui")
 py_ui_file = os.path.join(output_viewer_dir, "output_viewerUI.py")
 
 # Translate layout .ui file to .py file
-
 pyui_creator.createPyUI(ui_file, py_ui_file)
 
 from bladepy.software_core import output_viewerUI

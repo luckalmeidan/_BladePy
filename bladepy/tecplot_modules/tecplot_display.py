@@ -747,10 +747,6 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
     def debug(self):
            pass
 
-
-
-
-
 def main( ):
     app = QtGui.QApplication(sys.argv)
     tecplot_window = TecPlotWindow()

@@ -13,6 +13,7 @@ import sys
 import matplotlib.pyplot as plt
 import numpy as np
 from PyQt4 import QtGui
+
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
 from scipy import interpolate
@@ -55,7 +56,7 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
         self.ax1 = None
         self.ax2 = None
         self.ax3 = None
-        self.ax4= None
+        self.ax4 = None
 
         self.tecplot_blade_plotlines = []
         self.tecplot_stream_plotlines = []

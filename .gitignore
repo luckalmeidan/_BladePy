@@ -67,8 +67,8 @@ target/
 # QtCtreator CMake
 CMakeLists.txt.user*
 /bladepy/VERSION.txt
-/VERSION.txt
 /bladepy/sample/
 /compile.bat
 /bladepy/tecplot_modules/tecplot_sample/
 /.idea/
+/temp/

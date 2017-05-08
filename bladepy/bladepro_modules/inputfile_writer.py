@@ -313,8 +313,8 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         working_path = self.ui_working_path_edit.text()
 
         try:
-            bladepro_version = self.op_viewer.preferences_widget.list_settings[1].value(
-                "bladepro_settings/default_bladebro_version")
+            bladepro_version = self.op_viewer.preferences_widget.default_bladebro_version
+
         except:
             bladepro_version = "bladepro"
 
@@ -340,7 +340,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         print("%s routine called" % bladepro_version)
 
         self.ui_inputpreview_textedit.clear()
-        QtCore.QCoreApplication.processEvents(self)
+        QtCore.QCoreApplication.processEvents()
         status_message = "Last Status: BladePro is running. Please wait..."
         self.ui_application_status_lbl.setText(status_message)
 
@@ -350,9 +350,9 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         :return:
         """
         if display_output is "Error":
-            print("bladepro routine ended")
+            print("bladepro routine failed")
 
-            QtGui.QApplication.restoreOverrideCursor(self)
+            QtGui.QApplication.restoreOverrideCursor()
             # noinspection PyCallByClass
             QtGui.QMessageBox.about(self, "Warning", "Process failed: BladePro returned an error flag")
             status_message = "Last Status: BladePro routine failed"
@@ -371,12 +371,12 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         cursor.insertText("bladepro routine ended")
         self.ui_inputpreview_textedit.ensureCursorVisible()
 
-        QtGui.QApplication.restoreOverrideCursor(self)
+        QtGui.QApplication.restoreOverrideCursor()
 
         if display_output:
-            if "OUTPUT" not in self.ui_inputpreview_textedit.toPlainText():
-                QtGui.QMessageBox.warning(self, "Warning",
-                                          "No OUTPUT in BladePro's log created. BladePy might load old outputs")
+            # if "OUTPUT" not in self.ui_inputpreview_textedit.toPlainText():
+            #     QtGui.QMessageBox.warning(self, "Warning",
+            #                               "No OUTPUT in BladePro's log created. BladePy might load old outputs")
             self.op_viewer.addCase()
             return True
         else:

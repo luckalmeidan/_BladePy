@@ -5,9 +5,6 @@ import sys
 user_home = os.path.expanduser('~')
 os.environ['MPLCONFIGDIR'] = os.path.join(user_home, ".config/BladePy/matplotlib/.cache")
 
-
-print("DEBUG matplotlib cache path:", os.environ['MPLCONFIGDIR'] )
-
 from bladepy.layout_creator import pyui_creator
 
 update = False

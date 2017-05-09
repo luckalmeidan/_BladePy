@@ -56,6 +56,7 @@ from bladepy.software_core import output_viewerUI
 
 # This dictionary works because depending on OS, e.g. the register might save False as false, crashing the program
 dct = {"true": True, "false": False, True: True, False: False}
+print("DEBUG matplotlib cache path:", os.environ['MPLCONFIGDIR'] )
 
 # noinspection PyBroadException
 try:

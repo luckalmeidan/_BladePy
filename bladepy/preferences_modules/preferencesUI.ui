@@ -437,5 +437,54 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>ui_preferences_igs_surf_chk</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>ui_preferences_igs_surf_exception_edit</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>96</x>
+     <y>207</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>184</x>
+     <y>207</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ui_preferences_igs_3d_cur_chk</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>ui_preferences_igs_3d_cur_exception_edit</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>105</x>
+     <y>226</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>208</x>
+     <y>228</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ui_preferences_igs_2d_cur_chk</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>ui_preferences_igs_2d_cur_exception_edit</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>129</x>
+     <y>247</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>211</x>
+     <y>252</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

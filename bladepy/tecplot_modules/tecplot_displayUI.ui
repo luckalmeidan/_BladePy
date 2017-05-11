@@ -44,7 +44,7 @@ p, li { white-space: pre-wrap; }
     <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="windowTitle">
-    <string>TecPlot 1</string>
+    <string>Meridional and m'-θ views</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -100,7 +100,7 @@ p, li { white-space: pre-wrap; }
     <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="windowTitle">
-    <string>TecPlot 2</string>
+    <string>Thickness and β angle dist.</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>

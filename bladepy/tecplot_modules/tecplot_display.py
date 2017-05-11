@@ -238,8 +238,8 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
         except (TypeError, ValueError):
             tecplotlist_stackcur_plotline = []
 
-        plt.xlabel("Z")
-        plt.ylabel("R")
+        plt.xlabel("Z [mm]")
+        plt.ylabel("R [mm]")
 
         # The main reason that the lines for the blades is stored separately from the streamlines is that they
         # are not going to pass through same modifications. E.g. it is set that the blade lines will not be dashed
@@ -286,8 +286,8 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
 
 
 
-        plt.xlabel("MP")
-        plt.ylabel("TH")
+        plt.xlabel("MP [-]")
+        plt.ylabel("TH [rad]")
 
         return tecplotlist_profile_plotlines, tecplotlist_mean_plotlines, tecplotlist_stackpnts_plotline
 
@@ -310,8 +310,8 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
 
             m += 1
 
-        plt.xlabel("S")
-        plt.ylabel("T")
+        plt.xlabel("S norm. [-]")
+        plt.ylabel("T [mm]")
 
         return tecplotlist_thickness_plotlines
 
@@ -338,14 +338,14 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
                                     label='Meanline {i}'.format(i=n))
             tecplotlist_meanbeta_plotlines.append(meanbetaline[0])
 
-            x_label = "M"
+            x_label = "M norm. [-]"
 
 
 
             m += 1
 
         plt.xlabel(x_label)
-        plt.ylabel("BETA")
+        plt.ylabel("BETA [deg]")
 
         return tecplotlist_meanbeta_plotlines
 
@@ -371,10 +371,10 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
             if self.op_viewer.case_node.tecplotIsNeutral:
                 # Iterates through all sub-plots of the tecplots graphics.
 
-                for n in range(1, len(self.op_viewer.case_node.tecplotLists)):
+                for n in range(0, len(self.op_viewer.case_node.tecplotLists)):
                     # m is a variable for cycling through tecplot_colors
                     for index, line in enumerate(self.op_viewer.case_node.tecplotLists[n]):
-                        line.set_color(self.op_viewer.case_node.tecplotSavedColorList[n-1][index])
+                        line.set_color(self.op_viewer.case_node.tecplotSavedColorList[n][index])
 
                         if line.get_linestyle() != "None":
                             line.set_linestyle('-')
@@ -394,7 +394,7 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
                                                           self.op_viewer.ui_case_treeview.currentIndex()))
 
             else:
-                for n in range(1, len(self.op_viewer.case_node.tecplotLists)):
+                for n in range(0, len(self.op_viewer.case_node.tecplotLists)):
                     for line in self.op_viewer.case_node.tecplotLists[n]:
                         temp_line_list_color.append(line.get_color())
                         line.set_color("k")

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1292</width>
-    <height>953</height>
+    <width>1120</width>
+    <height>957</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,7 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="1" rowspan="7">
+    <item row="0" column="1" rowspan="8">
      <widget class="QGroupBox" name="ui_output_groupbox">
       <property name="statusTip">
        <string>Output options</string>
@@ -26,249 +26,6 @@
       <layout class="QVBoxLayout" name="ui_output_groupbox_vl">
        <item>
         <layout class="QGridLayout" name="ui_output_groupbox_vl_gl">
-         <item row="20" column="0" colspan="3">
-          <widget class="Line" name="ui_output_div_gui_line_3">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item row="21" column="2">
-          <widget class="QLineEdit" name="ui_output_mappnts_pointsfile_edit">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="acceptDrops">
-            <bool>true</bool>
-           </property>
-           <property name="statusTip">
-            <string>Filename: File where Cartesian x-y-z point set is given</string>
-           </property>
-           <property name="inputMask">
-            <string/>
-           </property>
-           <property name="text">
-            <string>points.dat</string>
-           </property>
-           <property name="placeholderText">
-            <string>*.ibl file</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QCheckBox" name="ui_output_tecplot_3d_chk">
-           <property name="statusTip">
-            <string>Enable keyword OUTPUT/TECPLOT/3D</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="shortcut">
-            <string>2</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QCheckBox" name="ui_output_tecplot_streams_chk">
-           <property name="statusTip">
-            <string>Enable keyword OUTPUT/TECPLOT/STREAMS</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="shortcut">
-            <string>2</string>
-           </property>
-          </widget>
-         </item>
-         <item row="12" column="2">
-          <widget class="QSpinBox" name="ui_output_cft_nsect_spn">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>n_sect: Number of sections to create</string>
-           </property>
-           <property name="maximum">
-            <number>11</number>
-           </property>
-          </widget>
-         </item>
-         <item row="12" column="1" rowspan="2">
-          <widget class="QLabel" name="ui_output_cft_lbl">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>Command: OUTPUT/CFT - create a CFturbo project file of a radial impeller geometry</string>
-           </property>
-           <property name="text">
-            <string>CFT</string>
-           </property>
-          </widget>
-         </item>
-         <item row="21" column="0" rowspan="2">
-          <widget class="QCheckBox" name="ui_output_mappnts_chk">
-           <property name="statusTip">
-            <string>Enable keyword OUTPUT/MAPPNTS</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="shortcut">
-            <string>+</string>
-           </property>
-          </widget>
-         </item>
-         <item row="21" column="1" rowspan="2">
-          <widget class="QLabel" name="ui_output_mappnts_lbl">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>Command: OUTPUT/MAPPNTS - This keyword will map a Cartesian x-y-z point set into the m'-teta space</string>
-           </property>
-           <property name="text">
-            <string>Map Points</string>
-           </property>
-          </widget>
-         </item>
-         <item row="25" column="2">
-          <widget class="QComboBox" name="ui_output_stackcur_opt_combo">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="statusTip">
-            <string>Stacking coordinate: CART or CYL for stacking curve in Cartesian x-y-z space or cylindrical r-teta-z space respectively</string>
-           </property>
-           <item>
-            <property name="text">
-             <string>CART - Cartesian x-y-z space</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>CYL - Cylindrical r-teta-z space</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="9" column="2">
-          <widget class="QSpinBox" name="ui_output_heighv_hvar_spn">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>npoints: Number of points on each stream curve</string>
-           </property>
-           <property name="maximum">
-            <number>100</number>
-           </property>
-          </widget>
-         </item>
-         <item row="13" column="2">
-          <widget class="QDoubleSpinBox" name="ui_output_cft_angle_dspn">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>Angle: If the surface/surface intersection fails the last input parameter angle can be set to rotate the stream curve around the rotational axis angle degrees</string>
-           </property>
-           <property name="maximum">
-            <double>360.000000000000000</double>
-           </property>
-           <property name="value">
-            <double>0.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="16" column="2">
-          <widget class="QDoubleSpinBox" name="ui_output_rtzt_thickness_dpsn">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>N: Thickness definition normal to meanline on stream surface</string>
-           </property>
-           <property name="maximum">
-            <double>360.000000000000000</double>
-           </property>
-           <property name="value">
-            <double>0.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="24" column="0" rowspan="2">
-          <widget class="QCheckBox" name="ui_output_stackcur_chk">
-           <property name="statusTip">
-            <string>Enable keyword OUTPUT/STACKCUR</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="shortcut">
-            <string>+</string>
-           </property>
-          </widget>
-         </item>
-         <item row="24" column="1" rowspan="2">
-          <widget class="QLabel" name="ui_output_stackcur_lbl">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>Command: OUTPUT/STACKCUR - The stacking position in selected space for each blade section will be written to a file</string>
-           </property>
-           <property name="text">
-            <string>Stack Curve</string>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="0">
-          <widget class="QCheckBox" name="ui_output_igs_pnts2pnts_chk">
-           <property name="statusTip">
-            <string>Enable keyword OUTPUT/IGS/PNTS2PNTS</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="shortcut">
-            <string>+</string>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="1">
-          <widget class="QLabel" name="ui_output_igs_pnts2pnts_lbl">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>Command: OUTPUT/IGS/PNTS2PNTS - This keyword will create an igs-file for visualizing a point set by marking each point in file filename</string>
-           </property>
-           <property name="text">
-            <string>IGS P2Points</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
-          <widget class="QLabel" name="ui_output_igs_pnts2cur_lbl">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>Command: OUTPUT/IGS/PNTS2CUR - This keyword will spline point curves given in &quot;filename&quot; to an igs-file named filename.cur.igs</string>
-           </property>
-           <property name="text">
-            <string>IGS P2Curves</string>
-           </property>
-          </widget>
-         </item>
          <item row="5" column="2">
           <widget class="QLineEdit" name="ui_output_igs_pnts2pnts_file_edit">
            <property name="enabled">
@@ -411,6 +168,236 @@
            </property>
            <property name="singleStep">
             <double>0.100000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="25" column="2">
+          <widget class="QComboBox" name="ui_output_stackcur_opt_combo">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="statusTip">
+            <string>Stacking coordinate: CART or CYL for stacking curve in Cartesian x-y-z space or cylindrical r-teta-z space respectively</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>CART - Cartesian x-y-z space</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>CYL - Cylindrical r-teta-z space</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="9" column="2">
+          <widget class="QSpinBox" name="ui_output_heighv_hvar_spn">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>npoints: Number of points on each stream curve</string>
+           </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
+          </widget>
+         </item>
+         <item row="13" column="2">
+          <widget class="QDoubleSpinBox" name="ui_output_cft_angle_dspn">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>Angle: If the surface/surface intersection fails the last input parameter angle can be set to rotate the stream curve around the rotational axis angle degrees</string>
+           </property>
+           <property name="maximum">
+            <double>360.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>0.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="16" column="2">
+          <widget class="QDoubleSpinBox" name="ui_output_rtzt_thickness_dpsn">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>N: Thickness definition normal to meanline on stream surface</string>
+           </property>
+           <property name="maximum">
+            <double>360.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>0.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="24" column="0" rowspan="2">
+          <widget class="QCheckBox" name="ui_output_stackcur_chk">
+           <property name="statusTip">
+            <string>Enable keyword OUTPUT/STACKCUR</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="shortcut">
+            <string>+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QCheckBox" name="ui_output_igs_pnts2pnts_chk">
+           <property name="statusTip">
+            <string>Enable keyword OUTPUT/IGS/PNTS2PNTS</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="shortcut">
+            <string>+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QLabel" name="ui_output_igs_pnts2pnts_lbl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>Command: OUTPUT/IGS/PNTS2PNTS - This keyword will create an igs-file for visualizing a point set by marking each point in file filename</string>
+           </property>
+           <property name="text">
+            <string>IGS P2Points</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLabel" name="ui_output_igs_pnts2cur_lbl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>Command: OUTPUT/IGS/PNTS2CUR - This keyword will spline point curves given in &quot;filename&quot; to an igs-file named filename.cur.igs</string>
+           </property>
+           <property name="text">
+            <string>IGS P2Curves</string>
+           </property>
+          </widget>
+         </item>
+         <item row="20" column="0" colspan="3">
+          <widget class="Line" name="ui_output_div_gui_line_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="21" column="2">
+          <widget class="QLineEdit" name="ui_output_mappnts_pointsfile_edit">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="acceptDrops">
+            <bool>true</bool>
+           </property>
+           <property name="statusTip">
+            <string>Filename: File where Cartesian x-y-z point set is given</string>
+           </property>
+           <property name="inputMask">
+            <string/>
+           </property>
+           <property name="text">
+            <string>points.dat</string>
+           </property>
+           <property name="placeholderText">
+            <string>*.ibl file</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="ui_output_tecplot_3d_chk">
+           <property name="statusTip">
+            <string>Enable keyword OUTPUT/TECPLOT/3D</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="shortcut">
+            <string>2</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QCheckBox" name="ui_output_tecplot_streams_chk">
+           <property name="statusTip">
+            <string>Enable keyword OUTPUT/TECPLOT/STREAMS</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="shortcut">
+            <string>2</string>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="2">
+          <widget class="QSpinBox" name="ui_output_cft_nsect_spn">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>n_sect: Number of sections to create</string>
+           </property>
+           <property name="maximum">
+            <number>11</number>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="1" rowspan="2">
+          <widget class="QLabel" name="ui_output_cft_lbl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>Command: OUTPUT/CFT - create a CFturbo project file of a radial impeller geometry</string>
+           </property>
+           <property name="text">
+            <string>CFT</string>
+           </property>
+          </widget>
+         </item>
+         <item row="21" column="0" rowspan="2">
+          <widget class="QCheckBox" name="ui_output_mappnts_chk">
+           <property name="statusTip">
+            <string>Enable keyword OUTPUT/MAPPNTS</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="shortcut">
+            <string>+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="21" column="1" rowspan="2">
+          <widget class="QLabel" name="ui_output_mappnts_lbl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>Command: OUTPUT/MAPPNTS - This keyword will map a Cartesian x-y-z point set into the m'-teta space</string>
+           </property>
+           <property name="text">
+            <string>Map Points</string>
            </property>
           </widget>
          </item>
@@ -772,12 +759,683 @@
            </property>
           </spacer>
          </item>
+         <item row="24" column="1" rowspan="2">
+          <widget class="QLabel" name="ui_output_stackcur_lbl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>Command: OUTPUT/STACKCUR - The stacking position in selected space for each blade section will be written to a file</string>
+           </property>
+           <property name="text">
+            <string>Stack Curve</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
       </layout>
      </widget>
     </item>
-    <item row="3" column="0">
+    <item row="5" column="0">
+     <widget class="QGroupBox" name="ui_modify_groupbox">
+      <property name="toolTip">
+       <string/>
+      </property>
+      <property name="statusTip">
+       <string>Modify Options</string>
+      </property>
+      <property name="title">
+       <string>Modify Panel</string>
+      </property>
+      <layout class="QVBoxLayout" name="ui_modify_groupbox_vl">
+       <item>
+        <layout class="QGridLayout" name="ui_modify_vl_gl">
+         <item row="4" column="2">
+          <widget class="QLabel" name="ui_modify_te_round_lbl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>Command: MODIFY/TE/ROUND - This keyword will round the trailing edge (TODO)</string>
+           </property>
+           <property name="text">
+            <string>Round TE</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2" rowspan="2">
+          <widget class="QLabel" name="ui_modify_te">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>Command: MODIFY/TE or MODIFY/TE/IBL - This keyword will do a milling operation on the geometry by cutting the blade geometry</string>
+           </property>
+           <property name="text">
+            <string>Mill TE</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="9">
+          <widget class="QDoubleSpinBox" name="ui_modify_scale_zc_dspn">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string>zc</string>
+           </property>
+           <property name="statusTip">
+            <string>zc component of point C</string>
+           </property>
+           <property name="maximum">
+            <double>199999.989999999990687</double>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QCheckBox" name="ui_modify_streams_chk">
+           <property name="statusTip">
+            <string>Enable keyword MODIFY/STREAMS</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="6" colspan="2">
+          <widget class="QComboBox" name="ui_modify_streams_input_combo">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <weight>50</weight>
+             <bold>false</bold>
+             <strikeout>false</strikeout>
+             <kerning>false</kerning>
+            </font>
+           </property>
+           <property name="mouseTracking">
+            <bool>false</bool>
+           </property>
+           <property name="acceptDrops">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>ELLIPTIC: n (int) number of stream surfaces; ORTHOGONAL: multiple entry between 0 and 1 of interior span positions. FILE: *.dat file file containing the stream surfaces</string>
+           </property>
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="editable">
+            <bool>true</bool>
+           </property>
+           <property name="maxCount">
+            <number>1</number>
+           </property>
+           <property name="minimumContentsLength">
+            <number>0</number>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="8" colspan="2">
+          <widget class="QPushButton" name="ui_modify_streams_deleteinput_btn">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>Remove Input: Delete entries in the combobox next to </string>
+           </property>
+           <property name="text">
+            <string>Delete Input</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
+          <widget class="QDoubleSpinBox" name="ui_modify_scale_xsc_dspn">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string>xsc</string>
+           </property>
+           <property name="statusTip">
+            <string notr="true">x-sc component of vector valued scale </string>
+           </property>
+           <property name="maximum">
+            <double>199999.989999999990687</double>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="6">
+          <widget class="QLabel" name="ui_modify_scale_ysc_lbl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string/>
+           </property>
+           <property name="text">
+            <string>y-sc</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="5">
+          <widget class="QDoubleSpinBox" name="ui_modify_scale_xc_dspn">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string>xc</string>
+           </property>
+           <property name="statusTip">
+            <string>xc component of point C</string>
+           </property>
+           <property name="maximum">
+            <double>199999.989999999990687</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="4">
+          <widget class="QLabel" name="ui_modify_scale_xc_lbl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string/>
+           </property>
+           <property name="text">
+            <string>xc</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="7">
+          <widget class="QDoubleSpinBox" name="ui_modify_scale_yc_dspn">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string>yc</string>
+           </property>
+           <property name="statusTip">
+            <string>yc component of point C</string>
+           </property>
+           <property name="maximum">
+            <double>199999.989999999990687</double>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="7">
+          <widget class="QDoubleSpinBox" name="ui_modify_scale_ysc_dspn">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string>ysc</string>
+           </property>
+           <property name="statusTip">
+            <string>ysc component of vector valued scale </string>
+           </property>
+           <property name="maximum">
+            <double>199999.989999999990687</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="6">
+          <widget class="QLabel" name="ui_modify_scale_yc_lbl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string/>
+           </property>
+           <property name="text">
+            <string>yc</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="9">
+          <widget class="QDoubleSpinBox" name="ui_modify_scale_zsc_dspn">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string>zsc</string>
+           </property>
+           <property name="statusTip">
+            <string>zsc component of vector valued scale</string>
+           </property>
+           <property name="maximum">
+            <double>199999.989999999990687</double>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="6" rowspan="2">
+          <widget class="QLabel" name="ui_modify_te_zref_lbl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string/>
+           </property>
+           <property name="text">
+            <string>z-ref</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="4" rowspan="2">
+          <widget class="QLabel" name="ui_modify_te_d_lbl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string/>
+           </property>
+           <property name="text">
+            <string>D</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="7" rowspan="2">
+          <widget class="QDoubleSpinBox" name="ui_modify_te_zref_dspn">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string>yc</string>
+           </property>
+           <property name="statusTip">
+            <string>z-ref coord:  surface of revolution created by the line in the meridional plane defined by the point (z-ref, D/2) with angle gamma.</string>
+           </property>
+           <property name="maximum">
+            <double>199999.989999999990687</double>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="5" rowspan="2">
+          <widget class="QDoubleSpinBox" name="ui_modify_te_d_dspn">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="statusTip">
+            <string>D coord: surface of revolution created by the line in the meridional plane defined by the point (z-ref, D/2) with angle gamma.</string>
+           </property>
+           <property name="maximum">
+            <double>199999.989999999990687</double>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QRadioButton" name="ui_modify_te_ibl_rbtn">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>MODIFY/TE/IBL - diameter, z-reference and gamma angled are read from the ibl-file. Therefore, this keyword can only be used when the geometry is defined with READ/IBL or READ/IBL2</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="8" rowspan="2">
+          <widget class="QLabel" name="ui_modify_te_gamma_lbl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string/>
+           </property>
+           <property name="text">
+            <string>Gamma</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" rowspan="2">
+          <widget class="QCheckBox" name="ui_modify_te_chk">
+           <property name="statusTip">
+            <string>Enable keyword MODIFY/TE</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QRadioButton" name="ui_modify_te_rbtn">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>MODIFY/TE</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="8">
+          <widget class="QLabel" name="ui_modify_scale_zc_lbl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string/>
+           </property>
+           <property name="text">
+            <string>zc</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="8">
+          <widget class="QLabel" name="ui_modify_scale_zsc_lbl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string/>
+           </property>
+           <property name="text">
+            <string>z-sc</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="9" rowspan="2">
+          <widget class="QDoubleSpinBox" name="ui_modify_te_gamma_dspn">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string>zc</string>
+           </property>
+           <property name="statusTip">
+            <string>Gamma:  surface of revolution created by the line in the meridional plane defined by the point (z-ref, D/2) with angle gamma.</string>
+           </property>
+           <property name="maximum">
+            <double>199999.989999999990687</double>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0" rowspan="2">
+          <widget class="QCheckBox" name="ui_modify_scale_chk">
+           <property name="statusTip">
+            <string>Enable keyword MODIFY/SCALE</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="2">
+          <widget class="QLabel" name="ui_modify_streams_lbl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>Command: MODIFY/STREAMS - This keyword will re-create the blade geometry based on new section profiles created on new stream surfaces</string>
+           </property>
+           <property name="text">
+            <string>Streams</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2" rowspan="2">
+          <widget class="QLabel" name="ui_modify_scale_lbl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>Command: MODIFY/SCALE - This keyword will scale the geometry with the vector valued scale factor f = (x-sc, y-sc, z-sc) with respect to a point C = (xc, yc, zc)</string>
+           </property>
+           <property name="text">
+            <string>Scale</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QLabel" name="ui_modify_scale_xsc_lbl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string/>
+           </property>
+           <property name="text">
+            <string>x-sc</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="4" colspan="2">
+          <widget class="QComboBox" name="ui_modify_streams_opt_combo">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="statusTip">
+            <string>Method: ELLIPTIC - constant span positions based on elliptic grid; ORTHOGONAL - constant span positions based on orthogonal grid; FILE - arbitrary stream surfaces read from file</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>ELLIPTIC</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>ORTHOGONAL</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>FILE</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QCheckBox" name="ui_modify_te_round_chk">
+           <property name="statusTip">
+            <string>Enable keyword MODIFY/STREAMS</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="4" colspan="6">
+          <widget class="QDoubleSpinBox" name="ui_modify_te_round_dpsn">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>field: (TODO)</string>
+           </property>
+           <property name="minimum">
+            <double>0.010000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>1.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.200000000000000</double>
+           </property>
+           <property name="value">
+            <double>0.100000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="3" rowspan="2">
+          <widget class="QToolButton" name="ui_modify_te_help_btn">
+           <property name="statusTip">
+            <string>Help: Display the figure for Trailing edge milling parameters details</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../../../../dev/.designer/backup/icons/bladepro/help.svg</normaloff>../../../../dev/.designer/backup/icons/bladepro/help.svg</iconset>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QGroupBox" name="ui_selectusersettings_groupbox">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="statusTip">
+       <string>User Settings</string>
+      </property>
+      <property name="title">
+       <string>Pre-Defined Sets</string>
+      </property>
+      <layout class="QGridLayout" name="ui_selectusersettings_groupbox_gl">
+       <item row="2" column="0">
+        <layout class="QGridLayout" name="ui_user_settings_vl_gl">
+         <item row="0" column="1">
+          <widget class="QComboBox" name="ui_listsettings_combo">
+           <property name="statusTip">
+            <string>List of settings, previously defined, that can be loaded.</string>
+           </property>
+           <property name="editable">
+            <bool>true</bool>
+           </property>
+           <property name="maxCount">
+            <number>10</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>Pre-defined set 1</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Pre-defined set 2</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Pre-defined set 3</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Pre-defined set 4</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Pre-defined set 5</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Pre-defined set 6</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Pre-defined set 7</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Pre-defined set 8</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Pre-defined set 9</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Pre-defined set 10</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="ui_renamesetting_btn">
+           <property name="statusTip">
+            <string>Button: Renames the name of user defined settings to make their name represent something to the user.</string>
+           </property>
+           <property name="text">
+            <string>Rename Pre-Defined Set</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QCheckBox" name="ui_quicklist_chk">
+           <property name="statusTip">
+            <string>Checking this option will enable quick surfing through the saved settings.</string>
+           </property>
+           <property name="text">
+            <string>Quick List View</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="4" column="0">
      <widget class="QGroupBox" name="ui_read_groupbox">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -959,83 +1617,10 @@
          </item>
         </layout>
        </item>
-       <item row="4" column="2" colspan="2">
-        <layout class="QGridLayout" name="ui_working_case_gl">
-         <item row="0" column="0">
-          <widget class="QLabel" name="ui_working_path_lbl">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>Working Path: The Path where BladePro will run</string>
-           </property>
-           <property name="text">
-            <string>Working Path</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="ui_case_name_lbl">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>Case Name: The name the input file and the outputs of BladePro will have</string>
-           </property>
-           <property name="text">
-            <string>Case Name</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1" colspan="3">
-          <widget class="QLineEdit" name="ui_case_name_edit">
-           <property name="statusTip">
-            <string>Edit this field to get alternate versions of geometry outputs. This will prevent BladePro from overwriting previous outputs</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1" colspan="4">
-          <widget class="QLineEdit" name="ui_working_path_edit"/>
-         </item>
-         <item row="2" column="1" colspan="4">
-          <widget class="QListWidget" name="ui_case_name_existent_list">
-           <property name="toolTip">
-            <string>Existant cases in folder</string>
-           </property>
-           <property name="statusTip">
-            <string>Existant cases in folder - This list is filled with existant Cases with supported outputs in the working path</string>
-           </property>
-           <property name="selectionMode">
-            <enum>QAbstractItemView::ExtendedSelection</enum>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="4">
-          <widget class="QToolButton" name="ui_select_path_btn">
-           <property name="text">
-            <string>Select Path</string>
-           </property>
-           <property name="popupMode">
-            <enum>QToolButton::InstantPopup</enum>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QPushButton" name="ui_display_selected_btn">
-           <property name="statusTip">
-            <string>Open: Send selected outputs to Output Viewer Window</string>
-           </property>
-           <property name="text">
-            <string>Open Selected Cases</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
       </layout>
      </widget>
     </item>
-    <item row="5" column="0" rowspan="2">
+    <item row="6" column="0" rowspan="2">
      <widget class="QGroupBox" name="ui_supported_outputs_groupbox">
       <property name="statusTip">
        <string>Supported Outputs: These are the ones that can be displayed in the Output Viewer</string>
@@ -1111,52 +1696,6 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="2">
-          <widget class="QComboBox" name="ui_output_igs_cur_3d_opt_combo">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="statusTip">
-            <string>List: Determines which surfaces to include in the igs-file</string>
-           </property>
-           <item>
-            <property name="text">
-             <string>0 - All surfaces</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>1 - Blade + flow path</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>2 - Blade</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>3 - Stream surfaces</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>4 - Hub</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>5 - Shroud</string>
-            </property>
-           </item>
-          </widget>
-         </item>
          <item row="0" column="1" rowspan="3">
           <widget class="QLabel" name="ui_output_igs_surf_lbl">
            <property name="enabled">
@@ -1181,32 +1720,6 @@
            <property name="text">
             <string>Tecplot 2D</string>
            </property>
-          </widget>
-         </item>
-         <item row="5" column="2">
-          <widget class="QComboBox" name="ui_output_igs_cur_2d_opt_combo">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="statusTip">
-            <string notr="true">List: Options for blade sections profiles in igs-file in different spaces</string>
-           </property>
-           <item>
-            <property name="text">
-             <string>1 - m'-teta</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>2 - m-rteta</string>
-            </property>
-           </item>
           </widget>
          </item>
          <item row="6" column="0">
@@ -1237,9 +1750,6 @@
          </item>
          <item row="2" column="4">
           <widget class="QSpinBox" name="ui_output_igs_extrap_shroud_spn">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
            <property name="statusTip">
             <string>%Shroud: Shroud percentage extension</string>
            </property>
@@ -1250,9 +1760,6 @@
          </item>
          <item row="2" column="3">
           <widget class="QSpinBox" name="ui_output_igs_extrap_hub_spn">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
            <property name="statusTip">
             <string>%Hub: Hub percentage extension</string>
            </property>
@@ -1342,7 +1849,14 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
+         <item row="3" column="0" colspan="5">
+          <widget class="Line" name="line_5">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2" colspan="3">
           <widget class="QComboBox" name="ui_output_igs_surf_opt_combo">
            <property name="enabled">
             <bool>false</bool>
@@ -1413,11 +1927,76 @@
            </item>
           </widget>
          </item>
-         <item row="3" column="0" colspan="5">
-          <widget class="Line" name="line_5">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+         <item row="4" column="2" colspan="3">
+          <widget class="QComboBox" name="ui_output_igs_cur_3d_opt_combo">
+           <property name="enabled">
+            <bool>false</bool>
            </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="statusTip">
+            <string>List: Determines which surfaces to include in the igs-file</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>0 - All surfaces</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1 - Blade + flow path</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2 - Blade</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>3 - Stream surfaces</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>4 - Hub</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>5 - Shroud</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="5" column="2" colspan="3">
+          <widget class="QComboBox" name="ui_output_igs_cur_2d_opt_combo">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="statusTip">
+            <string notr="true">List: Options for blade sections profiles in igs-file in different spaces</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>1 - m'-teta</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2 - m-rteta</string>
+            </property>
+           </item>
           </widget>
          </item>
         </layout>
@@ -1438,664 +2017,6 @@
       </layout>
      </widget>
     </item>
-    <item row="4" column="0">
-     <widget class="QGroupBox" name="ui_modify_groupbox">
-      <property name="toolTip">
-       <string/>
-      </property>
-      <property name="statusTip">
-       <string>Modify Options</string>
-      </property>
-      <property name="title">
-       <string>Modify Panel</string>
-      </property>
-      <layout class="QVBoxLayout" name="ui_modify_groupbox_vl">
-       <item>
-        <layout class="QGridLayout" name="ui_modify_vl_gl">
-         <item row="4" column="2">
-          <widget class="QLabel" name="ui_modify_te_round_lbl">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>Command: MODIFY/TE/ROUND - This keyword will round the trailing edge (TODO)</string>
-           </property>
-           <property name="text">
-            <string>Round TE</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2" rowspan="2">
-          <widget class="QLabel" name="ui_modify_te">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>Command: MODIFY/TE or MODIFY/TE/IBL - This keyword will do a milling operation on the geometry by cutting the blade geometry</string>
-           </property>
-           <property name="text">
-            <string>Mill TE</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="8">
-          <widget class="QDoubleSpinBox" name="ui_modify_scale_zc_dspn">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="toolTip">
-            <string>zc</string>
-           </property>
-           <property name="statusTip">
-            <string>zc component of point C</string>
-           </property>
-           <property name="maximum">
-            <double>199999.989999999990687</double>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="0">
-          <widget class="QCheckBox" name="ui_modify_streams_chk">
-           <property name="statusTip">
-            <string>Enable keyword MODIFY/STREAMS</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="5" colspan="2">
-          <widget class="QComboBox" name="ui_modify_streams_input_combo">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <weight>50</weight>
-             <bold>false</bold>
-             <strikeout>false</strikeout>
-             <kerning>false</kerning>
-            </font>
-           </property>
-           <property name="mouseTracking">
-            <bool>false</bool>
-           </property>
-           <property name="acceptDrops">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>ELLIPTIC: n (int) number of stream surfaces; ORTHOGONAL: multiple entry between 0 and 1 of interior span positions. FILE: *.dat file file containing the stream surfaces</string>
-           </property>
-           <property name="autoFillBackground">
-            <bool>false</bool>
-           </property>
-           <property name="editable">
-            <bool>true</bool>
-           </property>
-           <property name="maxCount">
-            <number>1</number>
-           </property>
-           <property name="minimumContentsLength">
-            <number>0</number>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="7" colspan="2">
-          <widget class="QPushButton" name="ui_modify_streams_deleteinput_btn">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>Remove Input: Delete entries in the combobox next to </string>
-           </property>
-           <property name="text">
-            <string>Delete Input</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4">
-          <widget class="QDoubleSpinBox" name="ui_modify_scale_xsc_dspn">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="toolTip">
-            <string>xsc</string>
-           </property>
-           <property name="statusTip">
-            <string notr="true">x-sc component of vector valued scale </string>
-           </property>
-           <property name="maximum">
-            <double>199999.989999999990687</double>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="5">
-          <widget class="QLabel" name="ui_modify_scale_ysc_lbl">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string/>
-           </property>
-           <property name="text">
-            <string>y-sc</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="4">
-          <widget class="QDoubleSpinBox" name="ui_modify_scale_xc_dspn">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="toolTip">
-            <string>xc</string>
-           </property>
-           <property name="statusTip">
-            <string>xc component of point C</string>
-           </property>
-           <property name="maximum">
-            <double>199999.989999999990687</double>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="3">
-          <widget class="QLabel" name="ui_modify_scale_xc_lbl">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string/>
-           </property>
-           <property name="text">
-            <string>xc</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="6">
-          <widget class="QDoubleSpinBox" name="ui_modify_scale_yc_dspn">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="toolTip">
-            <string>yc</string>
-           </property>
-           <property name="statusTip">
-            <string>yc component of point C</string>
-           </property>
-           <property name="maximum">
-            <double>199999.989999999990687</double>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="6">
-          <widget class="QDoubleSpinBox" name="ui_modify_scale_ysc_dspn">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="toolTip">
-            <string>ysc</string>
-           </property>
-           <property name="statusTip">
-            <string>ysc component of vector valued scale </string>
-           </property>
-           <property name="maximum">
-            <double>199999.989999999990687</double>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="5">
-          <widget class="QLabel" name="ui_modify_scale_yc_lbl">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string/>
-           </property>
-           <property name="text">
-            <string>yc</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="8">
-          <widget class="QDoubleSpinBox" name="ui_modify_scale_zsc_dspn">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="toolTip">
-            <string>zsc</string>
-           </property>
-           <property name="statusTip">
-            <string>zsc component of vector valued scale</string>
-           </property>
-           <property name="maximum">
-            <double>199999.989999999990687</double>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="5" rowspan="2">
-          <widget class="QLabel" name="ui_modify_te_zref_lbl">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string/>
-           </property>
-           <property name="text">
-            <string>z-ref</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="3" rowspan="2">
-          <widget class="QLabel" name="ui_modify_te_d_lbl">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string/>
-           </property>
-           <property name="text">
-            <string>D</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="6" rowspan="2">
-          <widget class="QDoubleSpinBox" name="ui_modify_te_zref_dspn">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="toolTip">
-            <string>yc</string>
-           </property>
-           <property name="statusTip">
-            <string>z-ref coord:  surface of revolution created by the line in the meridional plane defined by the point (z-ref, D/2) with angle gamma.</string>
-           </property>
-           <property name="maximum">
-            <double>199999.989999999990687</double>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="4" rowspan="2">
-          <widget class="QDoubleSpinBox" name="ui_modify_te_d_dspn">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="toolTip">
-            <string/>
-           </property>
-           <property name="statusTip">
-            <string>D coord: surface of revolution created by the line in the meridional plane defined by the point (z-ref, D/2) with angle gamma.</string>
-           </property>
-           <property name="maximum">
-            <double>199999.989999999990687</double>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QRadioButton" name="ui_modify_te_ibl_rbtn">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>MODIFY/TE/IBL - diameter, z-reference and gamma angled are read from the ibl-file. Therefore, this keyword can only be used when the geometry is defined with READ/IBL or READ/IBL2</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="7" rowspan="2">
-          <widget class="QLabel" name="ui_modify_te_gamma_lbl">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string/>
-           </property>
-           <property name="text">
-            <string>Gamma</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0" rowspan="2">
-          <widget class="QCheckBox" name="ui_modify_te_chk">
-           <property name="statusTip">
-            <string>Enable keyword MODIFY/TE</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QRadioButton" name="ui_modify_te_rbtn">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>MODIFY/TE</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="7">
-          <widget class="QLabel" name="ui_modify_scale_zc_lbl">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string/>
-           </property>
-           <property name="text">
-            <string>zc</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="7">
-          <widget class="QLabel" name="ui_modify_scale_zsc_lbl">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string/>
-           </property>
-           <property name="text">
-            <string>z-sc</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="8" rowspan="2">
-          <widget class="QDoubleSpinBox" name="ui_modify_te_gamma_dspn">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="toolTip">
-            <string>zc</string>
-           </property>
-           <property name="statusTip">
-            <string>Gamma:  surface of revolution created by the line in the meridional plane defined by the point (z-ref, D/2) with angle gamma.</string>
-           </property>
-           <property name="maximum">
-            <double>199999.989999999990687</double>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0" rowspan="2">
-          <widget class="QCheckBox" name="ui_modify_scale_chk">
-           <property name="statusTip">
-            <string>Enable keyword MODIFY/SCALE</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="2">
-          <widget class="QLabel" name="ui_modify_streams_lbl">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>Command: MODIFY/STREAMS - This keyword will re-create the blade geometry based on new section profiles created on new stream surfaces</string>
-           </property>
-           <property name="text">
-            <string>Streams</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2" rowspan="2">
-          <widget class="QLabel" name="ui_modify_scale_lbl">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>Command: MODIFY/SCALE - This keyword will scale the geometry with the vector valued scale factor f = (x-sc, y-sc, z-sc) with respect to a point C = (xc, yc, zc)</string>
-           </property>
-           <property name="text">
-            <string>Scale</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QLabel" name="ui_modify_scale_xsc_lbl">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string/>
-           </property>
-           <property name="text">
-            <string>x-sc</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="3" colspan="2">
-          <widget class="QComboBox" name="ui_modify_streams_opt_combo">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="statusTip">
-            <string>Method: ELLIPTIC - constant span positions based on elliptic grid; ORTHOGONAL - constant span positions based on orthogonal grid; FILE - arbitrary stream surfaces read from file</string>
-           </property>
-           <item>
-            <property name="text">
-             <string>ELLIPTIC</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>ORTHOGONAL</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>FILE</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="2" column="9" rowspan="2">
-          <widget class="QToolButton" name="ui_modify_te_help_btn">
-           <property name="statusTip">
-            <string>Help: Display the figure for Trailing edge milling parameters details</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>../../../../dev/.designer/backup/icons/bladepro/help.svg</normaloff>../../../../dev/.designer/backup/icons/bladepro/help.svg</iconset>
-           </property>
-           <property name="autoRaise">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QCheckBox" name="ui_modify_te_round_chk">
-           <property name="statusTip">
-            <string>Enable keyword MODIFY/STREAMS</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="3" colspan="6">
-          <widget class="QDoubleSpinBox" name="ui_modify_te_round_dpsn">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="statusTip">
-            <string>field: (TODO)</string>
-           </property>
-           <property name="minimum">
-            <double>0.010000000000000</double>
-           </property>
-           <property name="maximum">
-            <double>1.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.200000000000000</double>
-           </property>
-           <property name="value">
-            <double>0.100000000000000</double>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QGroupBox" name="ui_selectusersettings_groupbox">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="statusTip">
-       <string>User Settings</string>
-      </property>
-      <property name="title">
-       <string>Pre-Defined Sets</string>
-      </property>
-      <layout class="QGridLayout" name="ui_selectusersettings_groupbox_gl">
-       <item row="2" column="0">
-        <layout class="QGridLayout" name="ui_user_settings_vl_gl">
-         <item row="0" column="1">
-          <widget class="QComboBox" name="ui_listsettings_combo">
-           <property name="statusTip">
-            <string>List of settings, previously defined, that can be loaded.</string>
-           </property>
-           <property name="editable">
-            <bool>true</bool>
-           </property>
-           <property name="maxCount">
-            <number>10</number>
-           </property>
-           <item>
-            <property name="text">
-             <string>Pre-defined set 1</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Pre-defined set 2</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Pre-defined set 3</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Pre-defined set 4</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Pre-defined set 5</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Pre-defined set 6</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Pre-defined set 7</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Pre-defined set 8</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Pre-defined set 9</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Pre-defined set 10</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QPushButton" name="ui_renamesetting_btn">
-           <property name="statusTip">
-            <string>Button: Renames the name of user defined settings to make their name represent something to the user.</string>
-           </property>
-           <property name="text">
-            <string>Rename Pre-Defined Set</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QCheckBox" name="ui_quicklist_chk">
-           <property name="statusTip">
-            <string>Checking this option will enable quick surfing through the saved settings.</string>
-           </property>
-           <property name="text">
-            <string>Quick List View</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
-    </item>
     <item row="0" column="0">
      <widget class="QLabel" name="ui_application_status_lbl">
       <property name="enabled">
@@ -2112,6 +2033,124 @@
       </property>
      </widget>
     </item>
+    <item row="3" column="0">
+     <widget class="QGroupBox" name="ui_control_groupbox">
+      <property name="title">
+       <string>Control Panel</string>
+      </property>
+      <layout class="QVBoxLayout" name="ui_control_groupbox_vl">
+       <item>
+        <layout class="QGridLayout" name="ui_control_groupbox_vl_gl">
+         <item row="0" column="0">
+          <widget class="QLabel" name="ui_case_name_lbl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>Case Name: The name the input file and the outputs of BladePro will have</string>
+           </property>
+           <property name="text">
+            <string>Case Name</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QToolButton" name="ui_select_path_btn">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Select Path</string>
+           </property>
+           <property name="popupMode">
+            <enum>QToolButton::InstantPopup</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="ui_working_path_lbl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="statusTip">
+            <string>Working Path: The Path where BladePro will run</string>
+           </property>
+           <property name="text">
+            <string>Working Path</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1" colspan="2">
+          <widget class="QLineEdit" name="ui_working_path_edit"/>
+         </item>
+         <item row="3" column="0">
+          <widget class="QPushButton" name="ui_display_selected_btn">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="statusTip">
+            <string>Open: Send selected outputs to Output Viewer Window</string>
+           </property>
+           <property name="text">
+            <string>Open Selected Cases</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1" rowspan="2" colspan="2">
+          <widget class="QListWidget" name="ui_case_name_existent_list">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>200</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Existant cases in folder</string>
+           </property>
+           <property name="statusTip">
+            <string>Existant cases in folder - This list is filled with existant Cases with supported outputs in the working path</string>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::ExtendedSelection</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1" colspan="2">
+          <widget class="QLineEdit" name="ui_case_name_edit">
+           <property name="statusTip">
+            <string>Edit this field to get alternate versions of geometry outputs. This will prevent BladePro from overwriting previous outputs</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -2119,7 +2158,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1292</width>
+     <width>1120</width>
      <height>26</height>
     </rect>
    </property>
@@ -2163,7 +2202,7 @@
   <widget class="QDockWidget" name="ui_inputfilepreview_dockW">
    <property name="minimumSize">
     <size>
-     <width>350</width>
+     <width>178</width>
      <height>336</height>
     </size>
    </property>
@@ -2228,9 +2267,9 @@
         </widget>
        </item>
        <item row="3" column="2">
-        <widget class="QPushButton" name="ui_run_bladepro_send_btn">
+        <widget class="QPushButton" name="ui_run_bladepro_display_btn">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="toolTip">
           <string>Runs BladePro and display outputs</string>
@@ -2239,7 +2278,7 @@
           <string>Run BladePro - This will execute BladePro in terminal with the Inputfile correspondent with the checkboxes. The outputs will be sent to Output Viewer</string>
          </property>
          <property name="text">
-          <string>Run BladePro and Send</string>
+          <string>Run BladePro and Display</string>
          </property>
          <property name="shortcut">
           <string>G</string>
@@ -2548,11 +2587,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>39</x>
-     <y>221</y>
+     <y>432</y>
     </hint>
     <hint type="destinationlabel">
      <x>130</x>
-     <y>224</y>
+     <y>435</y>
     </hint>
    </hints>
   </connection>
@@ -2564,11 +2603,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>39</x>
-     <y>221</y>
+     <y>432</y>
     </hint>
     <hint type="destinationlabel">
      <x>400</x>
-     <y>224</y>
+     <y>435</y>
     </hint>
    </hints>
   </connection>
@@ -2580,11 +2619,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>39</x>
-     <y>221</y>
+     <y>432</y>
     </hint>
     <hint type="destinationlabel">
      <x>544</x>
-     <y>224</y>
+     <y>435</y>
     </hint>
    </hints>
   </connection>
@@ -2596,11 +2635,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>39</x>
-     <y>250</y>
+     <y>461</y>
     </hint>
     <hint type="destinationlabel">
      <x>130</x>
-     <y>253</y>
+     <y>464</y>
     </hint>
    </hints>
   </connection>
@@ -2612,11 +2651,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>39</x>
-     <y>250</y>
+     <y>461</y>
     </hint>
     <hint type="destinationlabel">
      <x>400</x>
-     <y>253</y>
+     <y>464</y>
     </hint>
    </hints>
   </connection>
@@ -2628,11 +2667,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>39</x>
-     <y>250</y>
+     <y>461</y>
     </hint>
     <hint type="destinationlabel">
      <x>468</x>
-     <y>253</y>
+     <y>464</y>
     </hint>
    </hints>
   </connection>
@@ -2644,11 +2683,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>39</x>
-     <y>250</y>
+     <y>461</y>
     </hint>
     <hint type="destinationlabel">
      <x>544</x>
-     <y>253</y>
+     <y>464</y>
     </hint>
    </hints>
   </connection>
@@ -2775,8 +2814,8 @@
      <y>770</y>
     </hint>
     <hint type="destinationlabel">
-     <x>439</x>
-     <y>773</y>
+     <x>326</x>
+     <y>777</y>
     </hint>
    </hints>
   </connection>
@@ -2791,8 +2830,8 @@
      <y>770</y>
     </hint>
     <hint type="destinationlabel">
-     <x>545</x>
-     <y>776</y>
+     <x>544</x>
+     <y>780</y>
     </hint>
    </hints>
   </connection>
@@ -2823,7 +2862,7 @@
      <y>329</y>
     </hint>
     <hint type="destinationlabel">
-     <x>906</x>
+     <x>905</x>
      <y>332</y>
     </hint>
    </hints>
@@ -2855,7 +2894,7 @@
      <y>411</y>
     </hint>
     <hint type="destinationlabel">
-     <x>906</x>
+     <x>905</x>
      <y>400</y>
     </hint>
    </hints>
@@ -2871,7 +2910,7 @@
      <y>411</y>
     </hint>
     <hint type="destinationlabel">
-     <x>906</x>
+     <x>905</x>
      <y>429</y>
     </hint>
    </hints>
@@ -2903,7 +2942,7 @@
      <y>479</y>
     </hint>
     <hint type="destinationlabel">
-     <x>906</x>
+     <x>905</x>
      <y>468</y>
     </hint>
    </hints>
@@ -2919,7 +2958,7 @@
      <y>479</y>
     </hint>
     <hint type="destinationlabel">
-     <x>906</x>
+     <x>905</x>
      <y>497</y>
     </hint>
    </hints>
@@ -2951,7 +2990,7 @@
      <y>547</y>
     </hint>
     <hint type="destinationlabel">
-     <x>906</x>
+     <x>905</x>
      <y>536</y>
     </hint>
    </hints>
@@ -2967,7 +3006,7 @@
      <y>547</y>
     </hint>
     <hint type="destinationlabel">
-     <x>906</x>
+     <x>905</x>
      <y>565</y>
     </hint>
    </hints>
@@ -3047,7 +3086,7 @@
      <y>190</y>
     </hint>
     <hint type="destinationlabel">
-     <x>906</x>
+     <x>905</x>
      <y>193</y>
     </hint>
    </hints>
@@ -3095,7 +3134,7 @@
      <y>615</y>
     </hint>
     <hint type="destinationlabel">
-     <x>906</x>
+     <x>905</x>
      <y>604</y>
     </hint>
    </hints>
@@ -3111,7 +3150,7 @@
      <y>615</y>
     </hint>
     <hint type="destinationlabel">
-     <x>906</x>
+     <x>905</x>
      <y>633</y>
     </hint>
    </hints>
@@ -3127,7 +3166,7 @@
      <y>219</y>
     </hint>
     <hint type="destinationlabel">
-     <x>906</x>
+     <x>905</x>
      <y>222</y>
     </hint>
    </hints>
@@ -3159,7 +3198,7 @@
      <y>683</y>
     </hint>
     <hint type="destinationlabel">
-     <x>906</x>
+     <x>905</x>
      <y>672</y>
     </hint>
    </hints>
@@ -3175,7 +3214,7 @@
      <y>683</y>
     </hint>
     <hint type="destinationlabel">
-     <x>906</x>
+     <x>905</x>
      <y>701</y>
     </hint>
    </hints>
@@ -3207,7 +3246,7 @@
      <y>271</y>
     </hint>
     <hint type="destinationlabel">
-     <x>906</x>
+     <x>905</x>
      <y>274</y>
     </hint>
    </hints>
@@ -3239,7 +3278,7 @@
      <y>300</y>
     </hint>
     <hint type="destinationlabel">
-     <x>906</x>
+     <x>905</x>
      <y>303</y>
     </hint>
    </hints>
@@ -3271,7 +3310,7 @@
      <y>358</y>
     </hint>
     <hint type="destinationlabel">
-     <x>906</x>
+     <x>905</x>
      <y>361</y>
     </hint>
    </hints>
@@ -3351,40 +3390,8 @@
      <y>764</y>
     </hint>
     <hint type="destinationlabel">
-     <x>142</x>
-     <y>794</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ui_output_igs_surf_chk</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ui_output_igs_extrap_hub_spn</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>33</x>
-     <y>761</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>459</x>
-     <y>791</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ui_output_igs_surf_chk</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ui_output_igs_extrap_shroud_spn</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>30</x>
-     <y>763</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>512</x>
-     <y>792</y>
+     <x>299</x>
+     <y>809</y>
     </hint>
    </hints>
   </connection>

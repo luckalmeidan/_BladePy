@@ -9,15 +9,21 @@ from bladepy.layout_creator import pyui_creator
 
 update = False
 compiling = False
+start_case = None
 
+print(os.getcwd())
 try:
-    if sys.argv[1] == "update":
+    if sys.argv[1] in ("--update", "-u"):
         update = True
-    elif sys.argv[1] == "compile":
+    elif sys.argv[1] in ("--compile", "-c"):
         update = True
         compiling = True
     else:
-        print("%s argument not recognized" % sys.argv[1])
+        start_case = []
+        print("Application starting with ", sys.argv[1:])
+
+        for arg in sys.argv[1:]:
+            start_case.append(os.path.join(os.getcwd(),arg))
 except:
     pass
 
@@ -31,6 +37,6 @@ if compiling:
     subprocess.call(["pyinstaller", "bladepy_run_linux.spec"])
 else:
     from bladepy.software_core import Core
-    Core.main()
+    Core.main(start_case)
 
 

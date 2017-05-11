@@ -53,7 +53,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         self.list_settings = []
         self.file_geometry = ""
-        self.working_directory = ""
+        self.bladepro_status = ""
         self.bladepro_process = None
 
         # List to up to 10 preferences_modules defined
@@ -127,7 +127,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         # Run blade pro button
         # TODO: fix this functionality
-        # self.ui_run_bladepro_send_btn.clicked.connect(self.runBladePro)
+        self.ui_run_bladepro_display_btn.clicked.connect(functools.partial(self.runBladePro, True))
 
         self.ui_run_bladepro_btn.clicked.connect(self.runBladePro)
 
@@ -149,10 +149,9 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         """
         # TODO: docstrings
         self.ui_case_name_existent_list.clear()
-        working_path = self.ui_working_path_edit.text()
 
         try:
-            list_dir = os.listdir(working_path)
+            list_dir = os.listdir(self.workingDirectory)
         except FileNotFoundError:
             return
 
@@ -178,24 +177,41 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         @return None
         """
-        working_path = self.ui_working_path_edit.text()
-        selected_path = QtGui.QFileDialog.getExistingDirectory(self, "Select Directory", working_path)
+        selected_path = QtGui.QFileDialog.getExistingDirectory(self, "Select Directory", self.workingDirectory)
 
         if selected_path == "":
             return
 
-        self.ui_working_path_edit.setText(str(selected_path))
+        self.workingDirectory = str(selected_path)
+
+    @property
+    def workingDirectory(self):
+        """
+
+        :return:
+        """
+        # TODO: Docstring
+        return self.ui_working_path_edit.text()
+
+    @workingDirectory.setter
+    def workingDirectory(self, work_path):
+        """
+
+        :return:
+        """
+        # TODO: Docstring
+        self.ui_working_path_edit.setText(work_path)
 
     def generateInput(self, preview=False):
         """
         Calls all other methods related to BladePro keywords to generate an input file
+
 
         This method is called by ui_button press or after loading any user preferences_modules.
         It calls all keywords methods of BladePro independent if they are going to generate something.
 
         @return None
         """
-        working_path = self.ui_working_path_edit.text()
         case_name = self.ui_case_name_edit.text()
 
         if case_name is "" or preview is True:
@@ -204,7 +220,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         else:
 
-            if os.path.isfile(os.path.join(working_path, case_name)):
+            if os.path.isfile(os.path.join(self.workingDirectory, case_name)):
                 overwrite_input = QtGui.QMessageBox.warning(self, "Warning", "Existent Case. Overwrite Inputfile?",
                                                             QtGui.QMessageBox.Yes |
                                                             QtGui.QMessageBox.No)
@@ -214,7 +230,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
                 else:
                     pass
 
-            generated_input = open(os.path.join(working_path, case_name), 'w')
+            generated_input = open(os.path.join(self.workingDirectory, case_name), 'w')
 
         # The commented lines are BladePro commands not implemented yed lines are BladePro commands not implemented yet.
         self.readOptions(generated_input)
@@ -269,7 +285,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         # self.outputGmshInpMerGridLETE(generated_input)
 
         if not preview:
-            generated_input = open(os.path.join(working_path, case_name), 'r')
+            generated_input = open(os.path.join(self.workingDirectory, case_name), 'r')
         else:
             generated_input = open(os.path.join(os.path.dirname(__file__), 'input_preview'), 'r')
 
@@ -294,6 +310,8 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         # TODO: Docstrings
 
         # Check if BladePro exists in machine
+        self.bladepro_status = ""
+
         try:
             subprocess.check_output(["bladepro"])
         except FileNotFoundError:
@@ -310,7 +328,6 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
             return False
 
         case_name = self.ui_case_name_edit.text()
-        working_path = self.ui_working_path_edit.text()
 
         try:
             bladepro_version = self.op_viewer.preferences_widget.default_bladebro_version
@@ -324,10 +341,10 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         self.bladepro_process.readyRead.connect(self._runBladeProDataReady)
         self.bladepro_process.started.connect((functools.partial(self._runBladeProStarted, bladepro_version)))
         self.bladepro_process.finished.connect((functools.partial(self._runBladeProFinished, display_output)))
-        self.bladepro_process.error.connect((functools.partial(self._runBladeProFinished, "Error")))
+        self.bladepro_process.error.connect(self._runBladeProFailed)
 
         QtGui.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        self.bladepro_process.start(bladepro_version, [os.path.join(working_path, case_name)])
+        self.bladepro_process.start(bladepro_version, [os.path.join(self.workingDirectory, case_name)])
 
         return True
 
@@ -344,45 +361,57 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         status_message = "Last Status: BladePro is running. Please wait..."
         self.ui_application_status_lbl.setText(status_message)
 
+    def _runBladeProFailed(self):
+        """
+
+        :return:
+        """
+        # TODO: Docstring
+
+        print("bladepro routine failed")
+
+        QtGui.QApplication.restoreOverrideCursor()
+        # noinspection PyCallByClass
+        QtGui.QMessageBox.about(self, "Warning", "Process failed: BladePro returned an error flag")
+        status_message = "Last Status: BladePro routine failed"
+        self.ui_application_status_lbl.setText(status_message)
+
+        self.bladepro_status = "Failed"
+        return
+
+
     def _runBladeProFinished(self, display_output):
         """
 
         :return:
         """
-        if display_output is "Error":
-            print("bladepro routine failed")
+
+        if self.bladepro_status != "Failed":
+
+            print("bladepro routine ended")
+            status_message = "Last Status: BladePro routine ended"
+
+            self.ui_application_status_lbl.setText(status_message)
+            self._fillExistentOutputs()
+
+            cursor = self.ui_inputpreview_textedit.textCursor()
+            cursor.movePosition(cursor.End)
+            cursor.insertText("bladepro routine ended")
+            self.ui_inputpreview_textedit.ensureCursorVisible()
 
             QtGui.QApplication.restoreOverrideCursor()
-            # noinspection PyCallByClass
-            QtGui.QMessageBox.about(self, "Warning", "Process failed: BladePro returned an error flag")
-            status_message = "Last Status: BladePro routine failed"
-            self.ui_application_status_lbl.setText(status_message)
 
-            return False
+            if display_output:
+                # if "OUTPUT" not in self.ui_inputpreview_textedit.toPlainText():
+                #     QtGui.QMessageBox.warning(self, "Warning",
+                #                               "No OUTPUT in BladePro's log created. BladePy might load old outputs")
+                new_case = self.ui_case_name_edit.text()
+                self.op_viewer._addCase(new_case)
+                return True
+            else:
+                return False
 
-        print("bladepro routine ended")
-        status_message = "Last Status: BladePro routine ended"
-
-        self.ui_application_status_lbl.setText(status_message)
-        self._fillExistentOutputs()
-
-        cursor = self.ui_inputpreview_textedit.textCursor()
-        cursor.movePosition(cursor.End)
-        cursor.insertText("bladepro routine ended")
-        self.ui_inputpreview_textedit.ensureCursorVisible()
-
-        QtGui.QApplication.restoreOverrideCursor()
-
-        if display_output:
-            # if "OUTPUT" not in self.ui_inputpreview_textedit.toPlainText():
-            #     QtGui.QMessageBox.warning(self, "Warning",
-            #                               "No OUTPUT in BladePro's log created. BladePy might load old outputs")
-            self.op_viewer.addCase()
-            return True
-        else:
-            return False
-
-            # TODO: DOCSTRINGS
+                # TODO: DOCSTRINGS
 
     def _runBladeProDataReady(self):
         """
@@ -403,16 +432,17 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         @return None
         """
         selected_case_list = self.ui_case_name_existent_list
-
+        case_files = []
         # In case user is only input_writer module
         if self.op_viewer is None:
             print("Open Core.py for displaying BladePro outputs")
             return
 
-        for item in selected_case_list.selectedItems():
-            self.ui_case_name_edit.setText(item.text())
 
-            self.op_viewer.addCase()
+        for case in selected_case_list.selectedItems():
+            case_files.append(os.path.join(self.workingDirectory, case.text()))
+
+        self.op_viewer.parseCase(case_files)
 
     # Read Section
     def readOptions(self, gen_file):
@@ -426,10 +456,9 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         @return None
 
         """
-        working_path = self.ui_working_path_edit.text()
         if self.ui_read_ibl_rbtn.isChecked():
             read_ibl_file = self.ui_read_ibl_iblfile_edit.text()
-            file_abs_path = os.path.join(working_path, read_ibl_file)
+            file_abs_path = os.path.join(self.workingDirectory, read_ibl_file)
 
             if self.ui_read_ibl_fpfile_edit.text() == "":
 
@@ -438,7 +467,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
             else:
                 gen_file.write("READ/IBL2\n")
                 read_fp_file = self.ui_read_ibl_fpfile_edit.text()
-                file_fp_abs_path = os.path.join(working_path, read_fp_file)
+                file_fp_abs_path = os.path.join(self.workingDirectory, read_fp_file)
                 gen_file.write("{file_name_ibl}\n{file_name_fp}\n\n".format(file_name_ibl=file_abs_path,
                                                                             file_name_fp=read_fp_file))
 
@@ -447,7 +476,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
             # Below the cft-geo filename the number of blades has to be specified since no information about the
             # blade count is included in the cft-geo file.
             read_cft_file = self.ui_read_cftgeo_cftfile_edit.text()
-            file_abs_path = os.path.join(working_path, read_cft_file)
+            file_abs_path = os.path.join(self.workingDirectory, read_cft_file)
 
             gen_file.write("READ/CFT-GEO\n")
             read_cftgeo_nblades = self.ui_read_cftgeo_nblades_spn.text()
@@ -464,7 +493,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         @return None
         """
         selected_file = QtGui.QFileDialog.getOpenFileName(self, 'Open file',
-                                                          self.working_directory,
+                                                          self.workingDirectory,
                                                           "(*.cft-geo *.ibl *.fp);; All Files(*.*)")
 
         # In case user gives up finding a file, return.
@@ -472,7 +501,6 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
             return
 
         file_geometry = os.path.basename(selected_file)
-        working_path = os.path.dirname(selected_file)
         case_name = os.path.splitext(file_geometry)[0]
         extension = os.path.splitext(file_geometry)[1]
 
@@ -491,7 +519,8 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
             self.ui_read_cftgeo_cftfile_edit.setText(file_geometry)
 
         self.ui_case_name_edit.setText(case_name + "_output")
-        self.ui_working_path_edit.setText(working_path)
+
+        self.workingDirectory = os.path.dirname(selected_file)
 
     def defineBlade(self, gen_file):
         """
@@ -864,10 +893,9 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         """
         if self.ui_output_igs_pnts2cur_chk.isChecked():
-            working_path = self.ui_working_path_edit.text()
 
             output_igs_pnts2cur_file = self.ui_output_igs_pnts2cur_file_edit.text()
-            file_abs_path = os.path.join(working_path, output_igs_pnts2cur_file)
+            file_abs_path = os.path.join(self.workingDirectory, output_igs_pnts2cur_file)
 
             gen_file.write("OUTPUT/IGS/PNTS2CUR\n")
             gen_file.write("{pnt2cur_file}\n\n".format(pnt2cur_file=file_abs_path))
@@ -886,10 +914,9 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         """
         if self.ui_output_igs_pnts2pnts_chk.isChecked():
-            working_path = self.ui_working_path_edit.text()
 
             output_igs_pnts2pnts_file = self.ui_output_igs_pnts2pnts_file_edit.text()
-            file_abs_path = os.path.join(working_path, output_igs_pnts2pnts_file)
+            file_abs_path = os.path.join(self.workingDirectory, output_igs_pnts2pnts_file)
 
             gen_file.write("OUTPUT/IGS/PNTS2PNTS\n")
             gen_file.write("{pnts2pnts_file}\n\n".format(pnts2pnts_file=file_abs_path))
@@ -908,13 +935,12 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         """
         if self.ui_output_mappnts_chk.isChecked():
-            working_path = self.ui_working_path_edit.text()
 
             output_mappnts_points = self.ui_output_mappnts_pointsfile_edit.text()
             output_mappnts_streamcurve = self.ui_output_mappnts_streamcurvefile_edit.text()
 
-            file_points_abs_path = os.path.join(working_path, output_mappnts_points)
-            file_stream_abs_path = os.path.join(working_path, output_mappnts_streamcurve)
+            file_points_abs_path = os.path.join(self.workingDirectory, output_mappnts_points)
+            file_stream_abs_path = os.path.join(self.workingDirectory, output_mappnts_streamcurve)
 
             gen_file.write("OUTPUT/MAPPNTS\n")
             gen_file.write("{mappnts_points}\n{mappnts_streamc}\n\n".format(mappnts_points=file_points_abs_path,
@@ -1358,7 +1384,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         """
         if pressed_btn.text() == "Exit":
             self.close()
-            QtCore.QCoreApplication.exit(self)
+            QtCore.QCoreApplication.exit()
             sys.exit()
 
     def menuFileBladeproButtonPressedGroup(self, pressed_btn):
@@ -1382,7 +1408,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         if pressed_btn.text() == "Run BladePro":
             self.runBladePro(display_output=False)
 
-        if pressed_btn.text() == "Run BladePro and Send":
+        if pressed_btn.text() == "Run BladePro and Display":
             self.runBladePro(display_output=True)
 
             # Case user is using only inputfile_writer module
@@ -1455,7 +1481,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
             self.ui_read_cftgeo_nblades_spn.setValue(int(self.list_settings[setting].value("cft_nblades")))
             self.ui_read_cftgeo_angle_dspn.setValue(float(self.list_settings[setting].value("cft_angle")))
 
-            self.ui_working_path_edit.setText(self.list_settings[setting].value("working_path"))
+            self.workingDirectory = (self.list_settings[setting].value("working_path"))
             self.ui_case_name_edit.setText(self.list_settings[setting].value("case_name"))
 
             self.list_settings[setting].endGroup()
@@ -1811,7 +1837,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
             QtGui.QAction(QtGui.QIcon(os.path.join(input_writer_dir, "icons/Run_bladepro.png")),
                           "Run BladePro", self),
             QtGui.QAction(QtGui.QIcon(os.path.join(input_writer_dir, "icons/Run_bladepro_send.png")),
-                          "Run BladePro and Send", self)]
+                          "Run BladePro and Display", self)]
 
         bladepro_shorcut = ["Ctrl+P", "Ctrl+B", "Ctrl+T"]
         bladepro_actions = zip(bladepro_actions, bladepro_shorcut)

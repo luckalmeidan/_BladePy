@@ -12,7 +12,7 @@ from ..occ_modules.shape_control import rev_shape_colordictionary
 # noinspection PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming,PyPep8Naming
 class CaseNode(object):
     """
-    Class to structure all data loaded in Core.BladePyCore.addCase().
+    Class to structure all data loaded in Core.BladePyCore._addCase().
 
     This is the structure to be read by the model set to tree list view. The case node contains information of
     name of the case, handle of the AIS_ColoredShape, the name of the sub-shapes in the loaded igs and the graphics
@@ -25,7 +25,7 @@ class CaseNode(object):
         """
         The constructor of the class.
 
-        A CaseNode object is created in Core.BladePyCore.addCase()
+        A CaseNode object is created in Core.BladePyCore._addCase()
 
         @param name [str] Name of the case
         @param shape [Handle_AIS_InteractiveObject] Handles of AIS_ColoredShape for shape controlling

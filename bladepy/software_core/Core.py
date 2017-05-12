@@ -142,6 +142,17 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
 
         self.setWindowTitle("BladePy %s - Main Window" % bladepy_version)
 
+        self.ui_treeview_dockcontents_vl.setContentsMargins(2,2,0,0)
+        self.ui_propertiestools_dockcontents_gl.setContentsMargins(2,2,0,0)
+        self.ui_tecplotgraphics_dockcontents_vl.setContentsMargins(0,0,0,0)
+        self.ui_tecplot_widget_vl.setContentsMargins(0, 0, 0, 0)
+        self.tecplot_widget.ui_tecplot1_dockcontents_vl.setContentsMargins(0, 0, 0, 0)
+        self.tecplot_widget.ui_tecplot2_dockcontents_vl.setContentsMargins(0, 0, 0, 0)
+        self.tecplot_widget.ui_tecplot1_widget_vl.setContentsMargins(0, 0, 0, 0)
+        self.tecplot_widget.ui_tecplot2_widget_vl.setContentsMargins(0, 0, 0, 0)
+
+
+
         # Connecting signals/slots
         self._connectOCCSignals()
         self._connectTecPlotSignals()
@@ -799,8 +810,6 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         """
         self.tecplot_widget = TecPlotWindow(OutputViewerWidget=self)
         self.ui_tecplot_widget_vl.addWidget(self.tecplot_widget)
-
-
 
 
     def _setupPreferencesWidget(self):

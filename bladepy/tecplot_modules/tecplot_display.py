@@ -145,7 +145,7 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
         self.ax2.set_xlabel(self.ax2.get_xlabel(), fontsize=12, labelpad=0)
         self.ax2.set_ylabel(self.ax2.get_ylabel(), fontsize=12, labelpad=-5)
 
-        plt.subplots_adjust(top=.96, bottom=.07, right=.95, left=.12)
+        plt.subplots_adjust(top=.98, bottom=.04, right=.95, left=.13, hspace=0.12)
         plt.figure(self._figure2.number)
 
         self.ax3 = plt.subplot(211)
@@ -169,7 +169,7 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
         self.ax4.set_xlabel(self.ax4.get_xlabel(), fontsize=12, labelpad=0)
         self.ax4.set_ylabel(self.ax4.get_ylabel(), fontsize=12, labelpad=5)
 
-        plt.subplots_adjust(top=.96, bottom=.07, right=.90, left=.12)
+        plt.subplots_adjust(top=.98, bottom=.04, right=.95, left=.13, hspace=0.12)
 
         try:
             if self.op_viewer.ui_tecplot_toggle_grid_chk.isChecked():
@@ -239,7 +239,7 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
             tecplotlist_stackcur_plotline = []
 
         plt.xlabel("Z [mm]")
-        plt.ylabel("R [mm]")
+        plt.ylabel("Radius [mm]")
 
         # The main reason that the lines for the blades is stored separately from the streamlines is that they
         # are not going to pass through same modifications. E.g. it is set that the blade lines will not be dashed
@@ -287,7 +287,7 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
 
 
         plt.xlabel("MP [-]")
-        plt.ylabel("TH [rad]")
+        plt.ylabel("Theta [rad]")
 
         return tecplotlist_profile_plotlines, tecplotlist_mean_plotlines, tecplotlist_stackpnts_plotline
 
@@ -301,8 +301,20 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
 
         m = 0
         tecplotlist_thickness_plotlines = []
+
+        normalize = True
+
         for n in range(0, len(self.tecplot_core.thickness_s_list)):
-            thicknessline = plt.plot(self.tecplot_core.thickness_s_list[n], self.tecplot_core.thickness_t_list[n],
+            if normalize:
+                self.tecplot_core.thickness_s_list[n] = np.asarray(self.tecplot_core.thickness_s_list[n]).astype(np.float)
+                meanline_coordinate = self.tecplot_core.thickness_s_list[n]/self.tecplot_core.thickness_s_list[n].max()
+                x_label = "Relative meanline lenght [-]"
+            else:
+                meanline_coordinate = self.tecplot_core.thickness_s_list[n]
+
+                x_label = "Meanline lenght [mm]"
+
+            thicknessline = plt.plot(meanline_coordinate, self.tecplot_core.thickness_t_list[n],
                                      color=tecplot_colors[m % len(tecplot_colors)],
                                      label='Thickness {i}'.format(i=n))
 
@@ -310,8 +322,8 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
 
             m += 1
 
-        plt.xlabel("S norm. [-]")
-        plt.ylabel("T [mm]")
+        plt.xlabel(x_label)
+        plt.ylabel("Thickness [mm]")
 
         return tecplotlist_thickness_plotlines
 
@@ -345,7 +357,7 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
             m += 1
 
         plt.xlabel(x_label)
-        plt.ylabel("BETA [deg]")
+        plt.ylabel("Beta [deg]")
 
         return tecplotlist_meanbeta_plotlines
 

@@ -7,7 +7,7 @@ os.environ['MPLCONFIGDIR'] = os.path.join(user_home, ".config/BladePy/matplotlib
 
 from bladepy.layout_creator import pyui_creator
 
-update = True
+update = False
 compiling = False
 start_case = None
 

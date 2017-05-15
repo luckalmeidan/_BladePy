@@ -302,25 +302,31 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
         m = 0
         tecplotlist_thickness_plotlines = []
 
-        normalize = True
+        try:
+            normalize = self.op_viewer.preferences_widget.default_tecplot_2d_normalize_thickness_check_state
+        except AttributeError:
+            normalize = True
 
-        for n in range(0, len(self.tecplot_core.thickness_s_list)):
-            if normalize:
-                self.tecplot_core.thickness_s_list[n] = np.asarray(self.tecplot_core.thickness_s_list[n]).astype(np.float)
-                meanline_coordinate = self.tecplot_core.thickness_s_list[n]/self.tecplot_core.thickness_s_list[n].max()
-                x_label = "Relative meanline lenght [-]"
-            else:
-                meanline_coordinate = self.tecplot_core.thickness_s_list[n]
+        try:
+            for n in range(0, len(self.tecplot_core.thickness_s_list)):
+                if normalize:
+                    self.tecplot_core.thickness_s_list[n] = np.asarray(self.tecplot_core.thickness_s_list[n]).astype(np.float)
+                    meanline_coordinate = self.tecplot_core.thickness_s_list[n]/self.tecplot_core.thickness_s_list[n].max()
+                    x_label = "Relative meanline lenght [-]"
+                else:
+                    meanline_coordinate = self.tecplot_core.thickness_s_list[n]
 
-                x_label = "Meanline lenght [mm]"
+                    x_label = "Meanline lenght [mm]"
 
-            thicknessline = plt.plot(meanline_coordinate, self.tecplot_core.thickness_t_list[n],
-                                     color=tecplot_colors[m % len(tecplot_colors)],
-                                     label='Thickness {i}'.format(i=n))
+                thicknessline = plt.plot(meanline_coordinate, self.tecplot_core.thickness_t_list[n],
+                                         color=tecplot_colors[m % len(tecplot_colors)],
+                                         label='Thickness {i}'.format(i=n))
 
-            tecplotlist_thickness_plotlines.append(thicknessline[0])
+                tecplotlist_thickness_plotlines.append(thicknessline[0])
 
-            m += 1
+                m += 1
+        except ValueError:
+            return []
 
         plt.xlabel(x_label)
         plt.ylabel("Thickness [mm]")
@@ -339,20 +345,32 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
         tecplotlist_meanbeta_plotlines = []
 
 
+        try:
+            normalize = self.op_viewer.preferences_widget.default_tecplot_2d_normalize_beta_check_state
+        except AttributeError:
+            normalize = True
+
         # Exception is case list is empty to not crash "all" built-in function
 
         for n in range(0, len(self.tecplot_core.meanline_beta_list)):
+            if normalize:
+                self.tecplot_core.meanline_m_list[n] = np.asarray(self.tecplot_core.meanline_m_list[n]).astype(np.float)
+                m_coord_le = self.tecplot_core.meanline_m_list[n].min()
+                m_coord_te = self.tecplot_core.meanline_m_list[n].max()
+
+                m_coordinate = (self.tecplot_core.meanline_m_list[n]-m_coord_le)/(m_coord_te-m_coord_le)
+                x_label = "Meridional coordinate  norm. [-]"
+            else:
+                m_coordinate = self.tecplot_core.meanline_m_list[n]
+                x_label = "Meridional coordinate [mm]"
+
             # TODO: weak condition to verify meanline_s
 
             # if "S" coordinate is empty or only zeros, plot MP x Beta.
-            meanbetaline = plt.plot(self.tecplot_core.meanline_m_list[n], self.tecplot_core.meanline_beta_list[n],
+            meanbetaline = plt.plot(m_coordinate, self.tecplot_core.meanline_beta_list[n],
                                     color=tecplot_colors[m % len(tecplot_colors)],
                                     label='Meanline {i}'.format(i=n))
             tecplotlist_meanbeta_plotlines.append(meanbetaline[0])
-
-            x_label = "M norm. [-]"
-
-
 
             m += 1
 
@@ -765,7 +783,7 @@ def main( ):
     tecplot_window = TecPlotWindow()
 
     tecplot_window.show()
-    tecplot_window.openTecplot("./tecplot_sample/612-0-1.2d.tec.dat")
+    tecplot_window.openTecplot("./sample/611-0-1.2d.tec.dat")
     tecplot_window.debug()
     # MainWindow.setgui()
     app.exec_()

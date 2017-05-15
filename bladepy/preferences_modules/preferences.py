@@ -47,6 +47,8 @@ class PreferencesBladePy(QtGui.QDialog, preferencesUI.Ui_PreferencesDialog):
         self.default_igs_2d_cur_check_state = bool
         self.default_igs_2d_cur_exception = str
         self.default_tecplot_2d_check_state = bool
+        self.default_tecplot_2d_normalize_beta_check_state = bool
+        self.default_tecplot_2d_normalize_thickness_check_state = bool
         self.default_bladebro_version = str
 
         self.setupUi(self)
@@ -122,6 +124,8 @@ class PreferencesBladePy(QtGui.QDialog, preferencesUI.Ui_PreferencesDialog):
         self.default_igs_2d_cur_check_state = dct[self.list_settings[1].value("default_igs_2d_cur_check_state")]
         self.default_igs_2d_cur_exception = self.list_settings[1].value("default_igs_2d_cur_exception")
         self.default_tecplot_2d_check_state = dct[self.list_settings[1].value("default_tecplot_check_state")]
+        self.default_tecplot_2d_normalize_beta_check_state = dct[self.list_settings[1].value("default_tecplot_normalize_beta_check_state")]
+        self.default_tecplot_2d_normalize_thickness_check_state = dct[self.list_settings[1].value("default_tecplot_normalize_thickness_check_state")]
 
         self.list_settings[1].endGroup()
 
@@ -161,6 +165,8 @@ class PreferencesBladePy(QtGui.QDialog, preferencesUI.Ui_PreferencesDialog):
         self.ui_preferences_igs_2d_cur_exception_edit.setText(self.default_igs_2d_cur_exception)
 
         self.ui_preferences_tecplot_2d_chk.setChecked(self.default_tecplot_2d_check_state)
+        self.ui_preferences_tecplot_2d_normalize_beta_chk.setChecked(self.default_tecplot_2d_normalize_beta_check_state)
+        self.ui_preferences_tecplot_2d_normalize_thickness_chk.setChecked(self.default_tecplot_2d_normalize_thickness_check_state)
 
         self.ui_preferences_running_bladepro_version_edit.setText(self.default_bladebro_version)
 
@@ -229,6 +235,8 @@ class PreferencesBladePy(QtGui.QDialog, preferencesUI.Ui_PreferencesDialog):
             to_be_default_igs_2d_cur_exception = self.ui_preferences_igs_2d_cur_exception_edit.text()
 
             to_be_default_tecplot_2d_check_state = self.ui_preferences_tecplot_2d_chk.isChecked()
+            to_be_default_tecplot_2d_normalize_beta_check_state = self.ui_preferences_tecplot_2d_normalize_beta_chk.isChecked()
+            to_be_default_tecplot_2d_normalize_thickness_check_state = self.ui_preferences_tecplot_2d_normalize_thickness_chk.isChecked()
 
             to_be_default_bladebro_version = self.ui_preferences_running_bladepro_version_edit.text()
 
@@ -249,6 +257,8 @@ class PreferencesBladePy(QtGui.QDialog, preferencesUI.Ui_PreferencesDialog):
             to_be_default_igs_2d_cur_exception = ''
 
             to_be_default_tecplot_2d_check_state = True
+            to_be_default_tecplot_2d_normalize_beta_check_state = True
+            to_be_default_tecplot_2d_normalize_thickness_check_state = True
 
             to_be_default_bladebro_version = "bladepro"
 
@@ -274,6 +284,8 @@ class PreferencesBladePy(QtGui.QDialog, preferencesUI.Ui_PreferencesDialog):
         self.list_settings[setting].setValue("default_igs_2d_cur_check_state", to_be_default_igs_2d_cur_check_state)
         self.list_settings[setting].setValue("default_igs_2d_cur_exception", to_be_default_igs_2d_cur_exception)
         self.list_settings[setting].setValue("default_tecplot_check_state", to_be_default_tecplot_2d_check_state)
+        self.list_settings[setting].setValue("default_tecplot_normalize_beta_check_state", to_be_default_tecplot_2d_normalize_beta_check_state)
+        self.list_settings[setting].setValue("default_tecplot_normalize_thickness_check_state", to_be_default_tecplot_2d_normalize_thickness_check_state)
 
         self.list_settings[setting].endGroup()
 

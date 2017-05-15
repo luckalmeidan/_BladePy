@@ -1750,6 +1750,9 @@
          </item>
          <item row="2" column="4">
           <widget class="QSpinBox" name="ui_output_igs_extrap_shroud_spn">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="statusTip">
             <string>%Shroud: Shroud percentage extension</string>
            </property>
@@ -1760,6 +1763,9 @@
          </item>
          <item row="2" column="3">
           <widget class="QSpinBox" name="ui_output_igs_extrap_hub_spn">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="statusTip">
             <string>%Hub: Hub percentage extension</string>
            </property>
@@ -3392,6 +3398,38 @@
     <hint type="destinationlabel">
      <x>299</x>
      <y>809</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ui_output_igs_surf_chk</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>ui_output_igs_extrap_hub_spn</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>32</x>
+     <y>766</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>385</x>
+     <y>802</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ui_output_igs_surf_chk</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>ui_output_igs_extrap_shroud_spn</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>36</x>
+     <y>767</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>502</x>
+     <y>797</y>
     </hint>
    </hints>
   </connection>

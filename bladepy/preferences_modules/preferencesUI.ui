@@ -10,13 +10,13 @@
     <x>0</x>
     <y>0</y>
     <width>470</width>
-    <height>530</height>
+    <height>653</height>
    </rect>
   </property>
   <property name="maximumSize">
    <size>
     <width>470</width>
-    <height>530</height>
+    <height>713</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -48,13 +48,26 @@
           <string>General</string>
          </property>
          <layout class="QGridLayout" name="ui_preferences_general_groupbox_gl">
+          <item row="4" column="0">
+           <spacer name="ui_preferences_general_vspacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
           <item row="1" column="0">
            <widget class="QGroupBox" name="self_preferences_general_outputs_groupbox">
             <property name="toolTip">
              <string>The ouputs checked will be displayed when loading a case. One can make exceptions when displaying IGS files.</string>
             </property>
             <property name="title">
-             <string>BladePro Outputs Loaded by Case</string>
+             <string>Case Family Files</string>
             </property>
             <layout class="QVBoxLayout" name="self_preferences_general_outputs_groupbox_vl">
              <item>
@@ -86,16 +99,6 @@
                 <widget class="QCheckBox" name="ui_preferences_igs_surf_chk">
                  <property name="text">
                   <string>IGS Surf</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item row="3" column="0">
-                <widget class="QCheckBox" name="ui_preferences_tecplot_2d_chk">
-                 <property name="text">
-                  <string>Tecplot 2D</string>
                  </property>
                  <property name="checked">
                   <bool>true</bool>
@@ -142,25 +145,22 @@
                  </property>
                 </widget>
                </item>
+               <item row="3" column="0">
+                <widget class="QCheckBox" name="ui_preferences_tecplot_2d_chk">
+                 <property name="text">
+                  <string>Tecplot 2D</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </item>
             </layout>
            </widget>
           </item>
           <item row="3" column="0">
-           <spacer name="ui_preferences_general_vspacer">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="2" column="0">
            <widget class="QGroupBox" name="self_preferences_general_shape_groupbox">
             <property name="statusTip">
              <string>Part Controls</string>
@@ -334,6 +334,36 @@
                  </property>
                  <property name="text">
                   <string>Zoom Step</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QGroupBox" name="self_preferences_general_shape_groupbox_2">
+            <property name="statusTip">
+             <string>Part Controls</string>
+            </property>
+            <property name="title">
+             <string>2D Plot</string>
+            </property>
+            <layout class="QVBoxLayout" name="self_preferences_general_shape_groupbox_vl_3">
+             <item>
+              <layout class="QGridLayout" name="ui_preferences_general_shape_gl_3">
+               <item row="0" column="0">
+                <widget class="QCheckBox" name="ui_preferences_tecplot_2d_normalize_beta_chk">
+                 <property name="text">
+                  <string>Normalize Beta distribution plot</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QCheckBox" name="ui_preferences_tecplot_2d_normalize_thickness_chk">
+                 <property name="text">
+                  <string>Normalize Thickness distribution plot</string>
                  </property>
                 </widget>
                </item>

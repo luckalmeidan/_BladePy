@@ -312,11 +312,11 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
                 if normalize:
                     self.tecplot_core.thickness_s_list[n] = np.asarray(self.tecplot_core.thickness_s_list[n]).astype(np.float)
                     meanline_coordinate = self.tecplot_core.thickness_s_list[n]/self.tecplot_core.thickness_s_list[n].max()
-                    x_label = "Relative meanline lenght [-]"
+                    x_label = "Relative meanline length [-]"
                 else:
                     meanline_coordinate = self.tecplot_core.thickness_s_list[n]
 
-                    x_label = "Meanline lenght [mm]"
+                    x_label = "Meanline length [mm]"
 
                 thicknessline = plt.plot(meanline_coordinate, self.tecplot_core.thickness_t_list[n],
                                          color=tecplot_colors[m % len(tecplot_colors)],
@@ -694,6 +694,7 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
 
         :return:
         """
+        # TODO: Docstrings
         try:
             if self.op_viewer.ui_tecplot_toggle_grid_chk.isChecked():
                 check = True
@@ -718,7 +719,7 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
         :return:
         """
         try:
-            for axis in [self.ax1, self.ax2, self.ax3, self.ax4]:
+            for axis in (self.ax1, self.ax2, self.ax3, self.ax4):
                 axis.relim(visible_only=True)
                 axis.autoscale(enable=True, axis='both', tight=True)
 
@@ -739,7 +740,7 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
 
         # TODO: Docsstrings
         try:
-            for axis in [self.ax1, self.ax2, self.ax3, self.ax4]:
+            for axis in (self.ax1, self.ax2, self.ax3, self.ax4):
                 axis.relim()
                 axis.autoscale_view()
 

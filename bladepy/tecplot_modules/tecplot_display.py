@@ -12,6 +12,8 @@ import sys
 
 import matplotlib.pyplot as plt
 import numpy as np
+from math import pi
+
 from PyQt4 import QtGui
 
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
@@ -116,11 +118,11 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
 
     def plotFunction(self):
         """
-        Calls tecplot_core functions and saves it in instance variables and adjust graphics preferences_modules like padding
+        Calls tecplot_core functions and saves it in instance variables and adjust graphics preferences_modules like
+        padding
 
         @return None
         """
-
 
         plt.figure(self._figure1.number)
         self.ax1 = plt.subplot(211)
@@ -129,7 +131,7 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
         plt.tight_layout()
 
         self.ax1.ticklabel_format(axis='y', style='sci', scilimits=(0, 0))
-        self.tecplot_blade_plotlines, self.tecplot_stream_plotlines, self.tecplot_stackcur_plotlines =\
+        self.tecplot_blade_plotlines, self.tecplot_stream_plotlines, self.tecplot_stackcur_plotlines = \
             self.tecplotDisplay_1()
 
         self.ax1.set_xlabel(self.ax1.get_xlabel(), fontsize=12, labelpad=0)
@@ -139,11 +141,11 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
 
         plt.axis('equal')
 
-        self.tecplot_profile_plotlines, self.tecplot_mean_plotlines, self.tecplot_stackpnts_plotlines =\
+        self.tecplot_profile_plotlines, self.tecplot_mean_plotlines, self.tecplot_stackpnts_plotlines = \
             self.tecplotDisplay_2()
 
         self.ax2.set_xlabel(self.ax2.get_xlabel(), fontsize=12, labelpad=0)
-        self.ax2.set_ylabel(self.ax2.get_ylabel(), fontsize=12, labelpad=-5)
+        self.ax2.set_ylabel(self.ax2.get_ylabel(), fontsize=12, labelpad=0)
 
         plt.subplots_adjust(top=.98, bottom=.04, right=.95, left=.13, hspace=0.12)
         plt.figure(self._figure2.number)
@@ -201,7 +203,7 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
             streamline = plt.plot(self.tecplot_core.stream_z_list[n], self.tecplot_core.stream_r_list[n],
                                   color=tecplot_colors[m % len(tecplot_colors)],
                                   lw=1.0,
-                                  label='Streamline {i}'.format(i=n),)
+                                  label='Streamline {i}'.format(i=n), )
 
             tecplotlist_stream_plotlines.append(streamline[0])
 
@@ -230,11 +232,12 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
             splining_points = 500
             tck, u = interpolate.splprep([self.tecplot_core.stackcur_z, self.tecplot_core.stackcur_r], s=0)
             u_smooth = np.linspace(u.min(), u.max(), splining_points)
-            self.tecplot_core.stackcur_z_smooth, self.tecplot_core.stackcur_r_smooth = interpolate.splev(u_smooth, tck, der=0)
+            self.tecplot_core.stackcur_z_smooth, self.tecplot_core.stackcur_r_smooth = interpolate.splev(u_smooth, tck,
+                                                                                                         der=0)
 
             tecplotlist_stackcur_plotline = plt.plot(self.tecplot_core.stackcur_z_smooth,
-                                                      self.tecplot_core.stackcur_r_smooth, '#ff6600',
-                                                      label="_Stackcur")
+                                                     self.tecplot_core.stackcur_r_smooth, '#ff6600',
+                                                     label="_Stackcur")
         except (TypeError, ValueError):
             tecplotlist_stackcur_plotline = []
 
@@ -257,35 +260,49 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
 
         """
 
-        m = 0
-
         tecplotlist_profile_plotlines = []
         tecplotlist_mean_plotlines = []
+        tecplotlist_stackpnts_plotline = []
 
-        tecplotlist_stackpnts_plotline = plt.plot(self.tecplot_core.stackcur_mp, self.tecplot_core.stackcur_th,
-                                                 color = '#ff6600',
-                                                 marker="o",
-                                                 linestyle='None',
-                                                 label = '_Stackcur')
+        blade_number = self.tecplot_core.n_blades
 
+        for j in range(0, blade_number):
 
-        for n in range(0, len(self.tecplot_core.bladeprofile_mp_list)):
-            profileline = plt.plot(self.tecplot_core.bladeprofile_mp_list[n], self.tecplot_core.bladeprofile_th_list[n],
-                                   color=tecplot_colors[m],
-                                   label='Bladeprofile {i}'.format(i=n))
+            m = 0
 
-            meanline = plt.plot(self.tecplot_core.meanline_mp_list[n], self.tecplot_core.meanline_th_list[n],
-                                color=tecplot_colors[m % len(tecplot_colors)],
-                                label='Meanline {i}'.format(i=n))
+            stackline = plt.plot(self.tecplot_core.stackcur_mp,
+                                 np.asarray(self.tecplot_core.stackcur_th).astype(np.float) + 2 * pi / blade_number * j,
+                                 color='#ff6600',
+                                 marker='o',
+                                 linestyle='None',
+                                 label='Blade {j}: _Stackcur'.format(j=j))
 
+            tecplotlist_stackpnts_plotline.append(stackline[0])
 
-            tecplotlist_profile_plotlines.append(profileline[0])
-            tecplotlist_mean_plotlines.append(meanline[0])
+            for n in range(0, len(self.tecplot_core.bladeprofile_mp_list)):
 
-            m += 1
+                profileline = plt.plot(self.tecplot_core.bladeprofile_mp_list[n],
+                                       np.asarray(self.tecplot_core.bladeprofile_th_list[n]).astype(np.float)
+                                       + (2 * pi / blade_number * j),
+                                       color=tecplot_colors[m],
+                                       label='Blade {j}: Bladeprofile {i}'.format(i=n, j=j))
 
+                meanline = plt.plot(self.tecplot_core.meanline_mp_list[n],
+                                    np.asarray(self.tecplot_core.meanline_th_list[n]).astype(np.float)
+                                    + (2 * pi / blade_number * j),
+                                    color=tecplot_colors[m % len(tecplot_colors)],
+                                    label='Blade {j}: Meanline {i} '.format(i=n, j=j))
 
+                if j != 0:
+                    for line in (profileline[0], meanline[0], stackline[0]):
+                        line.set_visible(False)
 
+                tecplotlist_profile_plotlines.append(profileline[0])
+                tecplotlist_mean_plotlines.append(meanline[0])
+
+                m += 1
+
+        self.tighten()
         plt.xlabel("MP [-]")
         plt.ylabel("Theta [rad]")
 
@@ -310,8 +327,10 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
         try:
             for n in range(0, len(self.tecplot_core.thickness_s_list)):
                 if normalize:
-                    self.tecplot_core.thickness_s_list[n] = np.asarray(self.tecplot_core.thickness_s_list[n]).astype(np.float)
-                    meanline_coordinate = self.tecplot_core.thickness_s_list[n]/self.tecplot_core.thickness_s_list[n].max()
+                    self.tecplot_core.thickness_s_list[n] = np.asarray(self.tecplot_core.thickness_s_list[n]).astype(
+                        np.float)
+                    meanline_coordinate = self.tecplot_core.thickness_s_list[n] / self.tecplot_core.thickness_s_list[
+                        n].max()
                     x_label = "Relative meanline length [-]"
                 else:
                     meanline_coordinate = self.tecplot_core.thickness_s_list[n]
@@ -344,7 +363,6 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
         m = 0
         tecplotlist_meanbeta_plotlines = []
 
-
         try:
             normalize = self.op_viewer.preferences_widget.default_tecplot_2d_normalize_beta_check_state
         except AttributeError:
@@ -358,7 +376,7 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
                 m_coord_le = self.tecplot_core.meanline_m_list[n].min()
                 m_coord_te = self.tecplot_core.meanline_m_list[n].max()
 
-                m_coordinate = (self.tecplot_core.meanline_m_list[n]-m_coord_le)/(m_coord_te-m_coord_le)
+                m_coordinate = (self.tecplot_core.meanline_m_list[n] - m_coord_le) / (m_coord_te - m_coord_le)
                 x_label = "Meridional coordinate  norm. [-]"
             else:
                 m_coordinate = self.tecplot_core.meanline_m_list[n]
@@ -452,7 +470,6 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
         @return  None
 
         """
-
         if self._exceptionCatch():
             return
 
@@ -490,7 +507,6 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
                     for index, line in enumerate(self.op_viewer.case_node.tecplotLists[n]):
                         line.set_visible(self.op_viewer.case_node.tecplotSavedStyleList[n][index])
 
-
                 self.op_viewer.ui_tecplot_setneutral_btn.setEnabled(True)
                 self.op_viewer.ui_tecplot_toggle_bladeprofiles_btn.setEnabled(True)
                 self.op_viewer.ui_tecplot_toggle_meanlines_btn.setEnabled(True)
@@ -521,6 +537,9 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
         if self._exceptionCatch():
             return
 
+        blade_number = self.op_viewer.case_node.numberBlades
+        blade_mode = self.op_viewer.case_node.bladeMode
+
         try:
             # if it is visible, turns to invisible and vice-versa
             if self.op_viewer.case_node.tecplotMeanLinesIsVisible:
@@ -532,19 +551,28 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
                     temp_line_list.append(line.get_visible())
                     line.set_visible(False)
 
-                to_save_style_list.append(temp_line_list)
+                to_save_style_list.extend(temp_line_list)
 
                 self.op_viewer.case_node.tecplotMeanLinesSavedStyleList = to_save_style_list
 
                 self.op_viewer.case_node.tecplotMeanLinesVisibility = "invisible"
 
-
             else:
                 # Makes tecplot lines visible. Recovers the linestyle calling tecplotSavedStyleList method.
 
                 for index, line in enumerate(self.op_viewer.case_node.tecplotLists[4]):
-                    line.set_visible(self.op_viewer.case_node.tecplotMeanLinesSavedStyleList[0][index])
+                    if blade_mode == "all":
+                        line.set_visible(self.op_viewer.case_node.tecplotMeanLinesSavedStyleList[index % blade_number])
 
+                    if blade_mode == "passage":
+                        if index / int(len(self.op_viewer.case_node.tecplotLists[4]) / blade_number) < 2:
+                            line.set_visible(
+                                self.op_viewer.case_node.tecplotMeanLinesSavedStyleList[index % blade_number])
+
+                    if blade_mode == "single":
+                        if index / int(len(self.op_viewer.case_node.tecplotLists[4]) / blade_number) < 1:
+                            line.set_visible(
+                                self.op_viewer.case_node.tecplotMeanLinesSavedStyleList[index % blade_number])
 
                 self.op_viewer.case_node.tecplotMeanLinesVisibility = "visible"
 
@@ -554,7 +582,55 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
         except AttributeError:
             pass
 
-    def toggleBladeProfiles( self ):
+    def viewBlades(self, mode):
+        """
+
+        :param mode:
+        :return:
+        """
+        # TODO: Docstring
+        if not self.op_viewer.case_node.ownPlot:
+            return
+
+        n_blades = self.op_viewer.case_node.numberBlades
+
+        if mode == "all":
+            k = 0
+            for i in range(int(len(self.op_viewer.case_node.tecplotLists[3]) / n_blades),
+                           len(self.op_viewer.case_node.tecplotLists[3])):
+                self.op_viewer.case_node.tecplotLists[3][i].set_visible(
+                    self.op_viewer.case_node.tecplotLists[3][k % self.op_viewer.case_node.numberBlades].get_visible())
+
+                self.op_viewer.case_node.tecplotLists[4][i].set_visible(
+                    self.op_viewer.case_node.tecplotLists[4][k % self.op_viewer.case_node.numberBlades].get_visible())
+
+            k += 1
+
+        elif mode == "passage" and n_blades > 1:
+            for i in range(2 * int(len(self.op_viewer.case_node.tecplotLists[3]) / n_blades),
+                           len(self.op_viewer.case_node.tecplotLists[3])):
+                self.op_viewer.case_node.tecplotLists[3][i].set_visible(False)
+                self.op_viewer.case_node.tecplotLists[4][i].set_visible(False)
+
+            k = 0
+            for i in range(int(len(self.op_viewer.case_node.tecplotLists[3]) / n_blades),
+                           2 * int(len(self.op_viewer.case_node.tecplotLists[3]) / n_blades)):
+                self.op_viewer.case_node.tecplotLists[3][i].set_visible(
+                    self.op_viewer.case_node.tecplotLists[3][k % self.op_viewer.case_node.numberBlades].get_visible())
+
+                self.op_viewer.case_node.tecplotLists[4][i].set_visible(
+                    self.op_viewer.case_node.tecplotLists[4][k % self.op_viewer.case_node.numberBlades].get_visible())
+
+        elif mode == "single":
+            for i in range(int(len(self.op_viewer.case_node.tecplotLists[3]) / n_blades),
+                           len(self.op_viewer.case_node.tecplotLists[3])):
+                self.op_viewer.case_node.tecplotLists[3][i].set_visible(False)
+                self.op_viewer.case_node.tecplotLists[4][i].set_visible(False)
+
+        self.op_viewer.case_node.bladeMode = mode
+        self.op_viewer.tecplot_widget.tighten()
+
+    def toggleBladeProfiles(self):
         """
         Toggles tecplot display to visible or invisible for the selected case mean lines.
 
@@ -568,6 +644,9 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
         if self._exceptionCatch():
             return
 
+        blade_number = self.op_viewer.case_node.numberBlades
+        blade_mode = self.op_viewer.case_node.bladeMode
+
         try:
             if self.op_viewer.case_node.tecplotBladeProfilesIsVisible:
                 # it must save the style list to recover it for re-displaying in way before making it invisbile.
@@ -578,19 +657,29 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
                     temp_line_list.append(line.get_visible())
                     line.set_visible(False)
 
-                to_save_style_list.append(temp_line_list)
+                to_save_style_list.extend(temp_line_list)
 
                 self.op_viewer.case_node.tecplotBladeProfilesSavedStyleList = to_save_style_list
 
                 self.op_viewer.case_node.tecplotBladeProfilesVisibility = "invisible"
 
-
             else:
                 # Makes tecplot lines visible. Recovers the linestyle calling tecplotSavedStyleList method.
 
-
                 for index, line in enumerate(self.op_viewer.case_node.tecplotLists[3]):
-                    line.set_visible(self.op_viewer.case_node.tecplotBladeProfilesSavedStyleList[0][index])
+                    if blade_mode == "all":
+                        line.set_visible(
+                            self.op_viewer.case_node.tecplotBladeProfilesSavedStyleList[index % blade_number])
+
+                    if blade_mode == "passage":
+                        if index / int(len(self.op_viewer.case_node.tecplotLists[3]) / blade_number) < 2:
+                            line.set_visible(
+                                self.op_viewer.case_node.tecplotBladeProfilesSavedStyleList[index % blade_number])
+
+                    if blade_mode == "single":
+                        if index / int(len(self.op_viewer.case_node.tecplotLists[3]) / blade_number) < 1:
+                            line.set_visible(
+                                self.op_viewer.case_node.tecplotBladeProfilesSavedStyleList[index % blade_number])
 
                 self.op_viewer.case_node.tecplotBladeProfilesVisibility = "visible"
 
@@ -624,19 +713,17 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
                     temp_line_list.append(line.get_visible())
                     line.set_visible(False)
 
-                to_save_style_list.append(temp_line_list)
+                to_save_style_list.extend(temp_line_list)
 
                 self.op_viewer.case_node.tecplotStreamLinesSavedStyleList = to_save_style_list
 
                 self.op_viewer.case_node.tecplotStreamLinesVisibility = "invisible"
 
-
             else:
                 # Makes tecplot lines visible. Recovers the linestyle calling tecplotSavedStyleList method.
 
-
                 for index, line in enumerate(self.op_viewer.case_node.tecplotLists[2]):
-                    line.set_visible(self.op_viewer.case_node.tecplotStreamLinesSavedStyleList[0][index])
+                    line.set_visible(self.op_viewer.case_node.tecplotStreamLinesSavedStyleList[index])
 
                 self.op_viewer.case_node.tecplotStreamLinesVisibility = "visible"
 
@@ -670,17 +757,16 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
                     temp_line_list.append(line.get_visible())
                     line.set_visible(False)
 
-                to_save_style_list.append(temp_line_list)
+                to_save_style_list.extend(temp_line_list)
 
                 self.op_viewer.case_node.tecplotStackCurSavedStyleList = to_save_style_list
 
                 self.op_viewer.case_node.tecplotStackCurVisibility = "invisible"
 
-
             else:
                 # Makes tecplot lines visible. Recovers the linestyle calling tecplotSavedStyleList method.
                 for index, line in enumerate(self.op_viewer.case_node.tecplotLists[1]):
-                    line.set_visible(self.op_viewer.case_node.tecplotStackCurSavedStyleList[0][index])
+                    line.set_visible(self.op_viewer.case_node.tecplotStackCurSavedStyleList[index])
 
                 self.op_viewer.case_node.tecplotStackCurVisibility = "visible"
 
@@ -710,8 +796,7 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
         except AttributeError:
             pass
 
-
-        # TODO: DOCSTRINGS
+            # TODO: DOCSTRINGS
 
     def tighten(self):
         """
@@ -723,14 +808,13 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
                 axis.relim(visible_only=True)
                 axis.autoscale(enable=True, axis='both', tight=True)
 
-
             self.canvas(1).draw()
             self.canvas(2).draw()
 
         except AttributeError:
             pass
 
-        # TODO: Docstrings, Comment
+            # TODO: Docstrings, Comment
 
     def relimScale(self):
         """
@@ -777,14 +861,15 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
             return True
 
     def debug(self):
-           pass
+        pass
 
-def main( ):
+
+def main():
     app = QtGui.QApplication(sys.argv)
     tecplot_window = TecPlotWindow()
 
     tecplot_window.show()
-    tecplot_window.openTecplot("./sample/611-0-1.2d.tec.dat")
+    tecplot_window.openTecplot("../../611-0-1.2d.tec.dat")
     tecplot_window.debug()
     # MainWindow.setgui()
     app.exec_()
@@ -796,4 +881,3 @@ def main( ):
 
 if __name__ == "__main__":
     main()
-

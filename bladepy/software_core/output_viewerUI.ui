@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1197</width>
-    <height>1045</height>
+    <height>1077</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -181,7 +181,7 @@
    </property>
    <property name="maximumSize">
     <size>
-     <width>500</width>
+     <width>510</width>
      <height>524287</height>
     </size>
    </property>
@@ -226,8 +226,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>364</width>
-          <height>622</height>
+          <width>393</width>
+          <height>612</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="ui_propertiestools_scrollarea_vl">
@@ -274,25 +274,22 @@
            <property name="title">
             <string>General Control</string>
            </property>
-           <layout class="QHBoxLayout" name="ui_general_control_groupbox_hl">
+           <layout class="QVBoxLayout" name="ui_general_control_groupbox_2">
             <item>
              <layout class="QGridLayout" name="ui_general_control_groupbox_hl_gl">
-              <item row="0" column="0">
-               <widget class="QLabel" name="ui_zoom_lbl">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
+              <item row="1" column="0">
+               <widget class="QCheckBox" name="ui_tecplot_toggle_grid_chk">
                 <property name="toolTip">
-                 <string>Costumize visualization zoom</string>
+                 <string>Toggle grid</string>
                 </property>
                 <property name="statusTip">
-                 <string>Zoom Factor - Amount of percentage of zooming by wheel scroll</string>
+                 <string>Grid - Toggle grid of plots</string>
                 </property>
                 <property name="text">
-                 <string>Zoom Factor:</string>
+                 <string>Plot Grid</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -311,6 +308,148 @@
                  <string>Ctrl+T</string>
                 </property>
                </widget>
+              </item>
+              <item row="2" column="0" colspan="2">
+               <layout class="QGridLayout" name="ui_blades_gl">
+                <item row="0" column="0">
+                 <widget class="QPushButton" name="ui_shape_activate_all_blades_btn">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>112</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>23</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Display all blades</string>
+                  </property>
+                  <property name="statusTip">
+                   <string>All Blades - Display all blades of impeller</string>
+                  </property>
+                  <property name="text">
+                   <string>All Blades</string>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>17</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
+                  </property>
+                  <property name="autoExclusive">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="2">
+                 <widget class="QPushButton" name="ui_shape_deactivate_blades_btn">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>112</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>23</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Display a single blade</string>
+                  </property>
+                  <property name="statusTip">
+                   <string>Display Single Blade - Display only the blade contained in IGES file</string>
+                  </property>
+                  <property name="text">
+                   <string>Single Blade</string>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>17</width>
+                    <height>17</height>
+                   </size>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
+                  </property>
+                  <property name="autoExclusive">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QPushButton" name="ui_shape_activate_passage_blades_btn">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>112</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>23</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Display blade passage</string>
+                  </property>
+                  <property name="statusTip">
+                   <string>Display blade passage - Display two consecutive blades</string>
+                  </property>
+                  <property name="text">
+                   <string>Blade Passage</string>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>17</width>
+                    <height>17</height>
+                   </size>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
+                  </property>
+                  <property name="autoExclusive">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </item>
               <item row="0" column="1">
                <widget class="QDoubleSpinBox" name="ui_display_zoomfactor_dspn">
@@ -346,19 +485,22 @@
                 </property>
                </widget>
               </item>
-              <item row="1" column="0">
-               <widget class="QCheckBox" name="ui_tecplot_toggle_grid_chk">
+              <item row="0" column="0">
+               <widget class="QLabel" name="ui_zoom_lbl">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="toolTip">
-                 <string>Toggle grid</string>
+                 <string>Costumize visualization zoom</string>
                 </property>
                 <property name="statusTip">
-                 <string>Grid - Toggle grid of plots</string>
+                 <string>Zoom Factor - Amount of percentage of zooming by wheel scroll</string>
                 </property>
                 <property name="text">
-                 <string>Plot Grid</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
+                 <string>Zoom Factor:</string>
                 </property>
                </widget>
               </item>
@@ -604,101 +746,6 @@
                  <double>15.000000000000000</double>
                 </property>
                </widget>
-              </item>
-              <item row="4" column="0" colspan="2">
-               <layout class="QGridLayout" name="ui_blades_gl">
-                <item row="1" column="0">
-                 <widget class="QPushButton" name="ui_shape_activate_all_blades_btn">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>23</height>
-                   </size>
-                  </property>
-                  <property name="toolTip">
-                   <string>Display all blades</string>
-                  </property>
-                  <property name="statusTip">
-                   <string>All Blades - Display all blades of impeller</string>
-                  </property>
-                  <property name="text">
-                   <string>All Blades</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QPushButton" name="ui_shape_activate_passage_blades_btn">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>23</height>
-                   </size>
-                  </property>
-                  <property name="toolTip">
-                   <string>Display blade passage</string>
-                  </property>
-                  <property name="statusTip">
-                   <string>Display blade passage - Display two consecutive blades</string>
-                  </property>
-                  <property name="text">
-                   <string>Blade Passage</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="2">
-                 <widget class="QPushButton" name="ui_shape_deactivate_blades_btn">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>23</height>
-                   </size>
-                  </property>
-                  <property name="toolTip">
-                   <string>Display a single blade</string>
-                  </property>
-                  <property name="statusTip">
-                   <string>Display Single Blade - Display only the blade contained in IGES file</string>
-                  </property>
-                  <property name="text">
-                   <string>Single Blade</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="0" colspan="3">
-                 <widget class="Line" name="line">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
               </item>
              </layout>
             </item>

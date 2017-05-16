@@ -21,7 +21,7 @@ class CaseNode(object):
 
     """
 
-    def __init__(self, name, loaded_shapes=[[], [], [], [[], [], []]], plot_lists=None, parent=None):
+    def __init__(self, name, loaded_shapes=[[], [], [], [[], []]], plot_lists=None, n_blades=1,parent=None):
         """
         The constructor of the class.
 
@@ -48,9 +48,9 @@ class CaseNode(object):
 
             self._subshape_names = loaded_shapes[3]
 
-            self._bladepro_version = loaded_shapes[4][0]
-            self._created_date = loaded_shapes[4][1]
-            self._n_blades = loaded_shapes[4][2]
+            self._n_blades = n_blades
+            self._bladepro_version = loaded_shapes[5][0]
+            self._created_date = loaded_shapes[5][1]
 
             self._parent = parent
 
@@ -99,6 +99,7 @@ class CaseNode(object):
             else:
                 self.tecplotMode = "None"
 
+            self.bladeMode = "single"
             self.tecplotVisibility = "visible"
             self.tecplotMeanLinesVisibility = "visible"
             self.tecplotBladeProfilesVisibility = "visible"
@@ -201,6 +202,27 @@ class CaseNode(object):
         @return [Handle_AIS_InteractiveObject] The AIS_ColoredShape Handle.
         """
         return self._h_copied_blades
+
+    @property
+    def bladeMode(self):
+        """
+        Method for getting the current state of visibility the tecplot graphics for this case
+
+        @return [str] The state of the tecplot. Can be "visible" or "invisible"
+        """
+        return self._bladeMode
+
+    @bladeMode.setter
+    def bladeMode(self, mode):
+        """
+        Method for setting a state for the tecplot graphics for this case
+
+        @param visibility [str] The visibility for this case. Can be "visible" or "invisible"
+        @return None
+        """
+        self._bladeMode = mode
+
+
 
     @property
     def shapeTransformation(self):

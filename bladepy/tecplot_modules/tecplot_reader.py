@@ -5,6 +5,7 @@ File that contains the class TecPlotCore for reading tecplot outputs.
 
 """
 import csv as csv
+from pyparsing import Word, nums, alphanums, alphas
 import matplotlib.pyplot as plt
 
 # Set the color list to be used by the plotter. The user is free to customize it.
@@ -57,6 +58,8 @@ class TecPlotCore(object):
         self.thickness_s_list = []
         self.thickness_t_list = []
 
+        self.n_blades = 1
+
     def tecplotReader(self, read_csv):
         """
         Function to dig into a csv file and to record it to instance variables lists.
@@ -107,6 +110,10 @@ class TecPlotCore(object):
 
                 for row in reader:
                     try:
+                        if "Number of blades" in row[0]:
+                            blade_header_model = "# Number of blades:" + Word(nums)
+                            self.n_blades = n_blades = int(blade_header_model.parseString(row[0])[1])
+
                         if "TITLE" in row[0]:
                             pass
                             continue
@@ -144,8 +151,8 @@ class TecPlotCore(object):
                             current_reading = "Blade Profiles"
 
                             # This condition is to check in case the list to be appended is not empty. This is the case
-                            # when the program identifies the first breaker for that section. The same is valid for meanline
-                            # and thickness
+                            # when the program identifies the first breaker for that section. The same is valid for
+                            #  meanline and thickness
                             if bladeprofile_mp:
                                 self.bladeprofile_mp_list.append(bladeprofile_mp)
                                 self.bladeprofile_th_list.append(bladeprofile_th)
@@ -241,6 +248,7 @@ class TecPlotCore(object):
         # Finish appending temporary lists to their main list of lists. This is necessary to be done here because
         # it only appends the temporary list in case of a new same-type breaker. E.g. Stream Curvess #1, Stream Curvess #2.
         # The last last set of data will never find a new breaker to enter and execute the appending.
+
 
         self.bladeprofile_mp_list.append(bladeprofile_mp)
         self.bladeprofile_th_list.append(bladeprofile_th)

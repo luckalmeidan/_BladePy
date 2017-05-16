@@ -152,7 +152,8 @@ class ShapeManager(object):
             # gets the number of individual shapes contained in the igs file
             nb = reader.NbShapes()
 
-            # for each individual shape gets the label nad creates a AIS_ColoredShape for data contained in reader.Shape()
+            # for each individual shape gets the label nad creates a AIS_ColoredShape for data contained in
+            #  reader.Shape()
             for i in range(1, nb + 1):
                 label = labels.Value(i)
                 h_name = Handle_TDataStd_Name()
@@ -249,8 +250,8 @@ class ShapeManager(object):
         return [loaded_h_ais_shapes,
                 loaded_blade_h_ais_shapes,
                 h_copy_blades,
-                loaded_subshape_names,
-                [bladepro_version, created_on_date, n_blades]]
+                loaded_subshape_names, n_blades,
+                [bladepro_version, created_on_date]]
 
     def setQuality(self):
         """
@@ -471,8 +472,18 @@ class ShapeManager(object):
             for i in range(0, int(len(self.op_viewer.case_node.copiedBladesHAIS) / (n_blades - 1))):
                 self.op_viewer.display.Context.Display(self.op_viewer.case_node.copiedBladesHAIS[i], False)
 
+        elif mode == "single":
+            for h_ais_shape in self.op_viewer.case_node.copiedBladesHAIS:
+                self.op_viewer.display.Context.Erase(h_ais_shape, False)
+
+
+        self.op_viewer.tecplot_widget.tighten()
+
+
         if self.op_viewer.selectionMode == "shape":
             self.op_viewer.current_h_ais_shape.extend(self.op_viewer.case_node.copiedBladesHAIS)
+
+        self.op_viewer.case_node.bladeMode = mode
 
         # TODO: comment section
         # TODO: DOCSTRINGS
@@ -483,19 +494,6 @@ class ShapeManager(object):
 
         pass
 
-    def review(self):
-        pass
-
-    def deactivateBlades(self):
-        if self._exceptionCatch():
-            return
-
-        for h_ais_shape in self.op_viewer.case_node.copiedBladesHAIS:
-            self.op_viewer.display.Context.Erase(h_ais_shape, False)
-
-        self.op_viewer.display.Repaint()
-        # TODO: COMMENT
-        # TODO: DOCSTRINGS
 
     def shapeDeletion(self, to_remove_shape, remove_copied=False, repaint=True):
         if self._exceptionCatch():

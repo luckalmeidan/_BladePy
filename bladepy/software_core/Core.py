@@ -142,9 +142,9 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
 
         self.setWindowTitle("BladePy %s - Main Window" % bladepy_version)
 
-        self.ui_treeview_dockcontents_vl.setContentsMargins(2,2,0,0)
-        self.ui_propertiestools_dockcontents_gl.setContentsMargins(2,2,0,0)
-        self.ui_tecplotgraphics_dockcontents_vl.setContentsMargins(0,0,0,0)
+        self.ui_treeview_dockcontents_vl.setContentsMargins(2, 2, 0, 0)
+        self.ui_propertiestools_dockcontents_gl.setContentsMargins(2, 2, 0, 0)
+        self.ui_tecplotgraphics_dockcontents_vl.setContentsMargins(0, 0, 0, 0)
         self.ui_tecplot_widget_vl.setContentsMargins(0, 0, 0, 0)
         self.tecplot_widget.ui_tecplot1_dockcontents_vl.setContentsMargins(0, 0, 0, 0)
         self.tecplot_widget.ui_tecplot2_dockcontents_vl.setContentsMargins(0, 0, 0, 0)
@@ -507,6 +507,8 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         # Calling the method loading a shape
         loaded_shapes = self.shape_manager.loadShape(to_be_loaded_shape_list)
 
+        igs_n_blades = loaded_shapes[4]
+
         # end of IGS shape loading routine
         loaded_tecplot_plotlines_list = []
 
@@ -542,9 +544,11 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
             except AttributeError:
                 pass
 
+        n_blades = max(igs_n_blades, self.tecplot_widget.tecplot_core.n_blades)
+
         # Creates a Case Node from data_structure module with the loaded shape and loaded tecplot
 
-        CaseNode(to_add_case_name, loaded_shapes, loaded_tecplot_plotlines_list,
+        CaseNode(to_add_case_name, loaded_shapes, loaded_tecplot_plotlines_list, n_blades,
                  self.root_node)
 
         # Updates the model for the tree view and sets it.
@@ -763,7 +767,8 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         self.ui_shape_activate_passage_blades_btn.clicked.connect(functools.partial(
             self.shape_manager.viewBlades, "passage"))
 
-        self.ui_shape_deactivate_blades_btn.clicked.connect(self.shape_manager.deactivateBlades)
+        self.ui_shape_deactivate_blades_btn.clicked.connect(functools.partial(
+            self.shape_manager.viewBlades, "single"))
 
         self.ui_display_zoomfactor_dspn.valueChanged.connect(self.setZoomFactor)
 
@@ -781,6 +786,17 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         self.ui_tecplot_toggle_streamlines_chk.clicked.connect(self.tecplot_widget.toggleStreamLines)
         self.ui_tecplot_toggle_grid_chk.clicked.connect(self.tecplot_widget.toggleGrid)
         self.ui_tecplot_tighten_btn.clicked.connect(self.tecplot_widget.tighten)
+
+
+        self.ui_shape_activate_all_blades_btn.clicked.connect(functools.partial(
+            self.tecplot_widget.viewBlades, "all"))
+
+        self.ui_shape_activate_passage_blades_btn.clicked.connect(functools.partial(
+            self.tecplot_widget.viewBlades, "passage"))
+
+        self.ui_shape_deactivate_blades_btn.clicked.connect(functools.partial(
+            self.tecplot_widget.viewBlades, "single"))
+
 
     def _setupDataStructure(self):
         """
@@ -938,6 +954,21 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         self._setAction(self.ui_file_menu_, None, ui_file_exit_action)
         self.ui_file_menu_.triggered[QtGui.QAction].connect(self.menuFileButtonPressedGroup)
 
+        self.ui_shape_activate_all_blades_btn.setIcon(
+            QtGui.QIcon(os.path.join(output_viewer_dir, "icons/views/all_blades.png")))
+
+        self.ui_shape_activate_all_blades_btn.setStyleSheet("text-align: left")
+
+        self.ui_shape_activate_passage_blades_btn.setIcon(
+            QtGui.QIcon(os.path.join(output_viewer_dir, "icons/views/blade_passage.png")))
+
+        self.ui_shape_activate_passage_blades_btn.setStyleSheet("text-align: left")
+
+        self.ui_shape_deactivate_blades_btn.setIcon(
+            QtGui.QIcon(os.path.join(output_viewer_dir, "icons/views/single_blade.png")))
+
+        self.ui_shape_deactivate_blades_btn.setStyleSheet("text-align: left")
+
     def _initOpenCascade(self):
         """
         Method function that initializes the graphic engine and sets it to the Qt GUI window.
@@ -999,6 +1030,15 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         else:
             self.ui_shapeappearance_groupbox.setEnabled(False)
             self.ui_shape_transformation_groupbox.setEnabled(False)
+
+
+        if self.case_node.bladeMode == "single":
+            self.ui_shape_deactivate_blades_btn.setChecked(True)
+        elif self.case_node.bladeMode == "passage":
+            self.ui_shape_activate_passage_blades_btn.setChecked(True)
+        elif self.case_node.bladeMode == "all":
+
+            self.ui_shape_activate_all_blades_btn.setEnabled(True)
 
         if self.case_node.ownPlot:
             self.ui_tecplot_control_groupbox.setEnabled(True)

@@ -513,6 +513,8 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         loaded_tecplot_plotlines_list = []
 
         # start of tecplot output loading. If the adding case does have this output type
+        self.tecplot_widget.tecplot_core.__init__()
+
         if tecplot_exists:
 
             # calls a method of Tecplot Widget for loading the csv file.

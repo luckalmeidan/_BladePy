@@ -97,6 +97,8 @@ class TecPlotCore(object):
         thickness_t = []
         thickness_s = []
 
+        self.n_blades = 1
+
         try:
             with open(read_csv, 'r') as f:
                 reader = csv.reader(f, delimiter='\t')
@@ -112,7 +114,7 @@ class TecPlotCore(object):
                     try:
                         if "Number of blades" in row[0]:
                             blade_header_model = "# Number of blades:" + Word(nums)
-                            self.n_blades = n_blades = int(blade_header_model.parseString(row[0])[1])
+                            self.n_blades = int(blade_header_model.parseString(row[0])[1])
 
                         if "TITLE" in row[0]:
                             pass

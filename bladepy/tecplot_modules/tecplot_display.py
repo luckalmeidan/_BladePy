@@ -589,7 +589,7 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
         :return:
         """
         # TODO: Docstring
-        if not self.op_viewer.case_node.ownPlot:
+        if self._exceptionCatch():
             return
 
         n_blades = self.op_viewer.case_node.numberBlades
@@ -856,13 +856,13 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
         """
         number_of_cases = self.op_viewer.model.rowCount(self.op_viewer.ui_case_treeview.rootIndex())
 
-        if self.op_viewer.case_node.tecplotMode == "None" or number_of_cases == 0:
-            print("Action not feasible")
+        if number_of_cases == 0:
+            # print("Action not feasible")
             return True
 
-    def debug(self):
-        pass
-
+        if not self.op_viewer.case_node.ownPlot:
+            # print("Action not feasible")
+            return True
 
 def main():
     app = QtGui.QApplication(sys.argv)

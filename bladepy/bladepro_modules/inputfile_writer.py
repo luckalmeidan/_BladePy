@@ -216,7 +216,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         if case_name is "" or preview is True:
             case_name = "input_preview"
-            generated_input = open(os.path.join(os.path.dirname(__file__), "input_preview"), 'w')
+            generated_input = open(os.path.join(self.workingDirectory, "input_preview"), 'w')
 
         else:
 
@@ -287,7 +287,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         if not preview:
             generated_input = open(os.path.join(self.workingDirectory, case_name), 'r')
         else:
-            generated_input = open(os.path.join(os.path.dirname(__file__), 'input_preview'), 'r')
+            generated_input = open(os.path.join(self.workingDirectory, 'input_preview'), 'r')
 
         self.ui_inputpreview_textedit.setPlainText(generated_input.read())
 
@@ -296,7 +296,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         generated_input.close()
 
         if preview:
-            os.remove(os.path.join(os.path.dirname(__file__), "input_preview"))
+            os.remove(os.path.join(self.workingDirectory, "input_preview"))
         else:
             print("Input file for the case was generated")
 

@@ -36,6 +36,8 @@ from bladepy.occ_modules.shape_control import rev_shape_colordictionary, shape_c
 from bladepy.occ_modules.qt_display import customQtViewer3d
 
 from bladepy.tecplot_modules.tecplot_display import TecPlotWindow
+from bladepy.tecplot_modules.ibl_reader import IblReader
+
 from bladepy.data_structure.case_model import CaseModel
 from bladepy.data_structure.case_node import CaseNode
 
@@ -151,7 +153,7 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         self.tecplot_widget.ui_tecplot1_widget_vl.setContentsMargins(0, 0, 0, 0)
         self.tecplot_widget.ui_tecplot2_widget_vl.setContentsMargins(0, 0, 0, 0)
 
-
+        self.ui_shape_transformation_groupbox_frame.setHidden(True)
 
         # Connecting signals/slots
         self._connectOCCSignals()
@@ -166,14 +168,10 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         # Set working directory to application location
         self.workingDirectory = os.getcwd()
 
-
-
         if not developer_mode:
             self.showMaximized()
             self.ui_debug_btn.setVisible(False)
         else:
-
-
 
             self.show()
         self.raise_()
@@ -246,7 +244,6 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
             self.display.FitAll()
 
         if pressed_btn.text() == "Flat lines":
-            self.display.DisableAntiAliasing()
             self.display.Context.SetDisplayMode(AIS_Shaded)
             self.display.Context.DefaultDrawer().GetObject().SetFaceBoundaryDraw(True)
 
@@ -260,7 +257,6 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
             self.display.Repaint()
 
         if pressed_btn.text() == "Shaded":
-            self.display.DisableAntiAliasing()
             self.display.Context.SetDisplayMode(AIS_Shaded)
             self.display.Context.DefaultDrawer().GetObject().SetFaceBoundaryDraw(False)
 
@@ -357,7 +353,9 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         # First triggers a GUI FileDialog.
         selected_files = QtGui.QFileDialog.getOpenFileNames(self, 'Open file',
                                                             self.inputwriter_widget.ui_working_path_edit.text(),
-                                                            "(*.dat *.igs *.iges *.rtzt);; All Files(*.*)")
+                                                            "(*.surf.igs *.cur.igs *.2d.tec.dat *.ibl *.cft-geo);; "
+                                                            "(*.dat *.igs *.iges);;"
+                                                            " All Files(*.*)")
 
         self.parseCase(selected_files)
 
@@ -401,7 +399,6 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
             # Triggers method for adding a case
             self._addCase(case_name)
 
-
     def _addCase(self, case_name):
         """
         Method that adds a Case in Output Viewer.
@@ -423,6 +420,8 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         igs_3d_cur_exists = False
         igs_2d_cur_exists = False
         tecplot_exists = False
+        iblpnts_exists = False
+        points_reader = None
 
         igs_surf_check_state = self.preferences_widget.default_igs_surf_check_state
         igs_cur_3d_check_state = self.preferences_widget.default_igs_3d_cur_check_state
@@ -471,8 +470,20 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
 
             igs_2d_cur_exists = os.path.isfile(igs_2d_cur_output_file_path)
 
+        if True:  # TODO: add load or not option
+            # same as tecplot output for igs 3d curves output
+            iblpnts_output_file_path = os.path.join(self.workingDirectory,
+                                                    case_name) + ".ibl"
+
+            iblpnts_exists = os.path.isfile(iblpnts_output_file_path)
+
+            if iblpnts_exists:
+                points_reader = IblReader()
+                points_reader.readFile(iblpnts_output_file_path)
+
+        print()
         # if not a single file is found for the adding case, displays a message and returns
-        if not any([tecplot_exists, igs_surf_exists, igs_3d_cur_exists, igs_2d_cur_exists]):
+        if not any([tecplot_exists, igs_surf_exists, igs_3d_cur_exists, igs_2d_cur_exists, iblpnts_exists]):
             msg = QtGui.QMessageBox()
             msg.setIcon(QtGui.QMessageBox.Information)
 
@@ -496,13 +507,16 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
 
         # appending all igs files to one list to be loaded by iges_reader
         if igs_surf_exists:
-            to_be_loaded_shape_list.append([igs_surf_output_file_path, igs_surf_exception])
+            to_be_loaded_shape_list.append(["igs_surf_file", igs_surf_output_file_path, igs_surf_exception])
 
         if igs_3d_cur_exists:
-            to_be_loaded_shape_list.append([igs_3d_cur_output_file_path, igs_3d_cur_exception])
+            to_be_loaded_shape_list.append(["igs_3d_cur_file", igs_3d_cur_output_file_path, igs_3d_cur_exception])
 
         if igs_2d_cur_exists:
-            to_be_loaded_shape_list.append([igs_2d_cur_output_file_path, igs_2d_cur_exception])
+            to_be_loaded_shape_list.append(["igs_2d_cur_file", igs_2d_cur_output_file_path, igs_2d_cur_exception])
+
+        if iblpnts_exists:
+            to_be_loaded_shape_list.append(["ibl_datapoints", points_reader.all_points, []])
 
         # Calling the method loading a shape
         loaded_shapes = self.shape_manager.loadShape(to_be_loaded_shape_list)
@@ -518,26 +532,34 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         if tecplot_exists:
 
             # calls a method of Tecplot Widget for loading the csv file.
-            self.tecplot_widget.openTecplot(tecplot_output_file_path)
+
+            self.tecplot_widget.openTecplot(tecplot_output_file_path, points_reader=points_reader)
 
             # fetches the attributes loaded in the Tecplot Widget
             loaded_tecplot_blade_plotlines = self.tecplot_widget.tecplot_blade_plotlines
             loaded_tecplot_stackcur_plotlines = self.tecplot_widget.tecplot_stackcur_plotlines
             loaded_tecplot_stackpnts_plotlines = self.tecplot_widget.tecplot_stackpnts_plotlines
             loaded_tecplot_stackcur_plotlines.extend(loaded_tecplot_stackpnts_plotlines)
+            loaded_tecplot_stream_vectors_plotlines = self.tecplot_widget.tecplot_stream_vectors_plotlines
+            tecplot_profile_vectors_plotlines = self.tecplot_widget.tecplot_profile_vectors_plotlines
 
             loaded_tecplot_stream_plotlines = self.tecplot_widget.tecplot_stream_plotlines
             loaded_tecplot_mean_plotlines = self.tecplot_widget.tecplot_mean_plotlines
             loaded_tecplot_profile_plotlines = self.tecplot_widget.tecplot_profile_plotlines
             loaded_tecplot_thickness_plotlines = self.tecplot_widget.tecplot_thickness_plotlines
+            loaded_points_list = self.tecplot_widget.points_list
 
             # Group all Tecplots in a single list with all lists
+
             loaded_tecplot_plotlines_list.append(loaded_tecplot_blade_plotlines)
             loaded_tecplot_plotlines_list.append(loaded_tecplot_stackcur_plotlines)
             loaded_tecplot_plotlines_list.append(loaded_tecplot_stream_plotlines)
             loaded_tecplot_plotlines_list.append(loaded_tecplot_profile_plotlines)
             loaded_tecplot_plotlines_list.append(loaded_tecplot_mean_plotlines)
             loaded_tecplot_plotlines_list.append(loaded_tecplot_thickness_plotlines)
+            loaded_tecplot_plotlines_list.append(
+                loaded_tecplot_stream_vectors_plotlines + tecplot_profile_vectors_plotlines)
+            loaded_tecplot_plotlines_list.append(loaded_points_list)
 
             # Glitch is expected for the line below. If so, just put a try/except.
             try:
@@ -572,6 +594,12 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
 
         self._setSelection(self.ui_case_treeview.currentIndex(), old=None)
 
+        # Add commands below to hide one plot by default.
+        self.tecplot_widget.toggleVectors()
+        self.tecplot_widget.togglePoints()
+
+        self._setSelection(self.ui_case_treeview.currentIndex(), old=None)
+
         self.display.Repaint()
 
     def deleteCase(self):
@@ -597,6 +625,7 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         self.tecplot_widget.canvas(1).draw()
         self.tecplot_widget.canvas(2).draw()
         self.tecplot_widget.relimScale()
+        self.tecplot_widget.tighten()
 
         self.current_h_ais_shape = self.case_node.shapeHAIS
 
@@ -673,6 +702,7 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
             self.ui_shape_setcolor_combo.setCurrentIndex(list(shape_colordictionary.keys()).index("Custom"))
 
         self.ui_shape_quality_dspn.setValue(0.001 / ais_subshape_ref.OwnDeviationCoefficient()[1])
+
         self.ui_shape_xdispl_dspn.setValue(float(subshape_ref[0][0]))
         self.ui_shape_ydispl_dspn.setValue(float(subshape_ref[0][1]))
         self.ui_shape_zdispl_dspn.setValue(float(subshape_ref[0][2]))
@@ -786,9 +816,12 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         self.ui_tecplot_toggle_bladeprofiles_btn.clicked.connect(self.tecplot_widget.toggleBladeProfiles)
         self.ui_tecplot_toggle_stackcurves_btn.clicked.connect(self.tecplot_widget.toggleStackCur)
         self.ui_tecplot_toggle_streamlines_chk.clicked.connect(self.tecplot_widget.toggleStreamLines)
-        self.ui_tecplot_toggle_grid_chk.clicked.connect(self.tecplot_widget.toggleGrid)
-        self.ui_tecplot_tighten_btn.clicked.connect(self.tecplot_widget.tighten)
+        self.ui_tecplot_toggle_direction_vectors_chk.clicked.connect(self.tecplot_widget.toggleVectors)
+        self.ui_data_points_chk.clicked.connect(self.tecplot_widget.togglePoints)
 
+        self.ui_tecplot_toggle_grid_chk.clicked.connect(self.tecplot_widget.toggleGrid)
+
+        self.ui_tecplot_tighten_btn.clicked.connect(self.tecplot_widget.tighten)
 
         self.ui_shape_activate_all_blades_btn.clicked.connect(functools.partial(
             self.tecplot_widget.viewBlades, "all"))
@@ -798,7 +831,6 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
 
         self.ui_shape_deactivate_blades_btn.clicked.connect(functools.partial(
             self.tecplot_widget.viewBlades, "single"))
-
 
     def _setupDataStructure(self):
         """
@@ -828,7 +860,6 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         """
         self.tecplot_widget = TecPlotWindow(OutputViewerWidget=self)
         self.ui_tecplot_widget_vl.addWidget(self.tecplot_widget)
-
 
     def _setupPreferencesWidget(self):
         """
@@ -986,14 +1017,14 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         # This attribute is OCCViewer.Viewer3d(self.GetHandle()), used to manage the 3D graphics.
         self.display = self.canva._display
         self.display.set_bg_gradient_color(137, 159, 200, 210, 218, 234)
-        self.display.DisableAntiAliasing()
+
         # Get default display shape Quality
         ais_context = self.display.GetContext().GetObject()
 
-        self.display.Context.DefaultDrawer().GetObject()
-
         self.DC = ais_context.DeviationCoefficient()
         self.DC_HLR = ais_context.HLRDeviationCoefficient()
+        self.DA = ais_context.DeviationAngle()
+        self.DA_HLR = ais_context.HLRAngle()
 
     def _setSelection(self, current, old=None):
         """
@@ -1033,7 +1064,6 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
             self.ui_shapeappearance_groupbox.setEnabled(False)
             self.ui_shape_transformation_groupbox.setEnabled(False)
 
-
         if self.case_node.bladeMode == "single":
             self.ui_shape_deactivate_blades_btn.setChecked(True)
         elif self.case_node.bladeMode == "passage":
@@ -1045,21 +1075,16 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
         if self.case_node.ownPlot:
             self.ui_tecplot_control_groupbox.setEnabled(True)
 
-            if self.case_node.tecplotIsVisible:
-                self.ui_tecplot_setinvisible_btn.setChecked(True)
-                self.ui_tecplot_setneutral_btn.setEnabled(True)
-                self.ui_tecplot_toggle_bladeprofiles_btn.setEnabled(True)
-                self.ui_tecplot_toggle_meanlines_btn.setEnabled(True)
-                self.ui_tecplot_toggle_stackcurves_btn.setEnabled(True)
-                self.ui_tecplot_toggle_streamlines_chk.setEnabled(True)
+            tecplot_visible = True if self.case_node.tecplotIsVisible else False
 
-            else:
-                self.ui_tecplot_setinvisible_btn.setChecked(False)
-                self.ui_tecplot_setneutral_btn.setEnabled(False)
-                self.ui_tecplot_toggle_bladeprofiles_btn.setEnabled(False)
-                self.ui_tecplot_toggle_meanlines_btn.setEnabled(False)
-                self.ui_tecplot_toggle_stackcurves_btn.setEnabled(False)
-                self.ui_tecplot_toggle_streamlines_chk.setEnabled(False)
+            self.ui_tecplot_setinvisible_btn.setChecked(tecplot_visible)
+            self.ui_tecplot_setneutral_btn.setEnabled(tecplot_visible)
+            self.ui_tecplot_toggle_bladeprofiles_btn.setEnabled(tecplot_visible)
+            self.ui_tecplot_toggle_meanlines_btn.setEnabled(tecplot_visible)
+            self.ui_tecplot_toggle_stackcurves_btn.setEnabled(tecplot_visible)
+            self.ui_tecplot_toggle_streamlines_chk.setEnabled(tecplot_visible)
+            self.ui_tecplot_toggle_direction_vectors_chk.setEnabled(tecplot_visible)
+            self.ui_data_points_chk.setEnabled(tecplot_visible and self.case_node.ownPoints)
 
             if self.case_node.tecplotBladeProfilesIsVisible:
                 self.ui_tecplot_toggle_bladeprofiles_btn.setChecked(True)
@@ -1085,6 +1110,16 @@ class BladePyCore(QtGui.QMainWindow, output_viewerUI.Ui_MainWindow):
                 self.ui_tecplot_toggle_stackcurves_btn.setChecked(True)
             else:
                 self.ui_tecplot_toggle_stackcurves_btn.setChecked(False)
+
+            if self.case_node.tecplotVectorsIsVisible:
+                self.ui_tecplot_toggle_direction_vectors_chk.setChecked(True)
+            else:
+                self.ui_tecplot_toggle_direction_vectors_chk.setChecked(False)
+
+            if self.case_node.dataPointsIsVisible:
+                self.ui_data_points_chk.setChecked(True)
+            else:
+                self.ui_data_points_chk.setChecked(False)
 
         else:
             self.ui_tecplot_control_groupbox.setEnabled(False)

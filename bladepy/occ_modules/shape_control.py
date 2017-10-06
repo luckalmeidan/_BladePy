@@ -9,17 +9,28 @@ imported through the GUI for painting shapes and for painting the TreeView widge
 import os
 from collections import OrderedDict
 from math import pi
+import pyparsing
 
 import OCC.Quantity as OCC_Color
-import pyparsing
+from OCC.AIS import AIS_PointCloud
 from OCC.AIS import AIS_ColoredShape
+
+
 from OCC.Graphic3d import Graphic3d_NOM_SATIN
+from OCC.Graphic3d import Graphic3d_ArrayOfPoints
+
 from OCC.IGESCAFControl import IGESCAFControl_Reader
 from OCC.TCollection import TCollection_ExtendedString
 from OCC.TDF import TDF_LabelSequence
 from OCC.TDataStd import TDataStd_Name_GetID, Handle_TDataStd_Name
 from OCC.TDocStd import Handle_TDocStd_Document
 from OCC.TopLoc import TopLoc_Location
+from OCC.TopoDS import TopoDS_Compound
+
+from OCC.BRepBuilderAPI import BRepBuilderAPI_MakeVertex
+from OCC.BRep import BRep_Builder
+from OCC.Prs3d import Prs3d_PointAspect
+
 # noinspection PyProtectedMember
 from OCC.XCAFApp import _XCAFApp
 from OCC.XCAFDoc import XCAFDoc_DocumentTool
@@ -28,10 +39,11 @@ from PyQt4 import QtGui
 from pyparsing import Word, nums, alphanums, alphas
 
 # set dictionaries for shape colors
+# view ./docs to get a list of color indexes
 shape_colordictionary = OrderedDict([("Blue", 422),
                                      ("Red", 415),
                                      ("Golden", 362),
-                                     ("Black", 0),
+                                     ("Green", 232),
                                      ("White", 3),
                                      ("Yellow", 257)])
 
@@ -42,7 +54,7 @@ shape_colordictionary["Custom"] = OCC_Color.Quantity_Color(rgb[0] / 255, rgb[1] 
                                                            OCC_Color.Quantity_TOC_RGB)
 
 # This shape colors are for the icons on tree view list
-shape_colordictionaryhex = {"Black": QtGui.QColor(0, 0, 0),
+shape_colordictionaryhex = {"Green": QtGui.QColor(50, 205, 50),
                             "White": QtGui.QColor(255, 255, 255),
                             "Blue": QtGui.QColor(0, 0, 240),
                             "Golden": QtGui.QColor(230, 153, 0),
@@ -95,37 +107,73 @@ class ShapeManager(object):
         created_on_date = "-"
 
         for shape_case in shape_list:
+            file_type = shape_case[0]
 
-            loaded_shape_filename = os.path.basename(shape_case[0])
-
-            # Read number of blades from geometry file
-            with open(shape_case[0]) as file:
-                shape_header = [next(file) for iterator in range(3)]
-
-            bladepro_line_in_file = shape_header[0]
-            date_line_in_file = shape_header[1]
-            n_blades_line_in_file = shape_header[2]
-
-            # style of information in header to parse
-            bladepro_header_model = "Created by" + Word(alphas) + Word(alphanums + "." + "-")
-            date_header_model = "Created on" + Word(alphanums + "-")
-            blade_header_model = "Number of blades:" + Word(nums)
-
-            try:
-                n_blades = int(blade_header_model.parseString(n_blades_line_in_file)[1])
-                bladepro_version = " ".join(bladepro_header_model.parseString(bladepro_line_in_file)[1:])
-                created_on_date = date_header_model.parseString(date_line_in_file)[1]
-            except pyparsing.ParseException:
-                print("Unable to fetch number of blades")
-
-            if "cur" in loaded_shape_filename:
+            if "cur" in file_type:
                 type_of_loaded_shape = "Curve"
+            elif "ibl" in file_type:
+                type_of_loaded_shape = "IBL/CFT-GEO Points"
+                ibl_data = shape_case[1]
             else:
                 type_of_loaded_shape = "Surface"
+                # Read number of blades from geometry file
 
-            exception_list = shape_case[1]
+            try:
+                if type_of_loaded_shape != "IBL/CFT-GEO Points":
+                    with open(shape_case[1]) as file:
+                        shape_header = [next(file) for iterator in range(3)]
+
+                    bladepro_line_in_file = shape_header[0]
+                    date_line_in_file = shape_header[1]
+                    n_blades_line_in_file = shape_header[2]
+
+                    # style of information in header to parse
+                    bladepro_header_model = "Created by" + Word(alphas) + Word(alphanums + "." + "-")
+                    date_header_model = "Created on" + Word(alphanums + "-")
+                    blade_header_model = "Number of blades:" + Word(nums)
+
+                    n_blades = int(blade_header_model.parseString(n_blades_line_in_file)[1])
+                    bladepro_version = " ".join(bladepro_header_model.parseString(bladepro_line_in_file)[1:])
+                    created_on_date = date_header_model.parseString(date_line_in_file)[1]
+
+            except pyparsing.ParseException:
+
+                print("Unable to fetch number of blades")
+
+            exception_list = shape_case[2]
             exception_list = list(filter(None, exception_list))  # Mistake-prevention of user filling of exception list
             # creates a handle for TdocStd documents
+
+            if type_of_loaded_shape is "IBL/CFT-GEO Points":
+
+                name_subshape = type_of_loaded_shape
+                loaded_subshape_names.append(type_of_loaded_shape)
+                topods_vertex_compound = TopoDS_Compound()
+                brep_builder = BRep_Builder()
+                brep_builder.MakeCompound(topods_vertex_compound)
+
+                for n in range(len(ibl_data.x[0])):
+                    x, y, z = ibl_data.x[0][n], ibl_data.y[0][n], ibl_data.z[0][n]
+                    topods_vertex = BRepBuilderAPI_MakeVertex(gp_Pnt(x, y, z)).Vertex()
+                    brep_builder.Add(topods_vertex_compound, topods_vertex)
+
+                h_point_aspect = Prs3d_PointAspect(0, 0, 5).GetHandle()
+                points_ais = AIS_ColoredShape(topods_vertex_compound)
+
+                self.op_viewer.display.Context.DefaultDrawer().GetObject().SetPointAspect(h_point_aspect)
+
+                loaded_ais_shapes.append(points_ais)
+                loaded_h_ais_shapes.append(points_ais.GetHandle())
+
+                # Uncomment below if one wants to replicate iblpoints with the extra blades
+                #loaded_blade_h_ais_shapes.append(points_ais.GetHandle())
+
+                # Uncomment if one wants to display IBL Points by default
+                # if not any(iterator in name_subshape for iterator in exception_list):
+                #     default_displaying_h_ais_shapes.append(points_ais.GetHandle())
+
+                continue
+
             h_doc = Handle_TDocStd_Document()
 
             # create the application
@@ -138,7 +186,10 @@ class ShapeManager(object):
 
             # creates a reader responsible for reading an IGS file
             reader = IGESCAFControl_Reader()
-            reader.ReadFile(shape_case[0])
+            try:
+                reader.ReadFile(shape_case[1])
+            except TypeError:
+                reader.ReadFile("./")
 
             #  Translates currently loaded IGES file into the document
             reader.Transfer(doc.GetHandle())
@@ -208,12 +259,23 @@ class ShapeManager(object):
                     pass
 
             # sets the default attributes for ais shapes handles
+
+
             for ais_shape in loaded_ais_shapes:
+
                 ais_shape.SetOwnDeviationCoefficient(self.op_viewer.DC /
                                                      self.op_viewer.preferences_widget.default_shape_factor)
 
+                # ais_shape.SetOwnDeviationAngle(self.op_viewer.DA /
+                #                                      self.op_viewer.preferences_widget.default_shape_factor )
+
                 ais_shape.SetOwnHLRDeviationCoefficient(self.op_viewer.DC_HLR /
                                                         self.op_viewer.preferences_widget.default_shape_factor)
+
+                # ais_shape.SetOwnHLRDeviationAngle(self.op_viewer.DA_HLR /
+                #                                         self.op_viewer.preferences_widget.default_shape_factor)
+
+
                 ais_shape.SetColor(shape_colordictionary[loaded_shape_color])
 
                 ais_shape.SetTransparency(self.op_viewer.preferences_widget.default_shape_transparency / 100)
@@ -558,8 +620,9 @@ class ShapeManager(object):
 
         @return None
         """
-
         number_of_cases = self.op_viewer.model.rowCount(self.op_viewer.ui_case_treeview.rootIndex())
         if self.op_viewer.current_h_ais_shape is None or number_of_cases == 0:
+            print("Exception Catch \n")
             print("Action not feasible")
+
             return True

@@ -83,6 +83,10 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         self.setupUi(self)
         self.setWindowTitle("BladePy - Input Writer")
 
+        # Set working directory
+        self.workingDirectory = os.getcwd()
+
+
         # sets a instance variable of the main object of Core
         self.op_viewer = output_viewer
 
@@ -106,7 +110,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         # Signal connections
         # Find path button
         self.ui_read_find_btn.clicked.connect(self.readOptionsFind)
-        self.ui_working_path_edit.setText(os.path.join(os.path.dirname(__file__)))
+
         self.ui_read_find_btn.clicked.connect(self._fillExistentOutputs)
         self.ui_working_path_edit.textChanged.connect(self._fillExistentOutputs)
 
@@ -129,10 +133,17 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         # TODO: fix this functionality
         self.ui_run_bladepro_display_btn.clicked.connect(functools.partial(self.runBladePro, True))
 
-        self.ui_run_bladepro_btn.clicked.connect(self.runBladePro)
-
         # Toolbar setup
         self._setupGUIMenus()
+        self._setupModifyPanelObjects()
+
+        self.ui_run_bladepro_btn.clicked.connect(self.runBladePro)
+
+        # Setup modify panel signals
+
+        for item in self.modify_panel_objs_collection:
+            spin_box = item[0]
+            spin_box.valueChanged.connect(functools.partial(self._modifyPanelSignalManager, item))
 
         # Graphic Settings
         icon = QtGui.QIcon()
@@ -141,6 +152,63 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         self.ui_modify_te_help_btn.setIcon(icon)
         self.loadSettings(-1, launch=True)
+
+    def _setupModifyPanelObjects(self):
+        """
+        Method for setuping modify panel objects
+
+
+
+        @return None
+        """
+
+
+        self.modify_panel_scale_objs = (self.ui_modify_scale_spn,
+                                        self.ui_modify_scale_xsc_lbl, self.ui_modify_scale_xsc_dspn,
+                                        self.ui_modify_scale_ysc_lbl, self.ui_modify_scale_ysc_dspn,
+                                        self.ui_modify_scale_zsc_lbl, self.ui_modify_scale_zsc_dspn,
+                                        self.ui_modify_scale_xc_lbl, self.ui_modify_scale_xc_dspn,
+                                        self.ui_modify_scale_yc_lbl, self.ui_modify_scale_yc_dspn,
+                                        self.ui_modify_scale_zc_lbl, self.ui_modify_scale_zc_dspn,
+                                        self.ui_modify_scale_lbl)
+
+
+        self.modify_panel_mill_objs = (self.ui_modify_te_spn, self.ui_modify_te_rbtn, self.ui_modify_te_ibl_rbtn,
+                                       self.ui_modify_te_d_lbl, self.ui_modify_te_d_dspn, self.ui_modify_te_zref_lbl,
+                                       self.ui_modify_te_zref_dspn, self.ui_modify_te_gamma_lbl,
+                                       self.ui_modify_te_gamma_dspn, self.ui_modify_te_lbl)
+
+        self.modify_panel_round_objs = (self.ui_modify_te_round_spn,
+                                        self.ui_modify_te_round_dpsn, self.ui_modify_te_round_lbl)
+
+        self.modify_panel_stream_objs = (self.ui_modify_stream_spn,
+                                         self.ui_modify_streams_opt_combo, self.ui_modify_streams_input_combo,
+                                         self.ui_modify_streams_deleteinput_btn, self.ui_modify_streams_lbl)
+
+        self.modify_panel_objs_collection = (self.modify_panel_scale_objs,  self.modify_panel_mill_objs,
+                                             self.modify_panel_round_objs, self.modify_panel_stream_objs)
+
+
+
+    def _modifyPanelSignalManager(self, obj_single_group):
+        """
+        Method for managing signals coming from modify panel
+
+
+        @return None
+        """
+        iter_object = iter(obj_single_group)
+        next(iter_object)
+
+        enabled_state = True if obj_single_group[0].value() > 0 else False
+
+        for iter in iter_object:
+            iter.setEnabled(enabled_state)
+
+
+
+
+
 
     def _fillExistentOutputs(self):
         """
@@ -216,7 +284,13 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         if case_name is "" or preview is True:
             case_name = "input_preview"
-            generated_input = open(os.path.join(self.workingDirectory, "input_preview"), 'w')
+
+            try:
+                generated_input = open(os.path.join(self.workingDirectory, "input_preview"), 'w')
+
+            except FileNotFoundError: # In case folder was deleted
+                return
+
 
         else:
 
@@ -235,10 +309,14 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         # The commented lines are BladePro commands not implemented yed lines are BladePro commands not implemented yet.
         self.readOptions(generated_input)
 
-        self.modifyScale(generated_input)
-        self.modifyTE(generated_input)
-        self.modifyStreams(generated_input)
-        self.modifyTERound(generated_input)
+        dispatcher = list(zip([modify_subgroup[0].value() for modify_subgroup in self.modify_panel_objs_collection],
+                         [self.modifyScale, self.modifyTE, self.modifyTERound, self.modifyStreams]))
+
+        # Sorting modify order
+        dispatcher = sorted(dispatcher, key=lambda x: x[0])
+
+        for function in dispatcher:
+            function[1](generated_input)
 
         self.outputIGSSurf(generated_input)
         self.outputIGSCur3d(generated_input)
@@ -545,7 +623,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         @return None
 
         """
-        if self.ui_modify_scale_chk.isChecked():
+        if self.ui_modify_scale_spn.value() != 0:
             modify_scale_xsc = self.ui_modify_scale_xsc_dspn.text()
             modify_scale_ysc = self.ui_modify_scale_ysc_dspn.text()
             modify_scale_zsc = self.ui_modify_scale_zsc_dspn.text()
@@ -573,10 +651,11 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         """
         if self.ui_modify_te_ibl_rbtn.isChecked():
-            if self.ui_modify_te_chk.isChecked():
+            if self.ui_modify_te_spn.value() != 0:
                 gen_file.write("MODIFY/TE/IBL\n\n")
+
         else:
-            if self.ui_modify_te_chk.isChecked():
+            if self.ui_modify_te_spn.value() > 0:
                 modify_te_d = self.ui_modify_te_d_dspn.text()
                 modify_te_zref = self.ui_modify_te_zref_dspn.text()
                 modify_te_gamma = self.ui_modify_te_gamma_dspn.text()
@@ -600,7 +679,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         # TODO: Describe Operation
         # TODO: tune dpsn
         round_value = self.ui_modify_te_round_dpsn.text()
-        if self.ui_modify_te_round_chk.isChecked():
+        if self.ui_modify_te_round_spn.value() != 0:
             gen_file.write("MODIFY/TE/ROUND\n")
             gen_file.write("{round_val}\n\n".format(round_val=round_value))
 
@@ -662,7 +741,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         @return None
 
         """
-        if self.ui_modify_streams_chk.isChecked():
+        if self.ui_modify_stream_spn.value() != 0:
             # Create a simple dictionary for combobox index option
             opt_dict = {0: "ELLIPTIC", 1: "ORTHOGONAL", 2: "FILE"}
             modify_streams_method = self.ui_modify_streams_opt_combo.currentIndex()
@@ -778,7 +857,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         if self.ui_output_igs_surf_chk.isChecked():
             opt_dict = {0: "No extrapolation", 1: "Parametric extrapolation", 2: "Span extrapolation"}
 
-            output_igs_surf_option = self.ui_output_igs_surf_opt_combo.currentIndex()
+            output_igs_surf_option = self.ui_output_igs_surf_opt_combo.currentText().split()[0]
             output_igs_extrapolation_method = self.ui_output_igs_extrap_opt_combo.currentIndex()
             output_igs_surf_rails_list = [float(self.ui_output_igs_surf_rail_combo.itemText(i))
                                           for i in range(self.ui_output_igs_surf_rail_combo.count())]
@@ -854,7 +933,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         """
         if self.ui_output_igs_cur_3d_chk.isChecked():
-            output_igs_cur_3d_option = self.ui_output_igs_cur_3d_opt_combo.currentIndex()
+            output_igs_cur_3d_option = self.ui_output_igs_cur_3d_opt_combo.currentText().split()[0]
 
             gen_file.write("OUTPUT/IGS/CUR/3D\n")
             gen_file.write("{_3dcur_option}\n\n".format(_3dcur_option=output_igs_cur_3d_option))
@@ -873,10 +952,10 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         """
         if self.ui_output_igs_cur_2d_chk.isChecked():
-            output_igs_cur_2d_option = self.ui_output_igs_cur_2d_opt_combo.currentIndex()
+            output_igs_cur_2d_option = self.ui_output_igs_cur_2d_opt_combo.currentText().split()[0]
 
             gen_file.write("OUTPUT/IGS/CUR/2D\n")
-            gen_file.write("{_2dcur_option}\n\n".format(_2dcur_option=output_igs_cur_2d_option + 1))
+            gen_file.write("{_2dcur_option}\n\n".format(_2dcur_option=output_igs_cur_2d_option))
 
     def outputIGSPnts2Cur(self, gen_file):
         """
@@ -1052,9 +1131,9 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         """
         if self.ui_output_camberangles_chk.isChecked():
-            output_camberangles_option = self.ui_output_camberangles_opt_combo.currentIndex()
+            output_camberangles_option = self.ui_output_camberangles_opt_combo.currentText().split()[0]
             gen_file.write("OUTPUT/CAMBERANGLES\n")
-            gen_file.write("{camberangles_option}\n\n".format(camberangles_option=output_camberangles_option + 1))
+            gen_file.write("{camberangles_option}\n\n".format(camberangles_option=output_camberangles_option))
 
     def outputSweepAngle(self, gen_file):
         """
@@ -1106,12 +1185,11 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         """
         if self.ui_output_stackcur_chk.isChecked():
             # Create a simple dictionary for combobox index option
-            opt_dict = {0: "CART", 1: "CYL"}
             output_stackcur_position = self.ui_output_stackcur_stackpos_dspn.text()
-            output_stackcur_coord = self.ui_output_stackcur_opt_combo.currentIndex()
+            output_stackcur_coord = self.ui_output_stackcur_opt_combo.currentText().split()[0]
             gen_file.write("OUTPUT/STACKCUR\n")
             gen_file.write("{stkcur_pos}\n{stkcur_coord}\n\n".format(stkcur_pos=output_stackcur_position,
-                                                                     stkcur_coord=opt_dict[output_stackcur_coord]))
+                                                                     stkcur_coord=output_stackcur_coord))
 
     def outputHeightV(self, gen_file):
         """
@@ -1186,7 +1264,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
         """
         if self.ui_output_rtzt_chk.isChecked():
             output_rtzt_npoints = self.ui_output_rtzt_npoints_spn.text()
-            output_rtzt_thickness = self.ui_output_rtzt_thickness_dpsn.text()
+            output_rtzt_thickness = self.ui_output_rtzt_thickness_opt_combo.currentText().split()[0]
             gen_file.write("OUTPUT/RTZT\n")
             gen_file.write("{n_points}\n{thickness}\n\n".format(n_points=output_rtzt_npoints,
                                                                 thickness=output_rtzt_thickness))
@@ -1481,7 +1559,6 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
             self.ui_read_cftgeo_nblades_spn.setValue(int(self.list_settings[setting].value("cft_nblades")))
             self.ui_read_cftgeo_angle_dspn.setValue(float(self.list_settings[setting].value("cft_angle")))
 
-            self.workingDirectory = (self.list_settings[setting].value("working_path"))
             self.ui_case_name_edit.setText(self.list_settings[setting].value("case_name"))
 
             self.list_settings[setting].endGroup()
@@ -1489,7 +1566,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
             self.list_settings[setting].beginGroup("modify_panel")
 
             self.list_settings[setting].beginGroup("scale")
-            self.ui_modify_scale_chk.setChecked(dct[self.list_settings[setting].value("checkbox")])
+            self.ui_modify_scale_spn.setValue(self.list_settings[setting].value("spinbox"))
             self.ui_modify_scale_xsc_dspn.setValue(float(self.list_settings[setting].value("xsc_value")))
             self.ui_modify_scale_ysc_dspn.setValue(float(self.list_settings[setting].value("ysc_value")))
             self.ui_modify_scale_zsc_dspn.setValue(float(self.list_settings[setting].value("zsc_value")))
@@ -1499,19 +1576,19 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
             self.list_settings[setting].endGroup()
 
             self.list_settings[setting].beginGroup("te")
-            self.ui_modify_te_chk.setChecked(dct[self.list_settings[setting].value("checkbox")])
+            self.ui_modify_te_spn.setValue(self.list_settings[setting].value("spinbox"))
             self.ui_modify_te_rbtn.setChecked(dct[self.list_settings[setting].value("te_option")])
             self.ui_modify_te_ibl_rbtn.setChecked(dct[self.list_settings[setting].value("te_ibl_option")])
             self.ui_modify_te_d_dspn.setValue(float(self.list_settings[setting].value("d_value")))
             self.ui_modify_te_zref_dspn.setValue(float(self.list_settings[setting].value("z-ref_value")))
             self.ui_modify_te_gamma_dspn.setValue(float(self.list_settings[setting].value("gamma_value")))
 
-            self.ui_modify_te_round_chk.setChecked(dct[self.list_settings[setting].value("round_checkbox")])
+            self.ui_modify_te_round_spn.setValue(self.list_settings[setting].value("round_spinbox"))
             self.ui_modify_te_round_dpsn.setValue(float(self.list_settings[setting].value("round_value")))
 
             self.list_settings[setting].endGroup()
 
-            self.ui_modify_streams_chk.setChecked(dct[self.list_settings[setting].value("streams/checkbox")])
+            self.ui_modify_stream_spn.setValue(self.list_settings[setting].value("streams/spinbox"))
             self.ui_modify_streams_opt_combo.setCurrentIndex(
                 int(self.list_settings[setting].value("streams/opt_combo")))
             self.ui_modify_streams_input_combo.setEditText(self.list_settings[setting].value("streams/input"))
@@ -1559,7 +1636,8 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
             self.ui_output_rtzt_chk.setChecked(dct[self.list_settings[setting].value("rtzt/checkbox")])
             self.ui_output_rtzt_npoints_spn.setValue(int(self.list_settings[setting].value("rtzt/npoints")))
-            self.ui_output_rtzt_thickness_dpsn.setValue(float(self.list_settings[setting].value("rtzt/thickness")))
+
+            self.ui_output_rtzt_thickness_opt_combo.setCurrentIndex(int(self.list_settings[setting].value("rtzt/opt_combo")))
 
             self.ui_output_streamc_chk.setChecked(dct[self.list_settings[setting].value("streamc/checkbox")])
             self.ui_output_streamc_npoints_spn.setValue(int(self.list_settings[setting].value("streamc/npoints")))
@@ -1675,7 +1753,7 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         self.list_settings[setting].beginGroup("scale")
 
-        self.list_settings[setting].setValue("checkbox", self.ui_modify_scale_chk.isChecked())
+        self.list_settings[setting].setValue("spinbox", self.ui_modify_scale_spn.value())
         self.list_settings[setting].setValue("xsc_value", self.ui_modify_scale_xsc_dspn.value())
         self.list_settings[setting].setValue("ysc_value", self.ui_modify_scale_ysc_dspn.value())
         self.list_settings[setting].setValue("zsc_value", self.ui_modify_scale_zsc_dspn.value())
@@ -1686,21 +1764,20 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         self.list_settings[setting].beginGroup("te")
 
-        self.list_settings[setting].setValue("checkbox", self.ui_modify_te_chk.isChecked())
+        self.list_settings[setting].setValue("spinbox", self.ui_modify_te_spn.value())
         self.list_settings[setting].setValue("te_option", self.ui_modify_te_rbtn.isChecked())
         self.list_settings[setting].setValue("te_ibl_option", self.ui_modify_te_ibl_rbtn.isChecked())
         self.list_settings[setting].setValue("d_value", self.ui_modify_te_d_dspn.value())
         self.list_settings[setting].setValue("z-ref_value", self.ui_modify_te_zref_dspn.value())
         self.list_settings[setting].setValue("gamma_value", self.ui_modify_te_gamma_dspn.value())
 
-        self.list_settings[setting].setValue("round_checkbox", self.ui_modify_te_round_chk.isChecked())
+        self.list_settings[setting].setValue("round_spinbox", self.ui_modify_te_round_spn.value())
         self.list_settings[setting].setValue("round_value", self.ui_modify_te_round_dpsn.value())
 
         self.list_settings[setting].endGroup()
 
-        self.list_settings[setting].setValue("streams/checkbox", self.ui_modify_streams_chk.isChecked())
+        self.list_settings[setting].setValue("streams/spinbox", self.ui_modify_stream_spn.value())
         self.list_settings[setting].setValue("streams/opt_combo", self.ui_modify_streams_opt_combo.currentIndex())
-
         self.list_settings[setting].setValue("streams/input", self.ui_modify_streams_input_combo.currentText())
         self.list_settings[setting].setValue("streams/inputlist",
                                              [float(self.ui_modify_streams_input_combo.itemText(i))
@@ -1737,7 +1814,9 @@ class InputWriterWindow(QtGui.QMainWindow, inputfile_writerUI.Ui_MainWindow):
 
         self.list_settings[setting].setValue("rtzt/checkbox", self.ui_output_rtzt_chk.isChecked())
         self.list_settings[setting].setValue("rtzt/npoints", self.ui_output_rtzt_npoints_spn.value())
-        self.list_settings[setting].setValue("rtzt/thickness", self.ui_output_rtzt_thickness_dpsn.value())
+        self.list_settings[setting].setValue("rtzt/opt_combo", self.ui_output_rtzt_thickness_opt_combo.currentIndex())
+
+
 
         self.list_settings[setting].setValue("streamc/checkbox", self.ui_output_streamc_chk.isChecked())
         self.list_settings[setting].setValue("streamc/npoints", self.ui_output_streamc_npoints_spn.value())

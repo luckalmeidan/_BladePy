@@ -21,7 +21,7 @@ class CaseNode(object):
 
     """
 
-    def __init__(self, name, loaded_shapes=[[], [], [], [[], []]], plot_lists=None, n_blades=1,parent=None):
+    def __init__(self, name, loaded_shapes=[[], [], [], [[], []]], plot_lists=None, n_blades=1, parent=None):
         """
         The constructor of the class.
 
@@ -73,6 +73,7 @@ class CaseNode(object):
                 node_shape_transparency = int(self.shapeHAIS[0].GetObject().Transparency() * 100)
                 node_shape_quality = 0.001 / self.shapeHAIS[0].GetObject().OwnDeviationCoefficient()[1]
 
+
             except IndexError:
                 node_shape_color = "Custom"
                 node_shape_transparency = 0
@@ -105,11 +106,15 @@ class CaseNode(object):
             self.tecplotBladeProfilesVisibility = "visible"
             self.tecplotStackCurVisibility = "visible"
             self.tecplotStreamLinesVisibility = "visible"
+            self.tecplotVectorsVisibility = "visible"
+            self.dataPointsVisibility = "visible"
 
             self.tecplotSavedStyleList = ([])
             self.tecplotBladeProfilesSavedStyleList = ([])
             self.tecplotMeanLinesSavedStyleList = ([])
             self.tecplotStackCurSavedStyleList = ([])
+            self.tecplotVectorsSavedStyleList = ([])
+            self.dataPointsSavedStyleList = ([])
 
             parent.addChild(self)
 
@@ -177,6 +182,11 @@ class CaseNode(object):
             return False
 
     @property
+    def ownPoints(self):
+        own_points = True if self.tecplotLists[7] else False
+        return own_points
+
+    @property
     def shapeHAIS(self):
         """
         Method for retrieving the handle of AIS_ColoredShape for the node
@@ -221,8 +231,6 @@ class CaseNode(object):
         @return None
         """
         self._bladeMode = mode
-
-
 
     @property
     def shapeTransformation(self):
@@ -371,6 +379,30 @@ class CaseNode(object):
         return self._tecplot_stackcur_savedstyle_list
 
     @property
+    def tecplotVectorsSavedStyleList(self):
+        """
+        Method for getting the saved tecplot graphics line-styles of this case.
+
+        This is useful for retrieving the last line-style when manipulating with Core.tecplot_setNeutral(),
+        Core.tecplot_setVisibility(). The program must remember it when toggling the options to save user's preference.
+
+        @return [list] List of tecplots lines
+        """
+        return self._tecplot_vectors_savedstyle_list
+
+    @property
+    def dataPointsSavedStyleList(self):
+        """
+        Method for getting the saved tecplot graphics line-styles of this case.
+
+        This is useful for retrieving the last line-style when manipulating with Core.tecplot_setNeutral(),
+        Core.tecplot_setVisibility(). The program must remember it when toggling the options to save user's preference.
+
+        @return [list] List of tecplots lines
+        """
+        return self._data_points_savedstyle_list
+
+    @property
     def tecplotStreamLinesSavedStyleList(self):
         """
         Method for getting the saved tecplot graphics line-styles of this case.
@@ -439,6 +471,30 @@ class CaseNode(object):
         """
         self._tecplot_stackcur_savedstyle_list = tecplot_list
 
+    @tecplotVectorsSavedStyleList.setter
+    def tecplotVectorsSavedStyleList(self, tecplot_list):
+        """
+        Method for setting the saved tecplot graphics line-styles of MeanLines of this case.
+
+        See datastructure.case_node.tecplotSavedStyleList()
+
+        @param tecplot_list [list] List of tecplot graphics line-styles to save
+        @return None
+        """
+        self._tecplot_vectors_savedstyle_list = tecplot_list
+
+    @dataPointsSavedStyleList.setter
+    def dataPointsSavedStyleList(self, data_points_list):
+        """
+        Method for setting the saved tecplot graphics line-styles of MeanLines of this case.
+
+        See datastructure.case_node.tecplotSavedStyleList()
+
+        @param tecplot_list [list] List of tecplot graphics line-styles to save
+        @return None
+        """
+        self._data_points_savedstyle_list = data_points_list
+
     @tecplotStreamLinesSavedStyleList.setter
     def tecplotStreamLinesSavedStyleList(self, tecplot_list):
         """
@@ -488,6 +544,15 @@ class CaseNode(object):
         return self._tecplot_stackcur_visibility
 
     @property
+    def tecplotVectorsVisibility(self):
+        """
+        Method for getting the current state of visibility the tecplot graphics for this case
+
+        @return [str] The state of the tecplot. Can be "visible" or "invisible"
+        """
+        return self._tecplot_vectors_visibility
+
+    @property
     def tecplotStreamLinesVisibility(self):
         """
         Method for getting the current state of visibility the tecplot graphics for this case
@@ -529,12 +594,22 @@ class CaseNode(object):
     @tecplotStackCurVisibility.setter
     def tecplotStackCurVisibility(self, visibility):
         """
-        Method for setting a state for the tecplot graphics for this case
+        Method for setting a state for the tecplot stackcur graphics for this case
 
         @param visibility [str] The visibility for this case. Can be "visible" or "invisible"
         @return None
         """
         self._tecplot_stackcur_visibility = visibility
+
+    @tecplotVectorsVisibility.setter
+    def tecplotVectorsVisibility(self, visibility):
+        """
+        Method for setting a state for the tecplot vectirs for this case
+
+        @param visibility [str] The visibility for this case. Can be "visible" or "invisible"
+        @return None
+        """
+        self._tecplot_vectors_visibility = visibility
 
     @tecplotStreamLinesVisibility.setter
     def tecplotStreamLinesVisibility(self, visibility):
@@ -585,11 +660,35 @@ class CaseNode(object):
     @property
     def tecplotStackCurIsVisible(self):
         """
-         Method for verifying if tecplot BladeProfiles is visible
+         Method for verifying if tecplot StackCur is visible
 
          @return [bool] True if it is "visible" False if it is "invisible"
          """
         if self.tecplotStackCurVisibility == "visible":
+            return True
+        else:
+            return False
+
+    @property
+    def tecplotVectorsIsVisible(self):
+        """
+         Method for verifying if tecplot BladeProfiles is visible
+
+         @return [bool] True if it is "visible" False if it is "invisible"
+         """
+        if self.tecplotVectorsVisibility == "visible":
+            return True
+        else:
+            return False
+
+    @property
+    def dataPointsIsVisible(self):
+        """
+         Method for verifying if tecplot BladeProfiles is visible
+
+         @return [bool] True if it is "visible" False if it is "invisible"
+         """
+        if self.dataPointsVisibility == "visible":
             return True
         else:
             return False

@@ -7,7 +7,7 @@ os.environ['MPLCONFIGDIR'] = os.path.join(user_home, ".config/BladePy/matplotlib
 
 from bladepy.layout_creator import pyui_creator
 
-update = True
+update = False
 compiling = False
 start_case = None
 
@@ -23,7 +23,7 @@ try:
         print("Application starting with ", sys.argv[1:])
 
         for arg in sys.argv[1:]:
-            start_case.append(os.path.join(os.getcwd(),arg))
+            start_case.append(os.path.join(os.getcwd(), arg))
 except:
     pass
 
@@ -37,6 +37,5 @@ if compiling:
     subprocess.call(["pyinstaller", "bladepy_run_linux.spec"])
 else:
     from bladepy.software_core import Core
+
     Core.main(start_case)
-
-

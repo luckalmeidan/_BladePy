@@ -28,8 +28,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1105</width>
-         <height>892</height>
+         <width>1009</width>
+         <height>871</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_3">
@@ -70,278 +70,45 @@
                </property>
               </widget>
              </item>
-             <item row="6" column="1">
-              <widget class="QLabel" name="ui_output_tepos_lbl">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
+             <item row="12" column="0" rowspan="2">
+              <widget class="QCheckBox" name="ui_output_cft_chk">
                <property name="statusTip">
-                <string>Command: OUTPUT/TEPOS - Write the trailing edge position of each blade section in cylindrical r-teta-z space to a file</string>
-               </property>
-               <property name="text">
-                <string>TE Position</string>
-               </property>
-              </widget>
-             </item>
-             <item row="10" column="0">
-              <widget class="QCheckBox" name="ui_output_camberangles_chk">
-               <property name="statusTip">
-                <string>Enable keyword OUTPUT/CAMBERANGLES</string>
+                <string>Enable keyword OUTPUT/CFT</string>
                </property>
                <property name="text">
                 <string/>
                </property>
                <property name="shortcut">
-                <string>+</string>
+                <string>7</string>
                </property>
               </widget>
              </item>
-             <item row="10" column="1">
-              <widget class="QLabel" name="ui_output_camberangles_lbl">
+             <item row="19" column="2">
+              <widget class="QDoubleSpinBox" name="ui_output_streamc_extension_dspn">
                <property name="enabled">
                 <bool>false</bool>
                </property>
                <property name="statusTip">
-                <string>Command: OUTPUT/CAMBERANGLES - This keyword will print the camber angles (beta) for each profile section to file</string>
-               </property>
-               <property name="text">
-                <string>Camber Angles</string>
-               </property>
-              </widget>
-             </item>
-             <item row="10" column="2">
-              <widget class="QComboBox" name="ui_output_camberangles_opt_combo">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="statusTip">
-                <string>Options for camber angle measurement: Against circumferential direction or against meridional direction</string>
-               </property>
-               <item>
-                <property name="text">
-                 <string>1 - Circumferential direction</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2 - Meridional direction</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-             <item row="26" column="0" colspan="3">
-              <spacer name="verticalSpacer">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="24" column="1" rowspan="2">
-              <widget class="QLabel" name="ui_output_stackcur_lbl">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="statusTip">
-                <string>Command: OUTPUT/STACKCUR - The stacking position in selected space for each blade section will be written to a file</string>
-               </property>
-               <property name="text">
-                <string>Stack Curve</string>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="2">
-              <widget class="QLineEdit" name="ui_output_igs_pnts2pnts_file_edit">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="acceptDrops">
-                <bool>true</bool>
-               </property>
-               <property name="statusTip">
-                <string>Filename: File with the points that are going to be marked</string>
-               </property>
-               <property name="inputMask">
-                <string/>
-               </property>
-               <property name="text">
-                <string>filename</string>
-               </property>
-               <property name="placeholderText">
-                <string>*.ibl file</string>
-               </property>
-              </widget>
-             </item>
-             <item row="8" column="1">
-              <widget class="QLabel" name="ui_output_lecur_lbl">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="statusTip">
-                <string>Command: OUTPUT/LE-CUR - Write leading edge point curve in meridional plane to a file with npoints</string>
-               </property>
-               <property name="text">
-                <string>LE Curves</string>
-               </property>
-              </widget>
-             </item>
-             <item row="8" column="0">
-              <widget class="QCheckBox" name="ui_output_lecur_chk">
-               <property name="statusTip">
-                <string>Enable keyword OUTPUT/LE-CUR</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="shortcut">
-                <string>2</string>
-               </property>
-              </widget>
-             </item>
-             <item row="8" column="2">
-              <widget class="QSpinBox" name="ui_output_lecur_npoints_spn">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="statusTip">
-                <string>npoints: Number of points in leading edge point curve in meridional plane</string>
+                <string>ext: Extension of stream curves (fraction of total curve length) upstream and downstream</string>
                </property>
                <property name="maximum">
-                <number>11</number>
+                <double>360.000000000000000</double>
+               </property>
+               <property name="value">
+                <double>0.000000000000000</double>
                </property>
               </widget>
              </item>
-             <item row="17" column="0" colspan="3">
-              <widget class="Line" name="ui_output_div_gui_line">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
+             <item row="7" column="1">
+              <widget class="QLabel" name="ui_output_tecur_lbl">
+               <property name="enabled">
+                <bool>false</bool>
                </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QCheckBox" name="ui_output_igs_pnts2cur_chk">
                <property name="statusTip">
-                <string>Enable keyword OUTPUT/IGS/PNTS2CUR</string>
+                <string>Command: OUTPUT/TE-CUR - Write trailing edge point curve in meridional plane to a file with npoints.</string>
                </property>
                <property name="text">
-                <string/>
-               </property>
-               <property name="shortcut">
-                <string>+</string>
-               </property>
-              </widget>
-             </item>
-             <item row="6" column="0">
-              <widget class="QCheckBox" name="ui_output_tepos_chk">
-               <property name="statusTip">
-                <string>Enable keyword OUTPUT/TEPOS</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="shortcut">
-                <string>2</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="2">
-              <widget class="QLineEdit" name="ui_output_igs_pnts2cur_file_edit">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="acceptDrops">
-                <bool>true</bool>
-               </property>
-               <property name="statusTip">
-                <string>Filename: File where the points curves to be splined are located</string>
-               </property>
-               <property name="inputMask">
-                <string/>
-               </property>
-               <property name="text">
-                <string>filename</string>
-               </property>
-               <property name="placeholderText">
-                <string>*.ibl file</string>
-               </property>
-              </widget>
-             </item>
-             <item row="18" column="2">
-              <widget class="QSpinBox" name="ui_output_streamc_npoints_spn">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="statusTip">
-                <string>npoints: Points (r and z coordinates) on each curve</string>
-               </property>
-               <property name="maximum">
-                <number>100</number>
-               </property>
-              </widget>
-             </item>
-             <item row="24" column="2">
-              <widget class="QDoubleSpinBox" name="ui_output_stackcur_stackpos_dspn">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="statusTip">
-                <string>Stacking position: (value between 0 – 1) where 0 is leading edge and 1 is trailing edge</string>
-               </property>
-               <property name="maximum">
-                <double>1.000000000000000</double>
-               </property>
-               <property name="singleStep">
-                <double>0.100000000000000</double>
-               </property>
-              </widget>
-             </item>
-             <item row="25" column="2">
-              <widget class="QComboBox" name="ui_output_stackcur_opt_combo">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="statusTip">
-                <string>Stacking coordinate: CART or CYL for stacking curve in Cartesian x-y-z space or cylindrical r-teta-z space respectively</string>
-               </property>
-               <item>
-                <property name="text">
-                 <string>CART - Cartesian x-y-z space</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>CYL - Cylindrical r-teta-z space</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-             <item row="9" column="2">
-              <widget class="QSpinBox" name="ui_output_heighv_hvar_spn">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="statusTip">
-                <string>npoints: Number of points on each stream curve</string>
-               </property>
-               <property name="maximum">
-                <number>100</number>
+                <string>TE Curves</string>
                </property>
               </widget>
              </item>
@@ -352,22 +119,6 @@
                </property>
                <property name="statusTip">
                 <string>Angle: If the surface/surface intersection fails the last input parameter angle can be set to rotate the stream curve around the rotational axis angle degrees</string>
-               </property>
-               <property name="maximum">
-                <double>360.000000000000000</double>
-               </property>
-               <property name="value">
-                <double>0.000000000000000</double>
-               </property>
-              </widget>
-             </item>
-             <item row="16" column="2">
-              <widget class="QDoubleSpinBox" name="ui_output_rtzt_thickness_dpsn">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="statusTip">
-                <string>N: Thickness definition normal to meanline on stream surface</string>
                </property>
                <property name="maximum">
                 <double>360.000000000000000</double>
@@ -748,46 +499,299 @@
                </property>
               </widget>
              </item>
-             <item row="12" column="0" rowspan="2">
-              <widget class="QCheckBox" name="ui_output_cft_chk">
+             <item row="6" column="1">
+              <widget class="QLabel" name="ui_output_tepos_lbl">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="statusTip">
-                <string>Enable keyword OUTPUT/CFT</string>
+                <string>Command: OUTPUT/TEPOS - Write the trailing edge position of each blade section in cylindrical r-teta-z space to a file</string>
+               </property>
+               <property name="text">
+                <string>TE Position</string>
+               </property>
+              </widget>
+             </item>
+             <item row="10" column="0">
+              <widget class="QCheckBox" name="ui_output_camberangles_chk">
+               <property name="statusTip">
+                <string>Enable keyword OUTPUT/CAMBERANGLES</string>
                </property>
                <property name="text">
                 <string/>
                </property>
                <property name="shortcut">
-                <string>7</string>
+                <string>+</string>
                </property>
               </widget>
              </item>
-             <item row="19" column="2">
-              <widget class="QDoubleSpinBox" name="ui_output_streamc_extension_dspn">
+             <item row="10" column="1">
+              <widget class="QLabel" name="ui_output_camberangles_lbl">
                <property name="enabled">
                 <bool>false</bool>
                </property>
                <property name="statusTip">
-                <string>ext: Extension of stream curves (fraction of total curve length) upstream and downstream</string>
-               </property>
-               <property name="maximum">
-                <double>360.000000000000000</double>
-               </property>
-               <property name="value">
-                <double>0.000000000000000</double>
-               </property>
-              </widget>
-             </item>
-             <item row="7" column="1">
-              <widget class="QLabel" name="ui_output_tecur_lbl">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="statusTip">
-                <string>Command: OUTPUT/TE-CUR - Write trailing edge point curve in meridional plane to a file with npoints.</string>
+                <string>Command: OUTPUT/CAMBERANGLES - This keyword will print the camber angles (beta) for each profile section to file</string>
                </property>
                <property name="text">
-                <string>TE Curves</string>
+                <string>Camber Angles</string>
                </property>
+              </widget>
+             </item>
+             <item row="10" column="2">
+              <widget class="QComboBox" name="ui_output_camberangles_opt_combo">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="statusTip">
+                <string>Options for camber angle measurement: Against circumferential direction or against meridional direction</string>
+               </property>
+               <item>
+                <property name="text">
+                 <string>1 - Circumferential direction</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2 - Meridional direction</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="8" column="2">
+              <widget class="QSpinBox" name="ui_output_lecur_npoints_spn">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="statusTip">
+                <string>npoints: Number of points in leading edge point curve in meridional plane</string>
+               </property>
+               <property name="maximum">
+                <number>11</number>
+               </property>
+              </widget>
+             </item>
+             <item row="17" column="0" colspan="3">
+              <widget class="Line" name="ui_output_div_gui_line">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QCheckBox" name="ui_output_igs_pnts2cur_chk">
+               <property name="statusTip">
+                <string>Enable keyword OUTPUT/IGS/PNTS2CUR</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="shortcut">
+                <string>+</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QCheckBox" name="ui_output_tepos_chk">
+               <property name="statusTip">
+                <string>Enable keyword OUTPUT/TEPOS</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="shortcut">
+                <string>2</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="2">
+              <widget class="QLineEdit" name="ui_output_igs_pnts2cur_file_edit">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="acceptDrops">
+                <bool>true</bool>
+               </property>
+               <property name="statusTip">
+                <string>Filename: File where the points curves to be splined are located</string>
+               </property>
+               <property name="inputMask">
+                <string/>
+               </property>
+               <property name="text">
+                <string>filename</string>
+               </property>
+               <property name="placeholderText">
+                <string>*.ibl file</string>
+               </property>
+              </widget>
+             </item>
+             <item row="26" column="0" colspan="3">
+              <spacer name="verticalSpacer">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="24" column="1" rowspan="2">
+              <widget class="QLabel" name="ui_output_stackcur_lbl">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="statusTip">
+                <string>Command: OUTPUT/STACKCUR - The stacking position in selected space for each blade section will be written to a file</string>
+               </property>
+               <property name="text">
+                <string>Stack Curve</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="2">
+              <widget class="QLineEdit" name="ui_output_igs_pnts2pnts_file_edit">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="acceptDrops">
+                <bool>true</bool>
+               </property>
+               <property name="statusTip">
+                <string>Filename: File with the points that are going to be marked</string>
+               </property>
+               <property name="inputMask">
+                <string/>
+               </property>
+               <property name="text">
+                <string>filename</string>
+               </property>
+               <property name="placeholderText">
+                <string>*.ibl file</string>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="1">
+              <widget class="QLabel" name="ui_output_lecur_lbl">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="statusTip">
+                <string>Command: OUTPUT/LE-CUR - Write leading edge point curve in meridional plane to a file with npoints</string>
+               </property>
+               <property name="text">
+                <string>LE Curves</string>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="0">
+              <widget class="QCheckBox" name="ui_output_lecur_chk">
+               <property name="statusTip">
+                <string>Enable keyword OUTPUT/LE-CUR</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="shortcut">
+                <string>2</string>
+               </property>
+              </widget>
+             </item>
+             <item row="18" column="2">
+              <widget class="QSpinBox" name="ui_output_streamc_npoints_spn">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="statusTip">
+                <string>npoints: Points (r and z coordinates) on each curve</string>
+               </property>
+               <property name="maximum">
+                <number>100</number>
+               </property>
+              </widget>
+             </item>
+             <item row="24" column="2">
+              <widget class="QDoubleSpinBox" name="ui_output_stackcur_stackpos_dspn">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="statusTip">
+                <string>Stacking position: (value between 0 – 1) where 0 is leading edge and 1 is trailing edge</string>
+               </property>
+               <property name="maximum">
+                <double>1.000000000000000</double>
+               </property>
+               <property name="singleStep">
+                <double>0.100000000000000</double>
+               </property>
+              </widget>
+             </item>
+             <item row="25" column="2">
+              <widget class="QComboBox" name="ui_output_stackcur_opt_combo">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="statusTip">
+                <string>Stacking coordinate: CART or CYL for stacking curve in Cartesian x-y-z space or cylindrical r-teta-z space respectively</string>
+               </property>
+               <item>
+                <property name="text">
+                 <string>CART - Cartesian x-y-z space</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>CYL - Cylindrical r-teta-z space</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="9" column="2">
+              <widget class="QSpinBox" name="ui_output_heighv_hvar_spn">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="statusTip">
+                <string>npoints: Number of points on each stream curve</string>
+               </property>
+               <property name="maximum">
+                <number>100</number>
+               </property>
+              </widget>
+             </item>
+             <item row="16" column="2">
+              <widget class="QComboBox" name="ui_output_rtzt_thickness_opt_combo">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="statusTip">
+                <string>Thickness definition: N - normal to meanline on stream surface; T - tangential to meanline on stream surface</string>
+               </property>
+               <item>
+                <property name="text">
+                 <string>N - Normal to meanline</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>T - Tangential to meanline</string>
+                </property>
+               </item>
               </widget>
              </item>
             </layout>
@@ -1241,6 +1245,12 @@
              </item>
              <item row="1" column="0" rowspan="3">
               <widget class="QCheckBox" name="ui_output_igs_surf_chk">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="statusTip">
                 <string>Enable keyword OUTPUT/IGS/SURF</string>
                </property>
@@ -1254,6 +1264,12 @@
              </item>
              <item row="5" column="0">
               <widget class="QCheckBox" name="ui_output_igs_cur_3d_chk">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="statusTip">
                 <string>Enable keyword OUTPUT/IGS/CUR/3D</string>
                </property>
@@ -1267,6 +1283,12 @@
              </item>
              <item row="6" column="0">
               <widget class="QCheckBox" name="ui_output_igs_cur_2d_chk">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="statusTip">
                 <string>Enable keyword OUTPUT/IGS/CUR/2D</string>
                </property>
@@ -1319,6 +1341,12 @@
              </item>
              <item row="7" column="0">
               <widget class="QCheckBox" name="ui_output_tecplot_2d_chk">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="statusTip">
                 <string>Enable keyword OUTPUT/TECPLOT/2D</string>
                </property>
@@ -1481,7 +1509,7 @@
            <string/>
           </property>
           <property name="statusTip">
-           <string>Modify Options</string>
+           <string>Modify Options - Note:  BladePro's modify keywords are order sensitive, define with the spinbox the execution priority. Order shall be GUI's order if spinbox have equal values</string>
           </property>
           <property name="title">
            <string>Modify Panel</string>
@@ -1518,16 +1546,6 @@
                </property>
                <property name="maximum">
                 <double>199999.989999999990687</double>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0" rowspan="2">
-              <widget class="QCheckBox" name="ui_modify_scale_chk">
-               <property name="statusTip">
-                <string>Enable keyword MODIFY/SCALE</string>
-               </property>
-               <property name="text">
-                <string/>
                </property>
               </widget>
              </item>
@@ -1604,16 +1622,6 @@
                </item>
               </widget>
              </item>
-             <item row="4" column="0">
-              <widget class="QCheckBox" name="ui_modify_te_round_chk">
-               <property name="statusTip">
-                <string>Enable keyword MODIFY/STREAMS</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
              <item row="4" column="4" colspan="6">
               <widget class="QDoubleSpinBox" name="ui_modify_te_round_dpsn">
                <property name="enabled">
@@ -1632,6 +1640,102 @@
                 <double>0.200000000000000</double>
                </property>
                <property name="value">
+                <double>0.100000000000000</double>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="8" rowspan="2">
+              <widget class="QLabel" name="ui_modify_te_gamma_lbl">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="statusTip">
+                <string/>
+               </property>
+               <property name="text">
+                <string>Gamma</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QRadioButton" name="ui_modify_te_rbtn">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="statusTip">
+                <string>MODIFY/TE</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="8">
+              <widget class="QLabel" name="ui_modify_scale_zc_lbl">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="statusTip">
+                <string/>
+               </property>
+               <property name="text">
+                <string>zc</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="2">
+              <widget class="QLabel" name="ui_modify_te_round_lbl">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="statusTip">
+                <string>Command: MODIFY/TE/ROUND - This keyword will round the trailing edge (TODO)</string>
+               </property>
+               <property name="text">
+                <string>Round TE</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2" rowspan="2">
+              <widget class="QLabel" name="ui_modify_te_lbl">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="statusTip">
+                <string>Command: MODIFY/TE or MODIFY/TE/IBL - This keyword will do a milling operation on the geometry by cutting the blade geometry</string>
+               </property>
+               <property name="text">
+                <string>Mill TE</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="9">
+              <widget class="QDoubleSpinBox" name="ui_modify_scale_zc_dspn">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="toolTip">
+                <string>zc</string>
+               </property>
+               <property name="statusTip">
+                <string>zc component of point C</string>
+               </property>
+               <property name="decimals">
+                <number>4</number>
+               </property>
+               <property name="maximum">
+                <double>199999.989999999990687</double>
+               </property>
+               <property name="singleStep">
                 <double>0.100000000000000</double>
                </property>
               </widget>
@@ -1719,8 +1823,14 @@
                <property name="statusTip">
                 <string notr="true">x-sc component of vector valued scale </string>
                </property>
+               <property name="decimals">
+                <number>4</number>
+               </property>
                <property name="maximum">
                 <double>199999.989999999990687</double>
+               </property>
+               <property name="singleStep">
+                <double>0.100000000000000</double>
                </property>
               </widget>
              </item>
@@ -1751,8 +1861,14 @@
                <property name="statusTip">
                 <string>xc component of point C</string>
                </property>
+               <property name="decimals">
+                <number>4</number>
+               </property>
                <property name="maximum">
                 <double>199999.989999999990687</double>
+               </property>
+               <property name="singleStep">
+                <double>0.100000000000000</double>
                </property>
               </widget>
              </item>
@@ -1783,8 +1899,14 @@
                <property name="statusTip">
                 <string>yc component of point C</string>
                </property>
+               <property name="decimals">
+                <number>4</number>
+               </property>
                <property name="maximum">
                 <double>199999.989999999990687</double>
+               </property>
+               <property name="singleStep">
+                <double>0.100000000000000</double>
                </property>
               </widget>
              </item>
@@ -1799,8 +1921,14 @@
                <property name="statusTip">
                 <string>ysc component of vector valued scale </string>
                </property>
+               <property name="decimals">
+                <number>4</number>
+               </property>
                <property name="maximum">
                 <double>199999.989999999990687</double>
+               </property>
+               <property name="singleStep">
+                <double>0.100000000000000</double>
                </property>
               </widget>
              </item>
@@ -1831,8 +1959,14 @@
                <property name="statusTip">
                 <string>zsc component of vector valued scale</string>
                </property>
+               <property name="decimals">
+                <number>4</number>
+               </property>
                <property name="maximum">
                 <double>199999.989999999990687</double>
+               </property>
+               <property name="singleStep">
+                <double>0.100000000000000</double>
                </property>
               </widget>
              </item>
@@ -1879,8 +2013,14 @@
                <property name="statusTip">
                 <string>z-ref coord:  surface of revolution created by the line in the meridional plane defined by the point (z-ref, D/2) with angle gamma.</string>
                </property>
+               <property name="decimals">
+                <number>4</number>
+               </property>
                <property name="maximum">
                 <double>199999.989999999990687</double>
+               </property>
+               <property name="singleStep">
+                <double>0.100000000000000</double>
                </property>
               </widget>
              </item>
@@ -1895,8 +2035,14 @@
                <property name="statusTip">
                 <string>D coord: surface of revolution created by the line in the meridional plane defined by the point (z-ref, D/2) with angle gamma.</string>
                </property>
+               <property name="decimals">
+                <number>4</number>
+               </property>
                <property name="maximum">
                 <double>199999.989999999990687</double>
+               </property>
+               <property name="singleStep">
+                <double>0.100000000000000</double>
                </property>
               </widget>
              </item>
@@ -1913,113 +2059,55 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="8" rowspan="2">
-              <widget class="QLabel" name="ui_modify_te_gamma_lbl">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
+             <item row="0" column="0" rowspan="2">
+              <widget class="QSpinBox" name="ui_modify_scale_spn">
                <property name="statusTip">
-                <string/>
-               </property>
-               <property name="text">
-                <string>Gamma</string>
+                <string>Enable keyword MODIFY/SCALE and set order priority</string>
                </property>
                <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="maximum">
+                <number>4</number>
                </property>
               </widget>
              </item>
              <item row="2" column="0" rowspan="2">
-              <widget class="QCheckBox" name="ui_modify_te_chk">
+              <widget class="QSpinBox" name="ui_modify_te_spn">
                <property name="statusTip">
-                <string>Enable keyword MODIFY/TE</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QRadioButton" name="ui_modify_te_rbtn">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="statusTip">
-                <string>MODIFY/TE</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="8">
-              <widget class="QLabel" name="ui_modify_scale_zc_lbl">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="statusTip">
-                <string/>
-               </property>
-               <property name="text">
-                <string>zc</string>
+                <string>Enable keyword MODIFY/TE and set order priority</string>
                </property>
                <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="2">
-              <widget class="QLabel" name="ui_modify_te_round_lbl">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="statusTip">
-                <string>Command: MODIFY/TE/ROUND - This keyword will round the trailing edge (TODO)</string>
-               </property>
-               <property name="text">
-                <string>Round TE</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="2" rowspan="2">
-              <widget class="QLabel" name="ui_modify_te">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="statusTip">
-                <string>Command: MODIFY/TE or MODIFY/TE/IBL - This keyword will do a milling operation on the geometry by cutting the blade geometry</string>
-               </property>
-               <property name="text">
-                <string>Mill TE</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="9">
-              <widget class="QDoubleSpinBox" name="ui_modify_scale_zc_dspn">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="toolTip">
-                <string>zc</string>
-               </property>
-               <property name="statusTip">
-                <string>zc component of point C</string>
+                <set>Qt::AlignCenter</set>
                </property>
                <property name="maximum">
-                <double>199999.989999999990687</double>
+                <number>4</number>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QSpinBox" name="ui_modify_te_round_spn">
+               <property name="statusTip">
+                <string>Enable keyword MODIFY/TE/ROUND and set order priority</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="maximum">
+                <number>4</number>
                </property>
               </widget>
              </item>
              <item row="5" column="0">
-              <widget class="QCheckBox" name="ui_modify_streams_chk">
+              <widget class="QSpinBox" name="ui_modify_stream_spn">
                <property name="statusTip">
-                <string>Enable keyword MODIFY/STREAMS</string>
+                <string>Enable keyword MODIFY/STREAMS and set order priority</string>
                </property>
-               <property name="text">
-                <string/>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="maximum">
+                <number>4</number>
                </property>
               </widget>
              </item>
@@ -2340,266 +2428,90 @@
   </widget>
  </widget>
  <tabstops>
+  <tabstop>ui_renamesetting_btn</tabstop>
+  <tabstop>ui_listsettings_combo</tabstop>
+  <tabstop>ui_quicklist_chk</tabstop>
+  <tabstop>ui_case_name_edit</tabstop>
+  <tabstop>ui_working_path_edit</tabstop>
+  <tabstop>ui_select_path_btn</tabstop>
+  <tabstop>ui_display_selected_btn</tabstop>
+  <tabstop>ui_case_name_existent_list</tabstop>
+  <tabstop>ui_read_ibl_rbtn</tabstop>
+  <tabstop>ui_read_cftgeo_rbtn</tabstop>
+  <tabstop>ui_read_find_btn</tabstop>
+  <tabstop>ui_read_ibl_iblfile_edit</tabstop>
+  <tabstop>ui_read_cftgeo_cftfile_edit</tabstop>
+  <tabstop>ui_read_ibl_fpfile_edit</tabstop>
+  <tabstop>ui_read_cftgeo_nblades_spn</tabstop>
+  <tabstop>ui_read_cftgeo_angle_dspn</tabstop>
+  <tabstop>ui_modify_scale_xsc_dspn</tabstop>
+  <tabstop>ui_modify_scale_ysc_dspn</tabstop>
+  <tabstop>ui_modify_scale_zsc_dspn</tabstop>
+  <tabstop>ui_modify_scale_xc_dspn</tabstop>
+  <tabstop>ui_modify_scale_yc_dspn</tabstop>
+  <tabstop>ui_modify_scale_zc_dspn</tabstop>
+  <tabstop>ui_modify_te_rbtn</tabstop>
+  <tabstop>ui_modify_te_ibl_rbtn</tabstop>
+  <tabstop>ui_modify_te_help_btn</tabstop>
+  <tabstop>ui_modify_te_d_dspn</tabstop>
+  <tabstop>ui_modify_te_zref_dspn</tabstop>
+  <tabstop>ui_modify_te_gamma_dspn</tabstop>
+  <tabstop>ui_modify_te_round_dpsn</tabstop>
+  <tabstop>ui_modify_streams_opt_combo</tabstop>
+  <tabstop>ui_modify_streams_input_combo</tabstop>
+  <tabstop>ui_modify_streams_deleteinput_btn</tabstop>
+  <tabstop>ui_output_igs_surf_chk</tabstop>
+  <tabstop>ui_output_igs_surf_opt_combo</tabstop>
+  <tabstop>ui_output_igs_surf_rail_combo</tabstop>
+  <tabstop>ui_output_igs_surf_deleterail_btn</tabstop>
+  <tabstop>ui_output_igs_extrap_opt_combo</tabstop>
+  <tabstop>ui_output_igs_extrap_hub_spn</tabstop>
+  <tabstop>ui_output_igs_extrap_shroud_spn</tabstop>
+  <tabstop>ui_output_igs_cur_3d_chk</tabstop>
+  <tabstop>ui_output_igs_cur_3d_opt_combo</tabstop>
+  <tabstop>ui_output_igs_cur_2d_chk</tabstop>
+  <tabstop>ui_output_igs_cur_2d_opt_combo</tabstop>
+  <tabstop>ui_output_tecplot_2d_chk</tabstop>
+  <tabstop>ui_output_tecplot_3d_chk</tabstop>
+  <tabstop>ui_output_tecplot_streams_chk</tabstop>
+  <tabstop>ui_output_autogrid_chk</tabstop>
+  <tabstop>ui_output_sweepangle_chk</tabstop>
+  <tabstop>ui_output_igs_pnts2cur_chk</tabstop>
+  <tabstop>ui_output_igs_pnts2cur_file_edit</tabstop>
+  <tabstop>ui_output_igs_pnts2pnts_chk</tabstop>
+  <tabstop>ui_output_igs_pnts2pnts_file_edit</tabstop>
+  <tabstop>ui_output_tepos_chk</tabstop>
+  <tabstop>ui_output_tecur_chk</tabstop>
+  <tabstop>ui_output_tecur_npoints_spn</tabstop>
+  <tabstop>ui_output_lecur_chk</tabstop>
+  <tabstop>ui_output_lecur_npoints_spn</tabstop>
+  <tabstop>ui_output_heighv_chk</tabstop>
+  <tabstop>ui_output_heighv_hvar_spn</tabstop>
+  <tabstop>ui_output_camberangles_chk</tabstop>
+  <tabstop>ui_output_camberangles_opt_combo</tabstop>
+  <tabstop>ui_output_cft_chk</tabstop>
+  <tabstop>ui_output_cft_nsect_spn</tabstop>
+  <tabstop>ui_output_cft_angle_dspn</tabstop>
+  <tabstop>ui_output_rtzt_chk</tabstop>
+  <tabstop>ui_output_rtzt_npoints_spn</tabstop>
+  <tabstop>ui_output_rtzt_thickness_opt_combo</tabstop>
+  <tabstop>ui_output_streamc_chk</tabstop>
+  <tabstop>ui_output_streamc_npoints_spn</tabstop>
+  <tabstop>ui_output_streamc_extension_dspn</tabstop>
+  <tabstop>ui_output_mappnts_chk</tabstop>
+  <tabstop>ui_output_mappnts_pointsfile_edit</tabstop>
+  <tabstop>ui_output_mappnts_streamcurvefile_edit</tabstop>
+  <tabstop>ui_output_stackcur_chk</tabstop>
+  <tabstop>ui_output_stackcur_stackpos_dspn</tabstop>
+  <tabstop>ui_output_stackcur_opt_combo</tabstop>
+  <tabstop>ui_preview_inputfile_btn</tabstop>
+  <tabstop>ui_run_bladepro_btn</tabstop>
+  <tabstop>ui_run_bladepro_display_btn</tabstop>
+  <tabstop>scrollArea_3</tabstop>
   <tabstop>ui_inputpreview_textedit</tabstop>
  </tabstops>
  <resources/>
  <connections>
-  <connection>
-   <sender>ui_modify_scale_chk</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ui_modify_scale_lbl</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>39</x>
-     <y>542</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>124</x>
-     <y>560</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ui_modify_te_chk</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ui_modify_te_rbtn</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>39</x>
-     <y>594</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>62</x>
-     <y>583</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ui_modify_te_chk</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ui_modify_te_ibl_rbtn</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>39</x>
-     <y>594</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>62</x>
-     <y>606</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ui_modify_scale_chk</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ui_modify_scale_xsc_dspn</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>39</x>
-     <y>542</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>244</x>
-     <y>531</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ui_modify_scale_chk</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ui_modify_scale_ysc_dspn</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>39</x>
-     <y>542</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>369</x>
-     <y>531</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ui_modify_scale_chk</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ui_modify_scale_zsc_dspn</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>39</x>
-     <y>542</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>510</x>
-     <y>531</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ui_modify_scale_chk</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ui_modify_scale_xc_dspn</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>39</x>
-     <y>542</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>244</x>
-     <y>560</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ui_modify_scale_chk</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ui_modify_scale_yc_dspn</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>39</x>
-     <y>542</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>369</x>
-     <y>560</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ui_modify_scale_chk</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ui_modify_scale_zc_dspn</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>39</x>
-     <y>542</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>510</x>
-     <y>560</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ui_modify_te_chk</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ui_modify_te_zref_dspn</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>39</x>
-     <y>594</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>369</x>
-     <y>597</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ui_modify_te_chk</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ui_modify_te_gamma_dspn</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>39</x>
-     <y>594</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>510</x>
-     <y>597</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ui_modify_streams_chk</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ui_modify_streams_input_combo</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>39</x>
-     <y>664</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>369</x>
-     <y>667</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ui_modify_streams_chk</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ui_modify_streams_deleteinput_btn</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>39</x>
-     <y>664</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>510</x>
-     <y>670</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ui_modify_streams_chk</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ui_modify_streams_lbl</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>39</x>
-     <y>664</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>124</x>
-     <y>670</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ui_modify_te_chk</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ui_modify_te_d_dspn</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>39</x>
-     <y>594</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>244</x>
-     <y>597</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ui_modify_streams_chk</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ui_modify_streams_opt_combo</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>39</x>
-     <y>664</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>244</x>
-     <y>667</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>ui_read_ibl_rbtn</sender>
    <signal>toggled(bool)</signal>
@@ -2608,11 +2520,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>39</x>
-     <y>432</y>
+     <y>425</y>
     </hint>
     <hint type="destinationlabel">
      <x>130</x>
-     <y>435</y>
+     <y>428</y>
     </hint>
    </hints>
   </connection>
@@ -2624,11 +2536,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>39</x>
-     <y>432</y>
+     <y>425</y>
     </hint>
     <hint type="destinationlabel">
      <x>400</x>
-     <y>435</y>
+     <y>428</y>
     </hint>
    </hints>
   </connection>
@@ -2640,11 +2552,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>39</x>
-     <y>432</y>
+     <y>425</y>
     </hint>
     <hint type="destinationlabel">
-     <x>544</x>
-     <y>435</y>
+     <x>597</x>
+     <y>428</y>
     </hint>
    </hints>
   </connection>
@@ -2656,11 +2568,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>39</x>
-     <y>461</y>
+     <y>447</y>
     </hint>
     <hint type="destinationlabel">
      <x>130</x>
-     <y>464</y>
+     <y>450</y>
     </hint>
    </hints>
   </connection>
@@ -2672,11 +2584,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>39</x>
-     <y>461</y>
+     <y>447</y>
     </hint>
     <hint type="destinationlabel">
      <x>400</x>
-     <y>464</y>
+     <y>450</y>
     </hint>
    </hints>
   </connection>
@@ -2688,11 +2600,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>39</x>
-     <y>461</y>
+     <y>447</y>
     </hint>
     <hint type="destinationlabel">
-     <x>468</x>
-     <y>464</y>
+     <x>521</x>
+     <y>450</y>
     </hint>
    </hints>
   </connection>
@@ -2704,11 +2616,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>39</x>
-     <y>461</y>
+     <y>447</y>
     </hint>
     <hint type="destinationlabel">
-     <x>544</x>
-     <y>464</y>
+     <x>597</x>
+     <y>450</y>
     </hint>
    </hints>
   </connection>
@@ -2719,12 +2631,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>39</x>
-     <y>870</y>
+     <x>63</x>
+     <y>872</y>
     </hint>
     <hint type="destinationlabel">
-     <x>128</x>
-     <y>873</y>
+     <x>229</x>
+     <y>875</y>
     </hint>
    </hints>
   </connection>
@@ -2735,12 +2647,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>39</x>
-     <y>870</y>
+     <x>63</x>
+     <y>872</y>
     </hint>
     <hint type="destinationlabel">
-     <x>439</x>
-     <y>873</y>
+     <x>646</x>
+     <y>875</y>
     </hint>
    </hints>
   </connection>
@@ -2751,12 +2663,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>39</x>
-     <y>841</y>
+     <x>63</x>
+     <y>843</y>
     </hint>
     <hint type="destinationlabel">
-     <x>128</x>
-     <y>844</y>
+     <x>229</x>
+     <y>846</y>
     </hint>
    </hints>
   </connection>
@@ -2767,12 +2679,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>39</x>
-     <y>841</y>
+     <x>63</x>
+     <y>843</y>
     </hint>
     <hint type="destinationlabel">
-     <x>439</x>
-     <y>844</y>
+     <x>646</x>
+     <y>846</y>
     </hint>
    </hints>
   </connection>
@@ -2783,12 +2695,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>39</x>
-     <y>770</y>
+     <x>63</x>
+     <y>772</y>
     </hint>
     <hint type="destinationlabel">
-     <x>128</x>
-     <y>805</y>
+     <x>154</x>
+     <y>784</y>
     </hint>
    </hints>
   </connection>
@@ -2799,12 +2711,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>39</x>
-     <y>770</y>
+     <x>63</x>
+     <y>772</y>
     </hint>
     <hint type="destinationlabel">
-     <x>439</x>
-     <y>741</y>
+     <x>646</x>
+     <y>743</y>
     </hint>
    </hints>
   </connection>
@@ -2815,12 +2727,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>39</x>
-     <y>896</y>
+     <x>63</x>
+     <y>898</y>
     </hint>
     <hint type="destinationlabel">
-     <x>128</x>
-     <y>896</y>
+     <x>229</x>
+     <y>898</y>
     </hint>
    </hints>
   </connection>
@@ -2831,12 +2743,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>39</x>
-     <y>770</y>
+     <x>63</x>
+     <y>772</y>
     </hint>
     <hint type="destinationlabel">
-     <x>326</x>
-     <y>777</y>
+     <x>374</x>
+     <y>756</y>
     </hint>
    </hints>
   </connection>
@@ -2847,12 +2759,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>39</x>
-     <y>770</y>
+     <x>63</x>
+     <y>772</y>
     </hint>
     <hint type="destinationlabel">
-     <x>544</x>
-     <y>780</y>
+     <x>592</x>
+     <y>759</y>
     </hint>
    </hints>
   </connection>
@@ -2863,12 +2775,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>329</y>
+     <x>685</x>
+     <y>364</y>
     </hint>
     <hint type="destinationlabel">
-     <x>692</x>
-     <y>332</y>
+     <x>739</x>
+     <y>367</y>
     </hint>
    </hints>
   </connection>
@@ -2879,12 +2791,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>329</y>
+     <x>685</x>
+     <y>364</y>
     </hint>
     <hint type="destinationlabel">
-     <x>905</x>
-     <y>332</y>
+     <x>985</x>
+     <y>367</y>
     </hint>
    </hints>
   </connection>
@@ -2895,11 +2807,11 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>411</y>
+     <x>685</x>
+     <y>446</y>
     </hint>
     <hint type="destinationlabel">
-     <x>692</x>
+     <x>745</x>
      <y>429</y>
     </hint>
    </hints>
@@ -2911,12 +2823,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>411</y>
+     <x>685</x>
+     <y>446</y>
     </hint>
     <hint type="destinationlabel">
-     <x>905</x>
-     <y>400</y>
+     <x>985</x>
+     <y>435</y>
     </hint>
    </hints>
   </connection>
@@ -2927,12 +2839,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>411</y>
+     <x>685</x>
+     <y>446</y>
     </hint>
     <hint type="destinationlabel">
-     <x>905</x>
-     <y>429</y>
+     <x>985</x>
+     <y>464</y>
     </hint>
    </hints>
   </connection>
@@ -2943,11 +2855,11 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>479</y>
+     <x>685</x>
+     <y>514</y>
     </hint>
     <hint type="destinationlabel">
-     <x>692</x>
+     <x>745</x>
      <y>497</y>
     </hint>
    </hints>
@@ -2959,28 +2871,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>479</y>
+     <x>685</x>
+     <y>514</y>
     </hint>
     <hint type="destinationlabel">
-     <x>905</x>
-     <y>468</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ui_output_rtzt_chk</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ui_output_rtzt_thickness_dpsn</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>593</x>
-     <y>479</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>905</x>
-     <y>497</y>
+     <x>985</x>
+     <y>503</y>
     </hint>
    </hints>
   </connection>
@@ -2991,11 +2887,11 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>547</y>
+     <x>685</x>
+     <y>582</y>
     </hint>
     <hint type="destinationlabel">
-     <x>692</x>
+     <x>745</x>
      <y>565</y>
     </hint>
    </hints>
@@ -3007,12 +2903,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>547</y>
+     <x>685</x>
+     <y>582</y>
     </hint>
     <hint type="destinationlabel">
-     <x>905</x>
-     <y>536</y>
+     <x>985</x>
+     <y>571</y>
     </hint>
    </hints>
   </connection>
@@ -3023,12 +2919,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>547</y>
+     <x>685</x>
+     <y>582</y>
     </hint>
     <hint type="destinationlabel">
-     <x>905</x>
-     <y>565</y>
+     <x>985</x>
+     <y>600</y>
     </hint>
    </hints>
   </connection>
@@ -3039,12 +2935,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>141</y>
+     <x>685</x>
+     <y>176</y>
     </hint>
     <hint type="destinationlabel">
-     <x>692</x>
-     <y>141</y>
+     <x>739</x>
+     <y>176</y>
     </hint>
    </hints>
   </connection>
@@ -3055,12 +2951,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>164</y>
+     <x>685</x>
+     <y>199</y>
     </hint>
     <hint type="destinationlabel">
-     <x>692</x>
-     <y>164</y>
+     <x>739</x>
+     <y>199</y>
     </hint>
    </hints>
   </connection>
@@ -3071,12 +2967,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>95</y>
+     <x>685</x>
+     <y>130</y>
     </hint>
     <hint type="destinationlabel">
-     <x>692</x>
-     <y>95</y>
+     <x>739</x>
+     <y>130</y>
     </hint>
    </hints>
   </connection>
@@ -3087,12 +2983,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>190</y>
+     <x>685</x>
+     <y>225</y>
     </hint>
     <hint type="destinationlabel">
-     <x>692</x>
-     <y>193</y>
+     <x>739</x>
+     <y>228</y>
     </hint>
    </hints>
   </connection>
@@ -3103,12 +2999,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>190</y>
+     <x>685</x>
+     <y>225</y>
     </hint>
     <hint type="destinationlabel">
-     <x>905</x>
-     <y>193</y>
+     <x>985</x>
+     <y>228</y>
     </hint>
    </hints>
   </connection>
@@ -3119,12 +3015,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>219</y>
+     <x>685</x>
+     <y>254</y>
     </hint>
     <hint type="destinationlabel">
-     <x>692</x>
-     <y>222</y>
+     <x>739</x>
+     <y>257</y>
     </hint>
    </hints>
   </connection>
@@ -3135,11 +3031,11 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>615</y>
+     <x>685</x>
+     <y>650</y>
     </hint>
     <hint type="destinationlabel">
-     <x>692</x>
+     <x>745</x>
      <y>633</y>
     </hint>
    </hints>
@@ -3151,12 +3047,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>615</y>
+     <x>685</x>
+     <y>650</y>
     </hint>
     <hint type="destinationlabel">
-     <x>905</x>
-     <y>604</y>
+     <x>985</x>
+     <y>639</y>
     </hint>
    </hints>
   </connection>
@@ -3167,12 +3063,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>615</y>
+     <x>685</x>
+     <y>650</y>
     </hint>
     <hint type="destinationlabel">
-     <x>905</x>
-     <y>633</y>
+     <x>985</x>
+     <y>668</y>
     </hint>
    </hints>
   </connection>
@@ -3183,12 +3079,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>219</y>
+     <x>685</x>
+     <y>254</y>
     </hint>
     <hint type="destinationlabel">
-     <x>905</x>
-     <y>222</y>
+     <x>985</x>
+     <y>257</y>
     </hint>
    </hints>
   </connection>
@@ -3199,11 +3095,11 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>683</y>
+     <x>685</x>
+     <y>718</y>
     </hint>
     <hint type="destinationlabel">
-     <x>692</x>
+     <x>745</x>
      <y>701</y>
     </hint>
    </hints>
@@ -3215,12 +3111,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>683</y>
+     <x>685</x>
+     <y>718</y>
     </hint>
     <hint type="destinationlabel">
-     <x>905</x>
-     <y>672</y>
+     <x>985</x>
+     <y>707</y>
     </hint>
    </hints>
   </connection>
@@ -3231,12 +3127,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>683</y>
+     <x>685</x>
+     <y>718</y>
     </hint>
     <hint type="destinationlabel">
-     <x>905</x>
-     <y>701</y>
+     <x>985</x>
+     <y>736</y>
     </hint>
    </hints>
   </connection>
@@ -3247,12 +3143,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>271</y>
+     <x>685</x>
+     <y>306</y>
     </hint>
     <hint type="destinationlabel">
-     <x>692</x>
-     <y>274</y>
+     <x>739</x>
+     <y>309</y>
     </hint>
    </hints>
   </connection>
@@ -3263,12 +3159,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>271</y>
+     <x>685</x>
+     <y>306</y>
     </hint>
     <hint type="destinationlabel">
-     <x>905</x>
-     <y>274</y>
+     <x>985</x>
+     <y>309</y>
     </hint>
    </hints>
   </connection>
@@ -3279,12 +3175,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>300</y>
+     <x>685</x>
+     <y>335</y>
     </hint>
     <hint type="destinationlabel">
-     <x>692</x>
-     <y>303</y>
+     <x>739</x>
+     <y>338</y>
     </hint>
    </hints>
   </connection>
@@ -3295,12 +3191,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>300</y>
+     <x>685</x>
+     <y>335</y>
     </hint>
     <hint type="destinationlabel">
-     <x>905</x>
-     <y>303</y>
+     <x>985</x>
+     <y>338</y>
     </hint>
    </hints>
   </connection>
@@ -3311,12 +3207,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>358</y>
+     <x>685</x>
+     <y>393</y>
     </hint>
     <hint type="destinationlabel">
-     <x>692</x>
-     <y>361</y>
+     <x>739</x>
+     <y>396</y>
     </hint>
    </hints>
   </connection>
@@ -3327,12 +3223,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>358</y>
+     <x>685</x>
+     <y>393</y>
     </hint>
     <hint type="destinationlabel">
-     <x>905</x>
-     <y>361</y>
+     <x>985</x>
+     <y>396</y>
     </hint>
    </hints>
   </connection>
@@ -3343,12 +3239,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>245</y>
+     <x>685</x>
+     <y>280</y>
     </hint>
     <hint type="destinationlabel">
-     <x>692</x>
-     <y>245</y>
+     <x>739</x>
+     <y>280</y>
     </hint>
    </hints>
   </connection>
@@ -3359,44 +3255,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>118</y>
+     <x>685</x>
+     <y>153</y>
     </hint>
     <hint type="destinationlabel">
-     <x>692</x>
-     <y>118</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ui_modify_te_round_chk</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ui_modify_te_round_lbl</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>39</x>
-     <y>632</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>124</x>
-     <y>635</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ui_modify_te_round_chk</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ui_modify_te_round_dpsn</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>39</x>
-     <y>632</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>319</x>
-     <y>635</y>
+     <x>739</x>
+     <y>153</y>
     </hint>
    </hints>
   </connection>
@@ -3407,12 +3271,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>25</x>
-     <y>764</y>
+     <x>49</x>
+     <y>772</y>
     </hint>
     <hint type="destinationlabel">
-     <x>299</x>
-     <y>809</y>
+     <x>347</x>
+     <y>788</y>
     </hint>
    </hints>
   </connection>
@@ -3423,12 +3287,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>32</x>
-     <y>766</y>
+     <x>56</x>
+     <y>772</y>
     </hint>
     <hint type="destinationlabel">
-     <x>385</x>
-     <y>802</y>
+     <x>537</x>
+     <y>807</y>
     </hint>
    </hints>
   </connection>
@@ -3439,12 +3303,28 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>36</x>
-     <y>767</y>
+     <x>60</x>
+     <y>772</y>
     </hint>
     <hint type="destinationlabel">
-     <x>502</x>
-     <y>797</y>
+     <x>649</x>
+     <y>807</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ui_output_rtzt_chk</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>ui_output_rtzt_thickness_opt_combo</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>696</x>
+     <y>502</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>828</x>
+     <y>530</y>
     </hint>
    </hints>
   </connection>

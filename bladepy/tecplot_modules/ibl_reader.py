@@ -7,10 +7,15 @@ from mpl_toolkits.mplot3d import Axes3D
 
 class Section:
     def __init__(self, name):
+        """
+
+        :param name:
+        """
+
         n = 15
         self.type = name
 
-        if any(["All points" in name]):
+        if any(section_type in name for section_type in ["All points", "Hub", "Tip"]):
             n = 1
 
         self.x = [np.array([]) for x in range(n)]
@@ -48,15 +53,9 @@ class IblReader:
             current_reading = None
             previous_reading = None
 
-
             for row in reader:
                 try:
-                    if any(["Begin " in row[0],
-                            "!end" in row[0],
-                            "CORDINATES" in row[0],
-                            "There are  4 blades" in row[0],
-                            "Open Index Arclength" in row[0]]):
-
+                    if any(string in row[0] for string in ["Begin ", "!end", "CORDINATES", "There are  4 blades", "Open Index Arclength"]):
                         continue
 
                     if "HUB" in row[0]:
@@ -74,7 +73,6 @@ class IblReader:
                             index += 1
                         else:
                             index = 0
-
 
                     elif "LE-SURFACE" in row[0]:
                         current_reading = self.le_surface
@@ -131,8 +129,6 @@ class IblReader:
 
                             set_object.x[set_index] = np.append(set_object.x[set_index], r * np.cos(th_rad))
                             set_object.y[set_index] = np.append(set_object.y[set_index], r * np.sin(th_rad))
-
-
 
                     previous_reading = current_reading
 

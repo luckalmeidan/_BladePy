@@ -201,16 +201,17 @@ class TecPlotWindow(QtGui.QMainWindow, tecplot_displayUI.Ui_MainWindow):
 
         X, Y, U, V = coordinates
 
-        plot = plt.arrow(X, Y, U - X, V - Y,
+        vector = plt.arrow(X, Y, U - X, V - Y,
                          shape='full',
                          lw=0,
                          length_includes_head=True,
                          head_width=self._ref_length * 0.02,
                          color=context_color)
 
-        return plot
+        return vector
 
-    def _computeLength(self, x_list, y_list):
+    @staticmethod
+    def _computeLength(x_list, y_list):
         length = 0
         x_array = np.array(x_list).astype(np.float)
         y_array = np.array(y_list).astype(np.float)
